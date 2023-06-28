@@ -1,5 +1,5 @@
 <template lang="">
-    <nav class="nav">
+    <nav class="nav container">
         <div>
             <router-link to="/">
                 <span class="nav_langChange">EN</span>
@@ -12,7 +12,8 @@
         </div>
         <div>
             <router-link to="/sign-in">
-                <btnComponent/>
+                <btnComponent class="pc" icon="person.svg" text="Sign In" type="dark"/>
+                <btnComponent class="mobile" icon="person.svg" type="dark"/>
             </router-link>
         </div>
     </nav>
@@ -32,9 +33,6 @@ export default {
 <style scoped lang="scss">
     @import '../assets/styles/_variables.scss';
     .nav {
-        // tmp
-        margin:0 100px;
-        
         margin-top: 40px;
         display: flex;
         justify-content: space-between;
@@ -43,10 +41,16 @@ export default {
         a {
             text-decoration: none !important;
         }
-        
+
         & > div {
-            width: auto;
+            min-width: 100px;
             text-align: center;
+        }
+        button {
+            height: 43px;
+            &.mobile {
+                display: none;
+            }
         }
         &_langChange {
             border-radius: 15px;
@@ -63,6 +67,38 @@ export default {
 
             font-weight: 900;
             text-decoration: none;
+        }
+        
+    }
+    @media(max-width: 750px) {
+        .nav {
+            & > div {
+                min-width: 70px;
+            }
+            & img {
+                width: 80px;
+            }
+            & button {
+                height: 34px;
+                width: 70px;
+                border-radius: 10px;
+                border: 2px solid $dark;
+                padding: 0;
+                &.pc {
+                    display: none;
+                }
+                &.mobile {
+                    display: block;
+                }
+            }
+            
+            &_langChange {
+                font-weight: 700;
+                border-radius: 10px;
+                border: 2px solid $dark;
+                height: 30px;
+                width: 30px;
+            }
         }
     }
 </style>
