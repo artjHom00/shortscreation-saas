@@ -12,9 +12,11 @@
                     <input type="checkbox" id="rememberMe"/>
                     <label for="rememberMe">Remember me</label>
                 </div>
-                <router-link to="/" class="text-primary" style="text-align:right">Forgot Your Password?</router-link>
+                <router-link to="/" class="text-primary forgot">Forgot Your Password?</router-link>
             </div>
-            <btnComponent type="primary" text="Log In"/>
+            <router-link to="/dashboard" class="no-decoration">
+                <btnComponent type="primary" text="Log In"/>
+            </router-link>
             <p>Don’t have an account? <router-link to="/create-account" class="text-primary">Create an account!</router-link></p>
         </div>
     </div>
@@ -33,7 +35,7 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-    @import '../assets/styles/_variables.scss';
+    @import '@/assets/styles/_variables.scss';
 
     .auth {
         max-width: 500px;
@@ -49,6 +51,9 @@ export default {
         }
         & > * {
             margin-bottom: 40px;
+        }
+        & .forgot {
+            text-align:right
         }
         & > h3, & > p {
             text-align: center;
@@ -75,6 +80,11 @@ export default {
             padding: 30px;
             & label {
                 margin-left: 5px;
+            }
+            & > .options {
+                & > * {
+                    width: 50%;
+                }
             }
         }
     }

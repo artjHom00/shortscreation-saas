@@ -36,7 +36,7 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-    @import '../assets/styles/_variables.scss';
+    @import '@/assets/styles/_variables.scss';
 
     .create {
         max-width: 500px;

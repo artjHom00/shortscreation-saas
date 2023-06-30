@@ -1,17 +1,17 @@
 <template lang="">
     <nav class="nav container">
         <div>
-            <router-link to="/">
+            <router-link to="/" class="no-decoration">
                 <span class="nav_langChange">EN</span>
             </router-link>
         </div>
         <div>
-            <router-link to="/">
-                <img width="120" src="../assets/shortscreation.svg" alt="">
+            <router-link to="/" class="no-decoration">
+                <img width="120" src="../assets/images/logo.svg" alt="">
             </router-link>
         </div>
         <div>
-            <router-link to="/sign-in">
+            <router-link to="/sign-in" class="no-decoration">
                 <btnComponent class="pc" icon="person.svg" text="Sign In" type="dark"/>
                 <btnComponent class="mobile" icon="person.svg" type="dark"/>
             </router-link>
@@ -31,16 +31,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    @import '../assets/styles/_variables.scss';
+    @import '@/assets/styles/_variables.scss';
     .nav {
         margin-top: 40px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-
-        a {
-            text-decoration: none !important;
-        }
 
         & > div {
             min-width: 100px;
@@ -73,14 +69,14 @@ export default {
     @media(max-width: 750px) {
         .nav {
             & > div {
-                min-width: 70px;
+                min-width: 0px;
             }
             & img {
                 width: 80px;
             }
             & button {
                 height: 34px;
-                width: 70px;
+                width: 34px;
                 border-radius: 10px;
                 border: 2px solid $dark;
                 padding: 0;

@@ -1,7 +1,7 @@
 <template lang="">
     <footer class="footer container">
         <div class="footer-logo">
-            <img src="../assets/footer-logo.svg" width="180" alt="">
+            <img src="../assets/images/footer-logo.svg" width="180" alt="">
         </div>
         <div class="footer-info">
             <h4>Since 2023</h4>
@@ -18,7 +18,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    @import '../assets/styles/_variables.scss';
+    @import '@/assets/styles/_variables.scss';
     .footer {
         margin: 100px auto 30px auto;
         display: flex;

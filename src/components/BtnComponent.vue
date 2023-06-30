@@ -10,13 +10,13 @@ export default {
     props: ['icon', 'text', 'type'],
     computed: {
         getIcon: function() {
-            return require('@/assets/' + this.$props.icon)
+            return require('@/assets/images/' + this.$props.icon)
         }
     }
 }
 </script>
 <style scoped lang="scss">
-    @import '../assets/styles/_variables.scss';
+    @import '@/assets/styles/_variables.scss';
     
     button {
         border: none;

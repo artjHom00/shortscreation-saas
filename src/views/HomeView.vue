@@ -36,7 +36,7 @@
             <btnComponent type="primary" text="Get Started"/>
         </div>
         <div class="image">
-          <img src="../assets/notifications.svg" alt="">
+          <img src="../assets/images/home/notifications.svg" alt="">
         </div>
       </div>
     </div>
@@ -44,22 +44,22 @@
       <h2>How to use <span class="text-primary">ShortsCreation</span>?</h2>
       <div class="wrapper">
         <div class="adv">
-          <img src="../assets/person.png">
+          <img src="../assets/images/home/person.png">
           <h3>Send traffic to affiliate programms</h3>
           <h4>“AdCreative.ai is more than just an AI company; they have one of the largest high-conversion ad creative databases, if not the largest.”</h4>
         </div>
         <div class="adv">
-          <img src="../assets/eye.png">
+          <img src="../assets/images/home/eye.png">
           <h3>Gain views in short time</h3>
           <h4>“AdCreative.ai is more than just an AI company; they have one of the largest high-conversion ad creative databases, if not the largest.”</h4>
         </div>
         <div class="adv">
-          <img src="../assets/short.png">
+          <img src="../assets/images/home/short.png">
           <h3>Gain views in short time</h3>
           <h4>“AdCreative.ai is more than just an AI company; they have one of the largest high-conversion ad creative databases, if not the largest.”</h4>
         </div>
         <div class="adv">
-          <img src="../assets/store.png">
+          <img src="../assets/images/home/store.png">
           <h3>Send traffic to affiliate programms</h3>
           <h4>“AdCreative.ai is more than just an AI company; they have one of the largest high-conversion ad creative databases, if not the largest.”</h4>
         </div>
@@ -75,25 +75,25 @@
         </div>
         <div class="wrapper">
           <div class="review-el">
-            <img src="../assets/kendrick.png" alt="">
+            <img src="../assets/images/home/kendrick.png" alt="">
             <h3>SHAW</h3>
             <p>Everyone in digital marketing is going to be using Social Studio. It’s literally Canva + AI, and it’s built by the most hardworking, humble & experienced people in the industry, take advantage of this savings now because you’re getting it eventually. </p>
           </div>
 
           <div class="review-el">
-            <img src="../assets/kendrick.png" alt="">
+            <img src="../assets/images/home/kendrick.png" alt="">
             <h3>SHAW</h3>
             <p>Everyone in digital marketing is going to be using Social Studio. It’s literally Canva + AI, and it’s built by the most hardworking, humble & experienced people in the industry, take advantage of this savings now because you’re getting it eventually. </p>
           </div>
 
           <div class="review-el">
-            <img src="../assets/kendrick.png" alt="">
+            <img src="../assets/images/home/kendrick.png" alt="">
             <h3>SHAW</h3>
             <p>Everyone in digital marketing is going to be using Social Studio. It’s literally Canva + AI, and it’s built by the most hardworking, humble & experienced people in the industry, take advantage of this savings now because you’re getting it eventually. </p>
           </div>
 
           <div class="review-el">
-            <img src="../assets/kendrick.png" alt="">
+            <img src="../assets/images/home/kendrick.png" alt="">
             <h3>SHAW</h3>
             <p>Everyone in digital marketing is going to be using Social Studio. It’s literally Canva + AI, and it’s built by the most hardworking, humble & experienced people in the industry, take advantage of this savings now because you’re getting it eventually. </p>
           </div>
@@ -129,7 +129,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  @import '../assets/styles/_variables.scss';
+  @import '@/assets/styles/_variables.scss';
 
   .placeholder {
     margin: 0 auto;
@@ -332,6 +332,9 @@ export default {
       }
     }
     .subscriptions {
+      & > h2 > small {
+        font-size: initial;
+      }
       &-list {
         display: block;
         & > .subscription {

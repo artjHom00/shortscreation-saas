@@ -29,6 +29,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: #333745;
 }
+.no-decoration {
+  text-decoration: none !important;
+}
 h1 {
   font-size: 72px;
   font-weight: 800;
@@ -49,6 +52,7 @@ p {
   font-size: 16px;
 }
 a {
+  color: $dark;
   text-decoration: none;
   &:hover {
     text-decoration: underline;
@@ -77,7 +81,10 @@ a {
     font-size: 16px;
   }
   p, a, label {
-    font-size: 14px;
+    font-size: 13px;
+  }
+  small {
+    font-size: 11px;
   }
 }
 

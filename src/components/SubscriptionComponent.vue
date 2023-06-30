@@ -21,7 +21,7 @@
             <div class="subscription-content--el">
                 <h4>Fully automated content</h4>
                 <h3>
-                    <img src="../assets/verified.svg" alt="">
+                    <img src="../assets/images/home/verified.svg" alt="">
                 </h3>
             </div>
             <div>
@@ -43,7 +43,7 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-    @import '../assets/styles/_variables.scss';
+    @import '@/assets/styles/_variables.scss';
     
     .subscription {
         border-radius: 15px;
