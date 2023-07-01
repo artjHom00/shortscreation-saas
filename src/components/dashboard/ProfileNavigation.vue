@@ -1,12 +1,11 @@
 <template lang="">
     <div class="profile-nav">
         <div>
-            <img src="@/assets/images/dashboard/logout.svg" alt="">
+            <router-link to="/dashboard"><img src="@/assets/images/dashboard/logout.svg" alt=""></router-link>
         </div>
-        <BtnComponent type="primary" icon="dashboard/home.svg"/>
-        <BtnComponent type="dark" icon="dashboard/plus.svg"/>
-        <BtnComponent type="dark" icon="dashboard/accounts.svg"/>
-        <BtnComponent type="dark" icon="dashboard/refferals.svg"/>
+        <router-link v-for="(button, index) in buttons" :key="index" :to="button.url">
+            <BtnComponent :type="getButtonType(index)" :icon="button.icon" @click="setPrimary(index)"/>
+        </router-link>
     </div>
 </template>
 <script>
@@ -16,6 +15,55 @@ export default {
     name: 'ProfileNavigation',
     components: {
         BtnComponent
+    },
+    data() {
+        return {
+            buttons: [
+                {
+                    'url': '/dashboard',
+                    'icon': 'dashboard/home.svg',
+                },
+                {
+                    'url': '/create-content',
+                    'icon': 'dashboard/plus.svg',
+                },
+                {
+                    'url': '/accounts',
+                    'icon': 'dashboard/accounts.svg',
+                },
+                {
+                    'url': '/affiliate',
+                    'icon': 'dashboard/refferals.svg',
+                },
+        ]
+        }
+    },
+    mounted() {
+        this.buttons.map((button) => {
+            button.type = 'dark'
+
+            if(button.url === this.$route.fullPath) button.type = 'primary'
+            
+            return button
+        })
+
+    },
+    methods: {
+        setPrimary(index) {
+
+            this.buttons.map(button => {
+                if(button.type === 'primary') {
+                    button.type = 'dark'
+                }
+                return button
+            })
+
+            this.buttons[index].type = 'primary'
+            
+        },
+        getButtonType(index) {
+            return this.buttons[index].type
+        }
     }
 }
 </script>
@@ -26,7 +74,7 @@ export default {
         display: inline-flex;
         justify-content: center;
         align-items: center;
-        & > * {
+        & > * > * {
             margin: 0 25px;
             width: 30px;
             height: 30px;
@@ -35,13 +83,13 @@ export default {
     @media(max-width: 750px) {
         .profile-nav {
             
-            & > button {
+            & > * > button {
                 height: initial;
             }
-            & > * {
+            & > * > * {
                 margin: 0 10px;
             }
-            & > * > img {
+            & > * > a > img {
                 width: 25px;
                 height: 34px;
             }

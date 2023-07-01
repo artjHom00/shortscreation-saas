@@ -51,6 +51,9 @@ export default {
     @import '@/assets/styles/_variables.scss';
 
     .dashboard {
+        h2 {
+            margin-bottom: 70px;
+        }
         & .filled-section {
             width: calc(100% - 100px);
             background: $fade-w-image;

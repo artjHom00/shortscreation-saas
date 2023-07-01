@@ -3,7 +3,7 @@
     <div class="main-section section container">
       <h1>Automate & Earn on <span class="text-primary">YouTube Shorts</span></h1>
       <h4>Generate engagement focused social media post creatives in a matter of minutes using Artificial Intelligence. Generate perfectly sized creatives for Facebook, Instagram, LinkedIn, Pinterest, Twitter and more!</h4>
-      <btnComponent text="Start Creating 🔗" type="primary"/>
+      <BtnComponent text="Start Creating 🔗" type="primary"/>
       <div class="video placeholder"></div>
     </div>
     <div class="steps section container">
@@ -17,7 +17,7 @@
             <br><br>
             Our stunning algorithm collects the most up to date data and creates content that seems as if it’s written by humans.
           </h4>
-          <btnComponent type="primary" text="Create An Account"/>
+          <BtnComponent type="primary" text="Create An Account"/>
         </div>
       </div>
     </div>
@@ -33,7 +33,7 @@
               <br><br>  
               Create shorts, invite viewers to our service & make money
             </h4>
-            <btnComponent type="primary" text="Get Started"/>
+            <BtnComponent type="primary" text="Get Started"/>
         </div>
         <div class="image">
           <img src="../assets/images/home/notifications.svg" alt="">
@@ -116,13 +116,13 @@
 </template>
 
 <script>
-import btnComponent from '@/components/BtnComponent.vue'; 
+import BtnComponent from '@/components/BtnComponent.vue'; 
 import subscriptionComponent from '@/components/SubscriptionComponent.vue'; 
 
 export default {
   name: 'HomeView',
   components: {
-    btnComponent,
+    BtnComponent,
     subscriptionComponent
   }
 }

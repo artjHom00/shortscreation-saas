@@ -2,8 +2,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AuthView from '../views/AuthView.vue'
 import CreateAccountView from '../views/CreateAccountView.vue'
-import CreateContentView from '../views/CreateAccountView.vue'
+import CreateContentView from '../views/CreateContentView.vue'
 import DashboardView from '../views/DashboardView.vue'
+import AccountsView from '../views/AccountsView.vue'
+import AffiliateView from '../views/AffiliateView.vue'
 
 const routes = [
   {
@@ -30,6 +32,21 @@ const routes = [
     path: '/create-content',
     name: 'create-content',
     component: CreateContentView
+  },
+  {
+    path: '/create-content',
+    name: 'create-content',
+    component: CreateContentView
+  },
+  {
+    path: '/accounts',
+    name: 'accounts',
+    component: AccountsView
+  },
+  {
+    path: '/affiliate',
+    name: 'affiliate',
+    component: AffiliateView
   }
 ]
 

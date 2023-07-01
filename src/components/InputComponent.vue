@@ -34,7 +34,6 @@ export default {
             & > input {
                 padding: 15px;
                 width: calc(100% - 30px);
-
             }
         }
     }
