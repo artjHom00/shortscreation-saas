@@ -9,6 +9,7 @@
                 <h3>27 days left</h3>
             </div>
         </div>
+
         <div class="accounts">
             <h4>Your Accounts:</h4>
             <div class="accounts-list">
@@ -22,6 +23,7 @@
                 <AccountComponent/>
             </div>
         </div>
+
         <div class="last-shorts">
             <h4>Last shorts:</h4>
             <div class="last-shorts-list">
@@ -51,6 +53,9 @@ export default {
     @import '@/assets/styles/_variables.scss';
 
     .dashboard {
+        & > * {
+            margin-bottom: 30px;
+        }
         h2 {
             margin-bottom: 70px;
         }
@@ -95,6 +100,18 @@ export default {
         }
     }
     
+    @media(max-width: 680px) {
+        .dashboard {
+            & .last-shorts {
+                &-list {
+                    & > * {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+
     @media(max-width: 655px) {
         .dashboard {
             & .accounts {
@@ -104,13 +121,7 @@ export default {
                     }
                 }
             }
-            & .last-shorts {
-                &-list {
-                    & > * {
-                        width: 100%;
-                    }
-                }
-            }
+            
         }
     }
 </style>

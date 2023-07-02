@@ -5,14 +5,14 @@
 
         <div class="accounts">
 
-            <btnComponent type="primary" text="Add New Account"/>
+            <btnComponent type="primary" text="Add New Account" @click="changeStateOfForm"/>
 
             
-            <div class="add-account">
+            <div class="add-account" v-if="showForm">
 
                 <div class="add-account-form">
                     <inputComponent label="Email" placeholder="Email"/>
-                    <inputComponent label="Password" placeholder="Password"/>
+                    <inputComponent label="Password" placeholder="*********"/>
                     <inputComponent label="Recovery Email (if nedeed)" placeholder="Recovery email"/>
                 </div>
                 <btnComponent type="primary" text="Save"/>
@@ -43,6 +43,16 @@ import btnComponent from '@/components/BtnComponent.vue';
 
 export default {
     name: 'DashboardView',
+    data() {
+        return {
+            showForm: false
+        }
+    },
+    methods: {
+        changeStateOfForm() {
+            this.showForm = !this.showForm
+        }
+    },
     components: {
         ProfileNavigation,
         AccountComponent,

@@ -1,23 +1,13 @@
 <template lang="">
     <div class="container">
 
-        <div class="auth">
-            <h3>Hello!</h3>
+        <div class="create">
+            <h3>Restore Your Password</h3>
             <div class="form">
                 <InputComponent label="Email" placeholder="Enter your email address"/>
-                <InputComponent label="Password" placeholder="*********"/>
             </div>
-            <div class="options">
-                <div>
-                    <input type="checkbox" id="rememberMe"/>
-                    <label for="rememberMe">Remember me</label>
-                </div>
-                <router-link to="/forgot-password" class="text-primary forgot">Forgot Your Password?</router-link>
-            </div>
-            <router-link to="/dashboard" class="no-decoration">
-                <btnComponent type="primary" text="Log In"/>
-            </router-link>
-            <p>Don’t have an account? <router-link to="/create-account" class="text-primary">Create an account!</router-link></p>
+            <router-link to="/change-password" class="no-decoration"><btnComponent type="primary" text="Restore"/></router-link>
+            <p>Remembered password? <router-link to="/sign-in" class="text-primary">Sign in!</router-link></p>
         </div>
     </div>
 </template>
@@ -27,7 +17,7 @@ import InputComponent from '@/components/InputComponent.vue'
 import BtnComponent from '@/components/BtnComponent.vue'
 
 export default {
-    name: 'AuthView',
+    name: 'CreateAccountView',
     components: {
         InputComponent,
         BtnComponent
@@ -37,7 +27,7 @@ export default {
 <style scoped lang="scss">
     @import '@/assets/styles/_variables.scss';
 
-    .auth {
+    .create {
         max-width: 500px;
         display: block;
         margin: 0 auto;
@@ -52,9 +42,6 @@ export default {
         & > * {
             margin-bottom: 40px;
         }
-        & .forgot {
-            text-align:right
-        }
         & > h3, & > p {
             text-align: center;
         }
@@ -66,26 +53,15 @@ export default {
         & > .options {
             display: flex;
             justify-content: space-between;
-            & > div {
-                width: 50%;
-            }
         }
         & button {
             width: 100%;
         }
     }
-    
+
     @media(max-width: 750px) {
-        .auth {
+        .create {
             padding: 30px;
-            & label {
-                margin-left: 5px;
-            }
-            & > .options {
-                & > * {
-                    width: 50%;
-                }
-            }
         }
     }
 </style>

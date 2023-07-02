@@ -6,6 +6,8 @@ import CreateContentView from '../views/CreateContentView.vue'
 import DashboardView from '../views/DashboardView.vue'
 import AccountsView from '../views/AccountsView.vue'
 import AffiliateView from '../views/AffiliateView.vue'
+import ForgotPasswordView from '../views/ForgotPasswordView.vue'
+import ChangePasswordView from '../views/ChangePasswordView.vue'
 
 const routes = [
   {
@@ -47,6 +49,16 @@ const routes = [
     path: '/affiliate',
     name: 'affiliate',
     component: AffiliateView
+  },
+  {
+    path: '/forgot-password',
+    name: 'forgot-password',
+    component: ForgotPasswordView
+  },
+  {
+    path: '/change-password',
+    name: 'change-password',
+    component: ChangePasswordView
   }
 ]
 

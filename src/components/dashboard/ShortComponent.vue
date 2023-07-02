@@ -28,7 +28,7 @@ export default {
         border-radius: 15px;
         border: 1px solid $gray-white;
         background: $white;
-        max-width: 400px;
+        // max-width: 400px;
         min-width: 220px;
         & > div {
             & > h4, & > p {
