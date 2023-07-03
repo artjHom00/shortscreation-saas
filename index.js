@@ -4,7 +4,7 @@ let express = require('express')
 let mongoose = require('mongoose')
 let bodyParser = require('body-parser')
 
-require('dotenv').config()
+require('dotenv').config({ path: `.env.local`, override: true })
 
 let usersRoutes = require('./routes/users')
 

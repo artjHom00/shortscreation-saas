@@ -1,10 +1,6 @@
 const { mongoose, Schema, Types } = require('mongoose');
 
 const usersSchema = new Schema({
-    _id: {
-        required: true,
-        type: Types.ObjectId
-    },
     username: {
         required: true,
         type: String,
@@ -21,22 +17,48 @@ const usersSchema = new Schema({
         required: false,
         type: String,
     },
-    confirmed: {
-        required: true,
-        type: Boolean,
-        default: false
+    confirmation: {
+        status: {
+            required: true,
+            type: Boolean,
+            default: false
+        },
+        code: {
+            required: false,
+            type: Number
+        },
     },
     registration_date: { 
         required: true,
         type: Date,
         default: Date.now
     },
-    refferal: {
+    role: {
+        required: true,
         type: String,
+        default: 'user'
+    },
+    subscription: {
+        has_subscription: {
+            type: Boolean,
+            required: true,
+            default: false,
+        },
+        type: {
+            type: String,
+            required: false,
+        },
+        expires: {
+            type: Date,
+            required: false
+        }
+    },
+    refferal: {
+        type: Types.ObjectId,
         required: false,
     }
 });
 
-const user = mongoose.model('users', usersSchema);
+const User = mongoose.model('users', usersSchema);
 
-module.exports = user
+module.exports = User

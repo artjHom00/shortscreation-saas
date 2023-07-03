@@ -1,4 +1,49 @@
-let User = require('../models/user.js')
+let User = require('../models/User.js')
+let { generateAccessToken } = require('../services/jwt.js')
+let { sendConfirmationCode, confirmEmail } = require('../services/mailConfirmation.js')
+// let bcrypt = require('bcrypt')
+
+async function confirmUser(req, res) {
+  try {
+    const { code } = req.body;
+    
+    let confirmation = await confirmEmail(req.user.id, code)
+
+    if(!confirmation) {
+      return res.status(401).json({ error: 'Email address not verified'}) 
+    }
+    
+    res.json(confirmation)
+    
+  } catch (error) {
+    console.error('Error authenticating user:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+async function authUser(req, res) {
+  try {
+    const { email, password } = req.body;
+    
+    // Find the user by email
+    const user = await User.findOne({ email });
+
+    // Check if the user exists and if the password is correct
+    if (user && password === user.password) {
+      
+      let userWithJWT = await generateAccessToken(user)
+      // Return the authenticated user
+      res.json(userWithJWT);
+
+    } else {
+      // If the user doesn't exist or the password is incorrect, return an error response
+      res.status(401).json({ error: 'Invalid credentials' });
+    }
+  } catch (error) {
+    console.error('Error authenticating user:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
 
 // Create a new user
 async function createUser(req, res) {
@@ -20,7 +65,11 @@ async function createUser(req, res) {
         const newUser = new User(req.body);
         const savedUser = await newUser.save();
         
-        res.status(201).json(savedUser);
+        await sendConfirmationCode(email)
+        let userWithJWT = await generateAccessToken(savedUser)
+
+        res.status(201).json(userWithJWT);
+        
     } catch (error) {
         res.status(500).json({ error });
     }
@@ -84,6 +133,8 @@ async function createUser(req, res) {
   }
   
   module.exports = {
+    confirmUser,
+    authUser,
     createUser,
     getUsers,
     getUserById,
