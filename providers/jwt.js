@@ -1,8 +1,8 @@
 // https://www.digitalocean.com/community/tutorials/nodejs-jwt-expressjs
 // let sha256 = require('sha256')
 let jwt = require('jsonwebtoken')
-
 let User = require('../models/User')
+
 
 async function generateAccessToken(user) {
     try {
@@ -14,7 +14,7 @@ async function generateAccessToken(user) {
             jwt_token: token
         }, { new: true })
             
-        resolve(userData)
+        return userData
     } catch(error) {
         throw new Error(error)
     }
@@ -27,7 +27,7 @@ async function authenticateToken(req, res, next) {
 
     if (token == null) return res.sendStatus(401)
 
-    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    jwt.verify(token, process.env.JWT_SECRET, (err, { user }) => {
         if (err) return res.status(403).send(err);
         req.user = user;
 

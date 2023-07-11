@@ -1,4 +1,4 @@
-const { mongoose, Schema, Types } = require('mongoose');
+const { mongoose, Schema } = require('mongoose');
 
 const usersSchema = new Schema({
     username: {
@@ -54,7 +54,7 @@ const usersSchema = new Schema({
         }
     },
     refferal: {
-        type: Types.ObjectId,
+        type: Schema.Types.ObjectId,
         required: false,
     }
 });

@@ -17,12 +17,22 @@
   },
   "homepage": "https://github.com/artjHom00/shortscreation-saas#readme",
   "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "@ffprobe-installer/ffprobe": "^2.1.0",
+    "@tobyg74/tiktok-api-dl": "^1.0.4",
     "body-parser": "^1.20.2",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "fluent-ffmpeg": "^2.1.2",
+    "fs": "^0.0.1-security",
+    "https": "^1.0.0",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.3.1",
     "nodemailer": "^6.9.3",
-    "sha256": "^0.2.0"
+    "puppeteer": "^20.8.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "sha256": "^0.2.0",
+    "youtube-videos-uploader": "^2.0.19"
   }
 }
