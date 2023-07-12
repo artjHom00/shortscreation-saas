@@ -1,11 +1,14 @@
 <template lang="">
+    <Transition>
+        <NotificationComponent :type="notification.type" :message="notification.message" v-if="notification.show"/>
+    </Transition>
     <div class="container">
 
         <div class="auth">
             <h3>Hello!</h3>
             <div class="form">
-                <InputComponent label="Email" placeholder="Enter your email address"/>
-                <InputComponent label="Password" placeholder="*********"/>
+                <InputComponent label="Email" v-model="email" placeholder="Enter your email address"/>
+                <InputComponent label="Password" v-model="password" placeholder="*********"/>
             </div>
             <div class="options">
                 <div>
@@ -14,9 +17,9 @@
                 </div>
                 <router-link to="/forgot-password" class="text-primary forgot">Forgot Your Password?</router-link>
             </div>
-            <router-link to="/dashboard" class="no-decoration">
-                <btnComponent type="primary" text="Log In"/>
-            </router-link>
+            <!-- <router-link to="/dashboard" class="no-decoration"> -->
+                <btnComponent type="primary" text="Log In" @click="authUser"/>
+            <!-- </router-link> -->
             <p>Don’t have an account? <router-link to="/create-account" class="text-primary">Create an account!</router-link></p>
         </div>
     </div>
@@ -25,12 +28,63 @@
 <script>
 import InputComponent from '@/components/InputComponent.vue'
 import BtnComponent from '@/components/BtnComponent.vue'
+import NotificationComponent from '@/components/NotificationComponent.vue'
+
+import axios from 'axios';
 
 export default {
     name: 'AuthView',
+    data() {
+        return {
+            email: 'john@example.com', 
+            password: 'secretpasswosrd',
+            notification: {
+                show: false,
+                type: null,
+                message: null
+            }
+        }
+    },
     components: {
         InputComponent,
-        BtnComponent
+        BtnComponent,
+        NotificationComponent
+    },
+    methods: {
+        authUser() {
+            axios.post('users/auth', {
+                email: this.email,
+                password: this.password
+            }).then(({ data }) => {
+
+                this.$cookies.set('jwt_token', data.jwt_token)
+                this.showNotification('success', 'You’re authorized, redirecting')
+
+                setTimeout(() => {
+                    window.location.href = '/dashboard'
+                    // this.$router.push('/dashboard')
+                }, 1000)
+
+            }).catch(({ response: { data }}) => {
+                console.log("🚀 ~ file: AuthView.vue:59 ~ authUser ~ data:", data)
+                this.showNotification('fail', data.error)                
+            })
+        },
+        showNotification(type, message) {
+            this.notification = {
+                show: true,
+                type,
+                message
+            }
+            
+            setTimeout(() => {
+                this.notification.show = false
+            }, 3000)
+
+        }
+    },
+    mounted() {
+        axios.defaults.baseURL = this.$store.state.host
     }
 }
 </script>

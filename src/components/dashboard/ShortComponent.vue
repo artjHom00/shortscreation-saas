@@ -2,18 +2,19 @@
     <div class="short">
         <img class="short-image" src="@/assets/images/dashboard/youtube.svg" alt="">
         <div>
-            <a href="#">Go To Video</a>
-            <p><small><b>From TikTok: @exampleuser</b></small></p>
-            <p><small><b>To YouTube: @exampleuser</b></small></p>
+            <a :href="short.link">Go To Video</a>
+            <p><small><b>From TikTok: @{{ short.author }}</b></small></p>
+            <p><small><b>To: #{{ short.youtube_account_id }}</b></small></p>
         </div>
         <div class="short-date">
-            <small>2hr. ago</small>
+            <small>{{ new Date(short.created_at).getFullYear() }}</small>
         </div>
     </div>
 </template>
 <script>
 export default {
-    name: 'ShortComponent'
+    name: 'ShortComponent',
+    props: ['short'],
 }
 </script>
 <style scoped lang="scss">
@@ -21,6 +22,7 @@ export default {
 
     .short {
         display: flex;
+        gap: 15px;
         justify-content: space-between;
         align-items: center;
         min-height: 65px;
@@ -46,8 +48,10 @@ export default {
         &-date {
             height: 100%;
             font-size: 11px;
+            white-space: nowrap;
         }
     }
+
 
     @media(max-width: 400px) {
         .short {

@@ -1,18 +1,19 @@
 <template lang="">
     <div class="account">
-        <img class="account-image" src="@/assets/images/dashboard/kendrick.png" alt="">
+        <img class="account-image" :class="account.credentials_valid ? '' : 'notActive' " src="@/assets/images/dashboard/kendrick.png" alt="">
         <div>
-            <h4>Mariantic</h4>
-            <p><small>example@gmail.com</small></p>
+            <h4>{{ account?.email }}</h4>
+            <p><small>#{{ account?._id }}</small></p>
         </div>
         <div>
-            <img class="account-icon" src="@/assets/images/dashboard/lightning.svg" alt="">
+            <img class="account-icon" :class="account.credentials_valid ? '' : 'notActive' " src="@/assets/images/dashboard/lightning.svg" alt="">
         </div>
     </div>
 </template>
 <script>
 export default {
-    name: 'AccountComponent'
+    name: 'AccountComponent',
+    props: ['account']
 }
 </script>
 <style scoped lang="scss">
@@ -27,7 +28,7 @@ export default {
         border: 1px solid $gray-white;
         background: $white;
         // max-width: 350px;
-        min-width: 220px;
+        min-width: 350px;
         & > div {
             & > h4, & > p {
                 margin: 0;
@@ -41,6 +42,9 @@ export default {
         }
         &-icon {
             width: 15px;
+        }
+        .notActive {
+                filter:grayscale(100%)
         }
     }
 </style>

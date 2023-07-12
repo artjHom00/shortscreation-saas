@@ -11,10 +11,15 @@
             </router-link>
         </div>
         <div>
-            <router-link to="/sign-in" class="no-decoration">
+            <router-link to="/sign-in" class="no-decoration" v-if="!isAuthorized">
                 <btnComponent class="pc" icon="person.svg" text="Sign In" type="dark"/>
                 <btnComponent class="mobile" icon="person.svg" type="dark"/>
             </router-link>
+            <router-link to="/dashboard" class="no-decoration" v-else>
+                <btnComponent class="pc" icon="person.svg" type="primary"/>
+                <btnComponent class="mobile" icon="person.svg" type="primary"/>
+            </router-link>
+
         </div>
     </nav>
 </template>
@@ -22,11 +27,15 @@
 <script>
 import btnComponent from '@/components/BtnComponent.vue' 
 
+// import axios from 'axios'
+
 export default {
     name: 'NavComponent',
+    props: ['isAuthorized'],
     components: {
         btnComponent
-    }
+    },
+
 }
 </script>
 

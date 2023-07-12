@@ -21,12 +21,50 @@
                 <btnComponent type="primary" text="Save"/>
             </div>
         </div>
-
-        <div class="pinned">
-            <h4>Pinned comment:</h4>
-            <div class="pinned-form">
-                <inputComponent class="pinned-form--input" label="Enter a comment to pin under every video:" placeholder="Enter a comment..."/>
-                <btnComponent type="primary" text="Save"/>
+        <div class="settings-forms">
+            <div class="pinned">
+                <h4>Pinned comment:</h4>
+                <div class="pinned-form">
+                    <div class="pinned-form-wrapper">
+                        <inputComponent class="pinned-form--input" textarea="true" label="Enter a comment to pin under every video:" placeholder="Enter a comment..."/>
+                                                
+                        <div class="checkbox">
+                            <input type="checkbox" id="useDefault"/>
+                            <label for="useDefault"><small>Help us grow, use our default pinned comment</small></label>
+                        </div>
+                    </div>
+                    <btnComponent type="primary" text="Save"/>
+                </div>
+            </div>
+            <div class="title">
+                <h4>Videos title:</h4>
+                <div class="title-form">
+                    <div class="title-form-wrapper">
+                        <inputComponent class="title-form--input" textarea="true" label="Enter a title for every video" placeholder="Enter a title..."/>
+                        
+                        <div class="checkbox">
+                            <input type="checkbox" id="useDefault"/>
+                            <label for="useDefault"><small>Help us grow, use our default title</small></label>
+                        </div>
+                    </div>
+                        
+                    <btnComponent type="primary" text="Save"/>
+                </div>
+            </div>
+            <div class="description">
+                <h4>Videos descripion:</h4>
+                <div class="description-form">
+                    <div class="description-form-wrapper">
+                        <inputComponent class="description-form--input" textarea="true" label="Enter a description for every video" placeholder="Enter a description..."/>
+                                                
+                        <div class="checkbox">
+                            <input type="checkbox" id="useDefault"/>
+                            <label for="useDefault"><small>Help us grow, use our default description</small></label>
+                        </div>
+                    </div>
+                        
+                    <btnComponent type="primary" text="Save"/>
+                </div>
             </div>
         </div>
     </div>
@@ -100,25 +138,42 @@ export default {
                 width: 200px;
             }
         }
-        & .pinned {
-            width: 60%;
-            margin: 0 auto;
-            text-align: center;
-            &-form {
-                border-radius: 15px;
+
+        .settings-forms {
+            margin-top: 50px;
+            display: flex;
+            flex-wrap: wrap;
+            & .pinned, .title, .description {
+                width: calc(50% - 80px);
+                margin: 0 auto;
                 text-align: center;
-                padding: 20px 40px;
-                background: $white;
-                &--input {
-                    text-align: initial;
-                    max-width: 500px;
-                    margin: 0 auto;
-                    margin-bottom: 20px;
-                }
-                & button {
-                    margin-top: 20px;
-                    margin: 0 auto;
-                    width: 200px;
+                &-form {
+                    border-radius: 15px;
+                    text-align: center;
+                    padding: 10px 40px 30px 40px;
+                    background: $white;
+                    // display: flex;
+                    justify-content: center;
+                    &-wrapper {
+                        min-height: 210px;
+                        width: 100%;
+                        align-self: center;
+                        margin-bottom: 15px;
+                    }
+                    & .checkbox {
+                        text-align: left;
+                    }
+                    &--input {
+                        text-align: initial;
+                        max-width: 500px;
+                        margin: 0 auto;
+                        margin-bottom: 20px;
+                    }
+                    & button {
+                        margin-top: 20px;
+                        margin: 0 auto;
+                        width: 200px;
+                    }
                 }
             }
         }
@@ -137,8 +192,10 @@ export default {
                     }
                 }
             }
-            & .pinned {
-                width: 100%;
+            & .settings-forms {
+                & .pinned, .title {
+                    width: 100%;
+                }
             }
         }
     }

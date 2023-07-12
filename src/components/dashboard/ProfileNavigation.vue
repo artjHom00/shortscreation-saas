@@ -3,7 +3,7 @@
         <div>
             <router-link to="/dashboard"><img src="@/assets/images/dashboard/logout.svg" alt=""></router-link>
         </div>
-        <router-link v-for="(button, index) in buttons" :key="index" :to="button.url">
+        <router-link v-for="(button, index) in getAvailableNavigation" :key="index" :to="button.url">
             <BtnComponent :type="getButtonType(index)" :icon="button.icon" @click="setPrimary(index)"/>
         </router-link>
     </div>
@@ -13,6 +13,7 @@ import BtnComponent from '@/components/BtnComponent.vue'
 
 export default {
     name: 'ProfileNavigation',
+    props: ['user'],
     components: {
         BtnComponent
     },
@@ -22,18 +23,22 @@ export default {
                 {
                     'url': '/dashboard',
                     'icon': 'dashboard/home.svg',
+                    'subscriptionRequired': false
                 },
                 {
                     'url': '/create-content',
                     'icon': 'dashboard/plus.svg',
+                    'subscriptionRequired': true
                 },
                 {
                     'url': '/accounts',
                     'icon': 'dashboard/accounts.svg',
+                    'subscriptionRequired': true
                 },
                 {
                     'url': '/affiliate',
                     'icon': 'dashboard/refferals.svg',
+                    'subscriptionRequired': false
                 },
         ]
         }
@@ -47,6 +52,16 @@ export default {
             return button
         })
 
+    },
+    computed: {
+        getAvailableNavigation() {
+            return this.buttons.filter((button) => {
+                if(!button.subscriptionRequired || this.$props.user?.subscription?.has_subscription) {
+                    return true
+                }
+                return false
+            })
+        }
     },
     methods: {
         setPrimary(index) {

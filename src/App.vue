@@ -1,5 +1,5 @@
 <template>
-  <NavComponent/>
+  <NavComponent :key="isAuthorized" :isAuthorized="isAuthorized"/>
   <router-view/>
   <FooterComponent/>
 </template>
@@ -7,16 +7,62 @@
 <script>
 import NavComponent from '@/components/NavComponent.vue'
 import FooterComponent from '@/components/FooterComponent.vue'
+
+import axios from 'axios'
+
 export default {
   components: {
     NavComponent,
     FooterComponent
+  },
+  data() {
+    return {
+      isAuthorized: false
+    }
+  },
+  methods: {
+    getData() {
+
+      axios.get('users/me')
+      .then(({ data }) => {
+          console.log("🚀 ~ file: App.vue:28 ~ .then ~ data:", data)
+          this.isAuthorized = true
+      }).catch(({ response: { data }}) => {
+          console.log("🚀 ~ file: DashboardView.vue:62 ~ .then ~ data:", data.error)
+          // this.$router.push('/')
+      })
+    
+    },
+ 
+  },
+  watch: {
+    '$route' (to, from) {
+      this.getData()
+    }
+  },
+  mounted() {
+      
+      axios.defaults.baseURL = this.$store.state.host
+      axios.defaults.headers.common['Authorization'] = `Bearer ${this.$cookies.get('jwt_token')}`
+
+      this.getData()
   }
 }
 </script>
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap');
 @import './assets/styles/_variables.scss';
+
+/* https://vuejs.org/guide/built-ins/transition.html#the-transition-component */
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
 
 body {
   padding: 0;

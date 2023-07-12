@@ -1,11 +1,17 @@
 <template lang="">
     <div class="dashboard container">
-        <ProfileNavigation/>
+        <ProfileNavigation :user="user"/>
         <h2>Dashboard</h2>
         <div class="filled-section">
-            <div class="filled-section-content">
+            <div class="filled-section-content" v-if="user?.subscription?.has_subscription === false">
                 <h4>Your Subscription:</h4>
-                <h1>Basic Plan</h1>
+                <h1>No Subscription</h1>
+                <br>
+                <BtnComponent type="primary" text="Buy subscription"/>
+            </div>
+            <div class="filled-section-content" v-else>
+                <h4>Your Subscription:</h4>
+                <h1>{{ user?.subscription?.type }} Plan</h1>
                 <h3>27 days left</h3>
             </div>
         </div>
@@ -13,24 +19,14 @@
         <div class="accounts">
             <h4>Your Accounts:</h4>
             <div class="accounts-list">
-                <AccountComponent/>
-                <AccountComponent/>
-                <AccountComponent/>
-                <AccountComponent/>
-                <AccountComponent/>
-                <AccountComponent/>
-                <AccountComponent/>
-                <AccountComponent/>
+                <AccountComponent v-for="account in youtubeAccounts" :key="account._id" :account="account"/>
             </div>
         </div>
 
         <div class="last-shorts">
             <h4>Last shorts:</h4>
             <div class="last-shorts-list">
-                <ShortComponent/>
-                <ShortComponent/>
-                <ShortComponent/>
-                <ShortComponent/>
+                <ShortComponent v-for="short in shorts" :key="short._id" :short="short"/>
             </div>
         </div>
     </div>
@@ -38,14 +34,62 @@
 <script>
 import ProfileNavigation from '@/components/dashboard/ProfileNavigation.vue';
 import AccountComponent from '@/components/dashboard/AccountComponent.vue';
+import BtnComponent from '@/components/BtnComponent.vue';
 import ShortComponent from '@/components/dashboard/ShortComponent.vue';
+
+import axios from 'axios';
+
 
 export default {
     name: 'DashboardView',
     components: {
         ProfileNavigation,
         AccountComponent,
-        ShortComponent
+        BtnComponent,
+        ShortComponent,
+    },
+    data() {
+        return {
+            user: {},
+            youtubeAccounts: [],
+            shorts: [],
+        }
+    },
+    methods: {
+        getData() {
+            axios.get('users/me')
+            .then(({ data }) => {
+                this.user = data
+              
+                axios.get(`youtube-accounts/${this.user.id}`)
+                .then(({ data }) => {
+                    this.youtubeAccounts = data
+                }).catch(({ response: { data }}) => {
+                    console.log("🚀 ~ file: DashboardView.vue:62 ~ .then ~ data:", data.error)
+                    // this.$router.push('/')
+                })
+
+                axios.get(`users/shorts/${this.user.id}`)
+                .then(({ data }) => {
+                    this.shorts = data
+                }).catch(({ response: { data }}) => {
+                    console.log("🚀 ~ file: DashboardView.vue:62 ~ .then ~ data:", data.error)
+                    // this.$router.push('/')
+                })
+
+            }).catch(({ response: { data }}) => {
+                console.log("🚀 ~ file: DashboardView.vue:62 ~ .then ~ data:", data.error)
+                this.$router.push('/')
+            })
+        },
+ 
+    },
+    beforeMount() {
+        
+        axios.defaults.baseURL = this.$store.state.host
+        axios.defaults.headers.common['Authorization'] = `Bearer ${this.$cookies.get('jwt_token')}`
+        
+        this.getData()
     }
 }
 </script>
@@ -83,7 +127,7 @@ export default {
                 & > * {
                     // margin-right: 20px;
                     margin-bottom: 20px;
-                    width: calc(25% - 70px);
+                    width: calc(50% - 70px);
                 }
             }
         }
@@ -99,6 +143,19 @@ export default {
             }
         }
     }
+
+    @media(max-width: 978px) {
+        .dashboard {
+            & .accounts {
+                &-list {
+                    & > * {
+                        width: 100%;
+                    }
+                }
+            }
+            
+        }
+    }
     
     @media(max-width: 680px) {
         .dashboard {
@@ -109,19 +166,6 @@ export default {
                     }
                 }
             }
-        }
-    }
-
-    @media(max-width: 655px) {
-        .dashboard {
-            & .accounts {
-                &-list {
-                    & > * {
-                        width: 100%;
-                    }
-                }
-            }
-            
         }
     }
 </style>
