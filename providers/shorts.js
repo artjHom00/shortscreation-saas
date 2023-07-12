@@ -8,6 +8,7 @@ const { TiktokDL } = require("@tobyg74/tiktok-api-dl")
 let puppeteer = require('puppeteer')
 let { addTikTokIfNotExists, getRandomTikTokByAuthor, setTikTokAsUsed } = require('../services/tiktok')
 let YoutubeAccount = require('../models/YoutubeAccount')
+let Short = require('../models/Short')
 
 
 
@@ -230,7 +231,16 @@ async function generateAndUploadShort(youtubeAccountId) {
 
     await setTikTokAsUsed(randomTikTokInDb.id)
 
-    return link
+    let newShort = new Short({
+      user_id: foundYoutubeAccount.user_id,
+      youtube_account_id: youtubeAccountId,
+      author: randomTikTokAccount,
+      link: link[0],
+    })
+
+    let savedShort = await newShort.save();
+
+    return savedShort
           
   } catch(error) {
       throw new Error('Generating Tiktok:' + error)

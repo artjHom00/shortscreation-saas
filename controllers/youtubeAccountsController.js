@@ -41,14 +41,12 @@ async function addYoutubeAccount(req, res) {
   };
   
   // Get a single Youtube account by ID
-  const getYoutubeAccountById = async (req, res) => {
+  const getUsersYoutubeAccounts = async (req, res) => {
     try {
       const { id } = req.params;
-      const youtubeAccount = await YoutubeAccount.findById(id);
-      if (!youtubeAccount) {
-        return res.status(404).json({ error: 'Youtube account not found' });
-      }
-      res.json(youtubeAccount);
+      const youtubeAccounts = await YoutubeAccount.find({ user_id: id});
+      
+      res.json(youtubeAccounts);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal server error' });
@@ -116,7 +114,7 @@ async function addYoutubeAccount(req, res) {
 module.exports = {
     addYoutubeAccount,
     getYoutubeAccounts,
-    getYoutubeAccountById,
+    getUsersYoutubeAccounts,
     updateYoutubeAccount,
     deleteYoutubeAccount
 }

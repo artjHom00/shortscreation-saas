@@ -1,4 +1,5 @@
 let User = require('../models/User')
+let Short = require('../models/Short')
 let { generateAccessToken } = require('../providers/jwt.js')
 let { sendConfirmationCode, confirmEmail } = require('../services/mailConfirmation.js')
 
@@ -86,6 +87,23 @@ async function getUsers(req, res) {
   }
 }
 
+  
+// Get all users
+async function getUsersShorts(req, res) {
+  try {
+    const { id } = req.params;
+
+    const shorts = await Short.find({
+      user_id: id
+    });
+
+    res.json(shorts);
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+}
+
+
 // Get a single user by ID
 async function getUserById(req, res) {
   const { id } = req.params;
@@ -133,6 +151,21 @@ async function deleteUser(req, res) {
   }
 }
 
+// Get user by JWT
+async function getUserInfo(req, res) {
+  try {
+    console.log("🚀 ~ file: usersController.js:141 ~ getUserInfo ~ req.user:", req.user)
+
+    if (req.user) {
+      res.json(req.user);
+    } else {
+      res.status(404).json({ error: 'User not found' });
+    }
+
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+}
 
 
 module.exports = {
@@ -140,7 +173,9 @@ module.exports = {
   authUser,
   createUser,
   getUsers,
+  getUsersShorts,
   getUserById,
+  getUserInfo,
   updateUser,
   deleteUser
 };

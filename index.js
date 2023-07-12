@@ -1,6 +1,7 @@
 console.clear()
 
 let express = require('express')
+const cors = require('cors')
 let mongoose = require('mongoose')
 let bodyParser = require('body-parser')
 
@@ -11,6 +12,7 @@ let youtubeAccountsRoutes = require('./routes/youtubeAccountsRouter')
 
 let app = express()
 
+app.use(cors());
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -28,7 +30,7 @@ if (process.env.DB_URL) {
     // let { generateAndUploadShort } = require('./providers/shorts')  
 
     
-    // generateAndUploadShort('64a807d62e4354e9a738ea96').then((res) => {
+    // generateAndUploadShort('64aa85d0abca92c1af3ce544').then((res) => {
     //   console.log("🚀 ~ file: index.js:33 ~ generateAndUploadShort ~ res:", res)
     // }).catch(err => {
     //   console.log("🚀 ~ file: index.js:34 ~ generateAndUploadShort ~ err:", err)
