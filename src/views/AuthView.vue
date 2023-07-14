@@ -62,7 +62,6 @@ export default {
 
                 setTimeout(() => {
                     window.location.href = '/dashboard'
-                    // this.$router.push('/dashboard')
                 }, 1000)
 
             }).catch(({ response: { data }}) => {

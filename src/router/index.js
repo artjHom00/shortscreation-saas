@@ -9,56 +9,69 @@ import AffiliateView from '../views/AffiliateView.vue'
 import ForgotPasswordView from '../views/ForgotPasswordView.vue'
 import ChangePasswordView from '../views/ChangePasswordView.vue'
 
+
+
+
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    component: HomeView,
+    props: true,
   },
   {
     path: '/sign-in',
     name: 'sign-in',
-    component: AuthView
+    component: AuthView,
+    props: true,
   },
   {
     path: '/create-account',
     name: 'create-account',
-    component: CreateAccountView
+    component: CreateAccountView,
+    props: true,
   },
   {
     path: '/dashboard',
     name: 'dashboard',
-    component: DashboardView
+    component: DashboardView,
+    props: true,
   },
   {
     path: '/create-content',
     name: 'create-content',
-    component: CreateContentView
+    component: CreateContentView,
+    props: true,
   },
   {
     path: '/create-content',
     name: 'create-content',
-    component: CreateContentView
+    component: CreateContentView,
+    props: true,
   },
   {
     path: '/accounts',
     name: 'accounts',
-    component: AccountsView
+    component: AccountsView,
+    props: true,
   },
   {
     path: '/affiliate',
     name: 'affiliate',
-    component: AffiliateView
+    component: AffiliateView,
+    props: true,
   },
   {
     path: '/forgot-password',
     name: 'forgot-password',
-    component: ForgotPasswordView
+    component: ForgotPasswordView,
+    props: true,
   },
   {
     path: '/change-password',
     name: 'change-password',
-    component: ChangePasswordView
+    component: ChangePasswordView,
+    props: true,
   }
 ]
 

@@ -2,9 +2,9 @@
     <div class="short">
         <img class="short-image" src="@/assets/images/dashboard/youtube.svg" alt="">
         <div>
-            <a :href="short.link">Go To Video</a>
+            <a :href="short.link" target="_blank">Go To Video</a>
             <p><small><b>From TikTok: @{{ short.author }}</b></small></p>
-            <p><small><b>To: #{{ short.youtube_account_id }}</b></small></p>
+            <p><small><b>To: {{ short.youtube_account.email }}</b></small></p>
         </div>
         <div class="short-date">
             <small>{{ new Date(short.created_at).getFullYear() }}</small>

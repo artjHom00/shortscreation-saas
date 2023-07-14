@@ -1,10 +1,10 @@
 <template lang="">
     <div class="profile-nav">
         <div>
-            <router-link to="/dashboard"><img src="@/assets/images/dashboard/logout.svg" alt=""></router-link>
+            <a class="logout" @click="logout()"><img src="@/assets/images/dashboard/logout.svg" alt=""></a>
         </div>
-        <router-link v-for="(button, index) in getAvailableNavigation" :key="index" :to="button.url">
-            <BtnComponent :type="getButtonType(index)" :icon="button.icon" @click="setPrimary(index)"/>
+        <router-link v-for="(button, index) in buttons" :key="index" :to="button.url">
+            <BtnComponent :type="getButtonType(index)" :icon="button.icon" @click="setPrimary(index)" v-if="!button.subscriptionRequired || this.$props.user?.subscription?.has_subscription"/>
         </router-link>
     </div>
 </template>
@@ -33,7 +33,7 @@ export default {
                 {
                     'url': '/accounts',
                     'icon': 'dashboard/accounts.svg',
-                    'subscriptionRequired': true
+                    'subscriptionRequired': false
                 },
                 {
                     'url': '/affiliate',
@@ -53,23 +53,13 @@ export default {
         })
 
     },
-    computed: {
-        getAvailableNavigation() {
-            return this.buttons.filter((button) => {
-                if(!button.subscriptionRequired || this.$props.user?.subscription?.has_subscription) {
-                    return true
-                }
-                return false
-            })
-        }
-    },
     methods: {
         setPrimary(index) {
-
             this.buttons.map(button => {
                 if(button.type === 'primary') {
                     button.type = 'dark'
                 }
+
                 return button
             })
 
@@ -78,6 +68,11 @@ export default {
         },
         getButtonType(index) {
             return this.buttons[index].type
+        },
+        logout() {
+            this.$cookies.remove('jwt_token')
+
+            window.location.href = '/'
         }
     }
 }
@@ -89,6 +84,9 @@ export default {
         display: inline-flex;
         justify-content: center;
         align-items: center;
+        & .logout {
+            cursor: pointer;
+        }
         & > * > * {
             margin: 0 25px;
             width: 30px;

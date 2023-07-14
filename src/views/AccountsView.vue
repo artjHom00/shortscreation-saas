@@ -1,32 +1,35 @@
 <template lang="">
+    <Transition>
+        <NotificationComponent :type="notification.type" :message="notification.message" v-if="notification.show"/>
+    </Transition>
     <div class="dashboard container">
         <ProfileNavigation/>
-        <h2>Account</h2>
+        <h2>Accounts</h2>
 
         <div class="accounts">
 
             <btnComponent type="primary" text="Add New Account" @click="changeStateOfForm"/>
 
-            
+            <transition>
+
             <div class="add-account" v-if="showForm">
 
                 <div class="add-account-form">
-                    <inputComponent label="Email" placeholder="Email"/>
-                    <inputComponent label="Password" placeholder="*********"/>
-                    <inputComponent label="Recovery Email (if nedeed)" placeholder="Recovery email"/>
+                    <inputComponent v-model="newAccount.email" label="Email*" placeholder="Email"/>
+                    <inputComponent v-model="newAccount.password" label="Password*" placeholder="*********"/>
+                    <inputComponent v-model="newAccount.recoveryEmail" label="Recovery Email" placeholder="Recovery email"/>
                 </div>
-                <btnComponent type="primary" text="Save"/>
+                <btnComponent type="primary" text="Save" @click="createAccount()"/>
 
             </div>
+
+            </transition>
 
             <div>
 
                 <h4>Your Accounts:</h4>
                 <div class="accounts-list">
-                    <AccountComponent/>
-                    <AccountComponent/>
-                    <AccountComponent/>
-                    <AccountComponent/>
+                    <AccountComponent v-for="account in youtubeAccounts" :key="account._id" :account="account" editing="true" @delete="deleteAccount(account._id)" @edit="editAccount(account._id)"/>
                 </div>
 
             </div>
@@ -38,26 +41,122 @@
 <script>
 import ProfileNavigation from '@/components/dashboard/ProfileNavigation.vue';
 import AccountComponent from '@/components/dashboard/AccountComponent.vue';
+import NotificationComponent from '@/components/NotificationComponent.vue'
 import inputComponent from '@/components/InputComponent.vue';
 import btnComponent from '@/components/BtnComponent.vue';
 
+import axios from 'axios';
+
 export default {
     name: 'DashboardView',
+    props: ['user'],
     data() {
         return {
-            showForm: false
+            showForm: false,
+            youtubeAccounts: [],
+            newAccount: {
+                email: null,
+                password: null,
+                recoveryEmail: null
+            },
+            notification: {
+                show: false,
+                type: null,
+                message: null
+            }
         }
     },
     methods: {
         changeStateOfForm() {
             this.showForm = !this.showForm
+        },
+        createAccount() {
+            axios.post('youtube-accounts/', {
+                email: this.newAccount.email,
+                password: this.newAccount.password,
+                recoveryEmail: this.newAccount.recoveryEmail
+            })
+            .then(() => {
+                this.getData()
+                this.showForm = false
+
+                this.newAccount = {
+                    email: null,
+                    password: null,
+                    recoveryEmail: null
+                }
+
+                this.showNotification('success', 'Account successfully added!')
+            }).catch(({ response: { data }}) => {
+                console.log("🚀 ~ file: DashboardView.vue:62 ~ .then ~ data:", data.error)
+                // this.$router.push('/')
+            })  
+        },
+        getData() {
+            axios.get(`youtube-accounts/`)
+            .then(({ data }) => {
+                this.youtubeAccounts = data
+            }).catch(({ response: { data }}) => {
+                console.log("🚀 ~ file: DashboardView.vue:62 ~ .then ~ data:", data.error)
+                // this.$router.push('/')
+            })
+        },
+        deleteAccount(id, isEditing = false) {
+            axios.delete('youtube-accounts/' + id)
+            .then(() => {
+                if(!isEditing) {
+                    this.showNotification('success', 'Account successfully deleted!')
+                }
+                this.getData()
+            }).catch(({ response: { data }}) => {
+                this.showNotification('fail', data.error || 'Error occured while deleting')
+                // this.$router.push('/')
+            })  
+        },
+        editAccount(id) {
+            let youtubeAccount = this.youtubeAccounts.find(account => {
+                return account._id === id
+            })
+
+            this.newAccount = {
+                    email: youtubeAccount.email,
+                    password: youtubeAccount.password,
+                    recoveryEmail: youtubeAccount.recoveryEmail
+            }
+            
+            this.showForm = true
+
+            this.deleteAccount(id, true)
+        },
+        showNotification(type, message) {
+
+            this.notification = {
+                show: true,
+                type,
+                message
+            }
+            
+            setTimeout(() => {
+                this.notification.show = false
+            }, 3000)
+
         }
+            
+    },
+    mounted() {
+
+        axios.defaults.baseURL = this.$store.state.host
+        axios.defaults.headers.common['Authorization'] = `Bearer ${this.$cookies.get('jwt_token')}`
+        
+        this.getData()
+
     },
     components: {
         ProfileNavigation,
         AccountComponent,
         btnComponent,
-        inputComponent
+        inputComponent,
+        NotificationComponent
     }
 }
 </script>
@@ -97,11 +196,25 @@ export default {
                 flex-wrap: wrap;
                 & > * {
                     margin-bottom: 20px;
-                    width: calc(25% - 70px);
+                    width: calc(50% - 70px);
                 }
             }
         }
     }
+
+    @media(max-width: 1050px) {
+        .dashboard {
+            & .accounts {
+                &-list {
+                    & > * {
+                        width: 100%;
+                    }
+                }
+            }
+            
+        }
+    }
+
     @media(max-width: 796px) {
         .dashboard {
             &  .accounts {
@@ -115,18 +228,6 @@ export default {
                             width: 100%;
                         }
 
-                    }
-                }
-            }
-        }
-    }
-    
-    @media(max-width: 655px) {
-        .dashboard {
-            & .accounts {
-                &-list {
-                    & > * {
-                        width: 100%;
                     }
                 }
             }

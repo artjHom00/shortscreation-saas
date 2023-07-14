@@ -1,25 +1,39 @@
 <template lang="">
     <div class="refferal">
-        <h4>Mariantic</h4>
+        <h4>{{ affiliate.username }}</h4>
         <div class="refferal-info">
             <div>
                 <p><small>Subscription:</small></p>
-                <h4>27 days</h4>
+                <h4>{{ affiliate.subscription?.expires || '-' }}</h4>
             </div>
             <div>
                 <p><small>Registration:</small></p>
-                <h4>13/02/2019</h4>
+                <h4>{{ new Date(affiliate.registration_date).getFullYear() }}</h4>
             </div>
             <div>
                 <p><small>Earned:</small></p>
-                <h4><b>7.00$</b></h4>
+                <h4><b>${{ getEarningsFromRefferal }}</b></h4>
             </div>
         </div>
     </div>
 </template>
 <script>
 export default {
-    name: 'ShortComponent'
+    name: 'ShortComponent',
+    props: ['affiliate'],
+    computed: {
+        getEarningsFromRefferal() {
+            let sum = 0
+
+            let transactions = this.$props.affiliate.transactions
+
+            transactions.forEach(transaction => {
+                sum += transaction.amount
+            })
+
+            return sum
+        }
+    },
 }
 </script>
 <style scoped lang="scss">

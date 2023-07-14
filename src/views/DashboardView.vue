@@ -12,20 +12,27 @@
             <div class="filled-section-content" v-else>
                 <h4>Your Subscription:</h4>
                 <h1>{{ user?.subscription?.type }} Plan</h1>
-                <h3>27 days left</h3>
+                <h3>{{ user?.subscription?.expires}} left</h3>
             </div>
         </div>
 
         <div class="accounts">
             <h4>Your Accounts:</h4>
-            <div class="accounts-list">
-                <AccountComponent v-for="account in youtubeAccounts" :key="account._id" :account="account"/>
+            <div v-if="youtubeAccounts.length === 0">
+                <h3 >No accounts yet! :( <br></h3>
+            </div>
+            
+            <div class="accounts-list" v-else>
+                <router-link to="/accounts" v-for="account in youtubeAccounts" :key="account._id"><AccountComponent :account="account"/></router-link>
             </div>
         </div>
 
         <div class="last-shorts">
             <h4>Last shorts:</h4>
-            <div class="last-shorts-list">
+            <div v-if="shorts.length === 0">
+                <h3 >No shorts yet! :(</h3>
+            </div>
+            <div class="last-shorts-list" v-else>
                 <ShortComponent v-for="short in shorts" :key="short._id" :short="short"/>
             </div>
         </div>
@@ -42,6 +49,7 @@ import axios from 'axios';
 
 export default {
     name: 'DashboardView',
+    props: ['user'],
     components: {
         ProfileNavigation,
         AccountComponent,
@@ -50,46 +58,37 @@ export default {
     },
     data() {
         return {
-            user: {},
             youtubeAccounts: [],
             shorts: [],
         }
     },
     methods: {
         getData() {
-            axios.get('users/me')
+            axios.get(`youtube-accounts/`)
             .then(({ data }) => {
-                this.user = data
-              
-                axios.get(`youtube-accounts/${this.user.id}`)
-                .then(({ data }) => {
-                    this.youtubeAccounts = data
-                }).catch(({ response: { data }}) => {
-                    console.log("🚀 ~ file: DashboardView.vue:62 ~ .then ~ data:", data.error)
-                    // this.$router.push('/')
-                })
-
-                axios.get(`users/shorts/${this.user.id}`)
-                .then(({ data }) => {
-                    this.shorts = data
-                }).catch(({ response: { data }}) => {
-                    console.log("🚀 ~ file: DashboardView.vue:62 ~ .then ~ data:", data.error)
-                    // this.$router.push('/')
-                })
-
+                this.youtubeAccounts = data
             }).catch(({ response: { data }}) => {
                 console.log("🚀 ~ file: DashboardView.vue:62 ~ .then ~ data:", data.error)
-                this.$router.push('/')
+                // this.$router.push('/')
+            })
+
+            axios.get(`users/shorts/`)
+            .then(({ data }) => {
+                this.shorts = data
+            }).catch(({ response: { data }}) => {
+                console.log("🚀 ~ file: DashboardView.vue:62 ~ .then ~ data:", data.error)
+                // this.$router.push('/')
             })
         },
  
     },
-    beforeMount() {
+    mounted() {
         
         axios.defaults.baseURL = this.$store.state.host
         axios.defaults.headers.common['Authorization'] = `Bearer ${this.$cookies.get('jwt_token')}`
         
         this.getData()
+        
     }
 }
 </script>
@@ -97,8 +96,8 @@ export default {
     @import '@/assets/styles/_variables.scss';
 
     .dashboard {
-        & > * {
-            margin-bottom: 30px;
+        & > .accounts, & > .last-shorts {
+            margin-top: 50px;
         }
         h2 {
             margin-bottom: 70px;
@@ -126,8 +125,13 @@ export default {
                 flex-wrap: wrap;
                 & > * {
                     // margin-right: 20px;
+                    text-decoration: none;
                     margin-bottom: 20px;
                     width: calc(50% - 70px);
+                    transition: 0.2s opacity ease-in-out;
+                    &:hover {
+                        opacity: 0.75;
+                    }
                 }
             }
         }
@@ -166,6 +170,9 @@ export default {
                     }
                 }
             }
+        }
+        h1 {
+            font-size: 36px;
         }
     }
 </style>

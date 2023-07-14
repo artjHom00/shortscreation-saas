@@ -11,7 +11,7 @@
             </router-link>
         </div>
         <div>
-            <router-link to="/sign-in" class="no-decoration" v-if="!isAuthorized">
+            <router-link to="/sign-in" class="no-decoration" v-if="!user.id">
                 <btnComponent class="pc" icon="person.svg" text="Sign In" type="dark"/>
                 <btnComponent class="mobile" icon="person.svg" type="dark"/>
             </router-link>
@@ -31,7 +31,7 @@ import btnComponent from '@/components/BtnComponent.vue'
 
 export default {
     name: 'NavComponent',
-    props: ['isAuthorized'],
+    props: ['user'],
     components: {
         btnComponent
     },
@@ -87,7 +87,7 @@ export default {
                 height: 34px;
                 width: 34px;
                 border-radius: 10px;
-                border: 2px solid $dark;
+                // border: 2px solid $dark;
                 padding: 0;
                 &.pc {
                     display: none;

@@ -7,13 +7,24 @@
         </div>
         <div>
             <img class="account-icon" :class="account.credentials_valid ? '' : 'notActive' " src="@/assets/images/dashboard/lightning.svg" alt="">
+            <img class="account-icon--delete" src="@/assets/images/dashboard/delete.svg" alt="" @click="sendDeleteAccountEvent" v-if="editing">
+            <img class="account-icon--edit" src="@/assets/images/dashboard/edit.svg" alt="" @click="sendEditAccountEvent" v-if="editing">
         </div>
     </div>
 </template>
 <script>
+
 export default {
     name: 'AccountComponent',
-    props: ['account']
+    props: ['account', 'editing'],
+    methods: {
+        sendDeleteAccountEvent() {
+            this.$emit('delete')
+        },
+        sendEditAccountEvent() {
+            this.$emit('edit')
+        }
+    }
 }
 </script>
 <style scoped lang="scss">
@@ -28,7 +39,7 @@ export default {
         border: 1px solid $gray-white;
         background: $white;
         // max-width: 350px;
-        min-width: 350px;
+        min-width: 250px;
         & > div {
             & > h4, & > p {
                 margin: 0;
@@ -39,12 +50,31 @@ export default {
         }
         &-image {
             width: 50px;
+            position: relative;
         }
         &-icon {
             width: 15px;
+            &--delete, &--edit {
+                margin-left: 15px;
+                position: relative;
+                top: 1px;
+                transition: 0.2s all ease-in-out;
+                &:hover {
+                    cursor: pointer;
+                    top: -2px;
+                    
+                }
+            }
+            // &--edit {
+            //     margin-left: 15px;
+            //     &:hover {
+            //         cursor: pointer;
+            //     }
+            // }
         }
         .notActive {
-                filter:grayscale(100%)
+                filter: grayscale(100%);
+                opacity: 0.5;
         }
     }
 </style>

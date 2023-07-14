@@ -27,12 +27,13 @@
 
     .notification {
         position: fixed;
-        right: -30px;
+        right: 0px;
         top: 150px;
         color: $white;
         padding: 15px 20px;
-        border-radius: 15px;
-        min-width: 350px;
+        border-top-left-radius: 15px;
+        border-bottom-left-radius: 15px;
+        min-width: 300px;
         &.success {
             background: $primary;
         }

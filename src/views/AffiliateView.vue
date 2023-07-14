@@ -8,22 +8,21 @@
             <div class="filled-section">
                 <div class="filled-section-content">
                     <h4>Total Earned:</h4>
-                    <h1>$35.00</h1>
-                    <h3>via 5 refferals</h3>
+                    <h1>${{ getTotalEarnings }}</h1>
+                    <h3>via {{ affiliateData?.affiliates?.length }} refferals</h3>
                 </div>
                 <btnComponent type="primary" icon="dashboard/copy.svg"/>
             </div>
             
             <div class="refferals">
                 <h4>Your Refferals:</h4>
-                <div class="refferal-list">
-                    <RefferalComponent/>
-                    <RefferalComponent/>
-                    <RefferalComponent/>
-                    <RefferalComponent/>
-                    <RefferalComponent/>
+                <div v-if="affiliateData?.affiliates?.length === 0">
+                    <h3 >No refferals yet! :( <br></h3>
                 </div>
-                <btnComponent class="loadmore" type="primary" text="Load More"/>
+                <div class="refferal-list" v-else>
+                    <RefferalComponent v-for="affiliate of affiliateData.affiliates" :key="affiliate._id" :affiliate="affiliate"/>
+                </div>
+                <btnComponent class="loadmore" type="primary" text="Load More" @click="getData(affiliateData?.pagination?.page + 1)" v-if="affiliateData?.pagination?.page < affiliateData?.pagination?.totalPages"/>
 
             </div>
 
@@ -36,13 +35,62 @@ import ProfileNavigation from '@/components/dashboard/ProfileNavigation.vue';
 import RefferalComponent from '@/components/dashboard/RefferalComponent.vue';
 import btnComponent from '@/components/BtnComponent.vue';
 
+import axios from 'axios'
+
 export default {
-    name: 'DashboardView',
+    name: 'AffiliateView',
+    props: ['user'],
+    data() {
+        return {
+            affiliateData: {}
+        }
+    },
     components: {
         ProfileNavigation,
         RefferalComponent,
         btnComponent,
-    }
+    },
+    computed: {
+        getTotalEarnings() {
+            let affiliates = this.affiliateData?.affiliates
+            let sum = 0
+
+            if(affiliates) {
+                affiliates.forEach(affiliate => {
+                    let transactions = affiliate.transactions
+
+                    transactions.forEach(transaction => {
+                        sum += transaction.amount
+                    })
+                })
+    
+                return sum
+            }
+
+            return 0
+
+        }
+    },
+    methods: {
+        getData(page = 1) {
+            axios.get('users/affiliates?page=' + page)
+            .then(({ data }) => {
+                console.log("🚀 ~ file: AffiliateView.vue:53 ~ .then ~ data:", data)
+                this.affiliateData = data
+            })
+            .catch(() => {
+
+            })
+        },
+    },
+    mounted() {
+
+        axios.defaults.baseURL = this.$store.state.host
+        axios.defaults.headers.common['Authorization'] = `Bearer ${this.$cookies.get('jwt_token')}`
+
+        this.getData()
+
+    },
 }
 </script>
 <style scoped lang="scss">
@@ -111,12 +159,12 @@ export default {
             }
         }
     }
-    @media(max-width: 1200px) {
+    @media(max-width: 1000px) {
         .dashboard {
             & .affiliate {
                 & .refferal-list {
                     & > * {
-                        width: calc((100% - 70px))
+                        width: calc((100% - 50px))
                     }
                 }
             }

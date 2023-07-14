@@ -23,7 +23,7 @@ export default {
         border-radius: 15px;
         text-align: center;
         color: #FFF;
-        font-size: 16px;
+        font-size: 14px;
         font-family: Inter;
         font-weight: 600;
         line-height: 80%;

@@ -1,6 +1,6 @@
 <template>
-  <NavComponent :key="isAuthorized" :isAuthorized="isAuthorized"/>
-  <router-view/>
+  <NavComponent :user="user"/>
+  <router-view :user="user" :key="user"/>
   <FooterComponent/>
 </template>
 
@@ -17,7 +17,7 @@ export default {
   },
   data() {
     return {
-      isAuthorized: false
+      user: {}
     }
   },
   methods: {
@@ -25,18 +25,26 @@ export default {
 
       axios.get('users/me')
       .then(({ data }) => {
-          console.log("🚀 ~ file: App.vue:28 ~ .then ~ data:", data)
-          this.isAuthorized = true
+          this.user = data
       }).catch(({ response: { data }}) => {
           console.log("🚀 ~ file: DashboardView.vue:62 ~ .then ~ data:", data.error)
           // this.$router.push('/')
+      }).finally(() => {
+        this.setRefferalCookie()
       })
     
     },
+
+    setRefferalCookie() {
+      console.log("🚀 ~ file: App.vue:38 ~ setRefferalCookie ~ this.$route.query?.ref:", this.$route.query?.ref)
+      if(this.$route.query?.ref) {
+        this.$cookies.set('ref', this.$route.query?.ref)
+      }
+    }
  
   },
   watch: {
-    '$route' (to, from) {
+    '$route' () {
       this.getData()
     }
   },
