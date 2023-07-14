@@ -1,4 +1,5 @@
-const nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer')
+let User = require('../models/User')
 
 // Create a transporter for sending emails
 const transporter = nodemailer.createTransport({
@@ -35,9 +36,9 @@ async function sendConfirmationCode(email) {
 
     // Send the email
     const info = await transporter.sendMail(mailOptions);
-    console.log('Confirmation code email sent:', info.messageId);
+    console.log('Confirmation code email sent:' + info.messageId);
   } catch (error) {
-    throw new Error('Error sending confirmation code email:', error);
+    throw new Error('Error sending confirmation code email:' + error);
   }
 }
 

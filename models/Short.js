@@ -1,4 +1,3 @@
-
 const { mongoose, Schema, Types } = require('mongoose');
 
 const shortsSchema = new Schema({
@@ -6,9 +5,10 @@ const shortsSchema = new Schema({
         required: true,
         type: Schema.Types.ObjectId
     },
-    youtube_account_id: {
+    youtube_account_email: {
         required: true,
-        type: Schema.Types.ObjectId
+        type: String,
+        ref: 'YoutubeAccounts' // Reference the YoutubeAccount model
     },
     author: {
         required: true,
@@ -25,6 +25,14 @@ const shortsSchema = new Schema({
     },
 });
 
+// Add a virtual property to populate the full Youtube account info
+shortsSchema.virtual('youtube_account', {
+    ref: 'YoutubeAccounts',
+    localField: 'youtube_account_email',
+    foreignField: 'email',
+    justOne: true
+});
+
 const Short = mongoose.model('shorts', shortsSchema);
 
-module.exports = Short
+module.exports = Short;

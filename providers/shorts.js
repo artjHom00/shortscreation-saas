@@ -233,7 +233,7 @@ async function generateAndUploadShort(youtubeAccountId) {
 
     let newShort = new Short({
       user_id: foundYoutubeAccount.user_id,
-      youtube_account_id: youtubeAccountId,
+      youtube_account_email: foundYoutubeAccount.email,
       author: randomTikTokAccount,
       link: link[0],
     })

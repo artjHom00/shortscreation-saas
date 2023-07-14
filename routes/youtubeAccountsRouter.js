@@ -6,7 +6,7 @@ let { authenticateToken } = require('../providers/jwt')
 router.post('/', authenticateToken, addYoutubeAccount)
 
 router.get('/', authenticateToken, getYoutubeAccounts)
-router.get('/:id', authenticateToken, getUsersYoutubeAccounts)
+router.get('/', authenticateToken, getUsersYoutubeAccounts)
 
 router.delete('/:id', authenticateToken, deleteYoutubeAccount)
 router.patch('/:id', authenticateToken, updateYoutubeAccount)

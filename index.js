@@ -30,7 +30,7 @@ if (process.env.DB_URL) {
     // let { generateAndUploadShort } = require('./providers/shorts')  
 
     
-    // generateAndUploadShort('64aa85d0abca92c1af3ce544').then((res) => {
+    // generateAndUploadShort('64b02dee001d2bc27debc71f').then((res) => {
     //   console.log("🚀 ~ file: index.js:33 ~ generateAndUploadShort ~ res:", res)
     // }).catch(err => {
     //   console.log("🚀 ~ file: index.js:34 ~ generateAndUploadShort ~ err:", err)

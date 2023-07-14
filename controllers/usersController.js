@@ -1,5 +1,6 @@
 let User = require('../models/User')
 let Short = require('../models/Short')
+let Transaction = require('../models/Transaction')
 let { generateAccessToken } = require('../providers/jwt.js')
 let { sendConfirmationCode, confirmEmail } = require('../services/mailConfirmation.js')
 
@@ -64,15 +65,25 @@ async function createUser(req, res) {
       return res.status(409).json({ error: 'Username or email already exists' });
       }
 
-      const newUser = new User(req.body);
-      const savedUser = await newUser.save();
       
-      await sendConfirmationCode(email)
-      let userWithJWT = await generateAccessToken(savedUser)
+      let isSent = await sendConfirmationCode(email).catch((error) => {
+        res.status(500).json({ error: 'Error occured while sending email!' });
+        return false
+      })
+      
+      
+      if(isSent !== false) {
 
-      res.status(201).json(userWithJWT);
+        const newUser = new User(req.body);
+        const savedUser = await newUser.save();
+
+        let userWithJWT = await generateAccessToken(savedUser)
+  
+        res.status(201).json(userWithJWT);
+      }
       
   } catch (error) {
+      console.log("🚀 ~ file: usersController.js:79 ~ createUser ~ error:", error)
       res.status(500).json({ error });
   }
 }
@@ -88,18 +99,91 @@ async function getUsers(req, res) {
 }
 
   
-// Get all users
+// Get all user's shorts
 async function getUsersShorts(req, res) {
   try {
-    const { id } = req.params;
 
     const shorts = await Short.find({
-      user_id: id
+      user_id: req.user.id
+    }).populate('youtube_account')
+
+    const populatedShorts = shorts.map(short => ({
+      ...short._doc,
+      youtube_account: short.youtube_account // Access the populated youtube_account property
+    }));
+    res.json(populatedShorts);
+  } catch (error) {
+    console.log("🚀 ~ file: usersController.js:100 ~ getUsersShorts ~ error:", error)
+    res.status(500).json({ error });
+  }
+}
+
+async function getUsersAffiliates(req, res) {
+  try {
+    const userId = req.user.id;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    // Find the user by ID
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Fetch affiliates with pagination
+    const affiliates = await User.find({ refferal: userId })
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
+
+    // Count the total number of affiliates
+    const totalAffiliates = await User.countDocuments({ refferal: userId }).exec();
+
+    // Calculate total pages based on totalAffiliates and limit
+    const totalPages = Math.ceil(totalAffiliates / limit);
+
+    // Get transaction info for each affiliate
+    const affiliateIds = affiliates.map((affiliate) => affiliate._id);
+
+    const transactions = await Transaction.find({ user_id: { $in: affiliateIds } });
+
+    const affiliatesWithTransactions = affiliates.map((affiliate) => {
+      const affiliateTransactions = transactions.filter((transaction) =>
+        transaction.user_id.equals(affiliate._id)
+      );
+
+      return {
+        _id: affiliate._id,
+        username: affiliate.username,
+        email: affiliate.email,
+        registration_date: affiliate.registration_date,
+        transactions: affiliateTransactions.map((transaction) => ({
+          _id: transaction._id,
+          type: transaction.type,
+          amount: transaction.amount,
+          date: transaction.date,
+        })),
+      };
     });
 
-    res.json(shorts);
+    res.json({
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+      },
+      affiliates: affiliatesWithTransactions,
+      pagination: {
+        page,
+        limit,
+        totalAffiliates,
+        totalPages, // Include the total pages in the pagination object
+      },
+    });
   } catch (error) {
-    res.status(500).json({ error });
+    console.error('Error fetching user affiliates:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 }
 
@@ -154,7 +238,6 @@ async function deleteUser(req, res) {
 // Get user by JWT
 async function getUserInfo(req, res) {
   try {
-    console.log("🚀 ~ file: usersController.js:141 ~ getUserInfo ~ req.user:", req.user)
 
     if (req.user) {
       res.json(req.user);
@@ -173,6 +256,7 @@ module.exports = {
   authUser,
   createUser,
   getUsers,
+  getUsersAffiliates,
   getUsersShorts,
   getUserById,
   getUserInfo,

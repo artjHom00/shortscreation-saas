@@ -9,7 +9,7 @@ async function generateAccessToken(user) {
         // password = sha256(password)
         
         const token = jwt.sign({ 
-            id: user.id,
+            id: user._id,
             username: user.username,
             email: user.email,
             role: user.role,
@@ -31,7 +31,6 @@ async function generateAccessToken(user) {
 async function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
-    console.log("🚀 ~ file: jwt.js:33 ~ authenticateToken ~ token:", token)
 
     if (token == null) return res.sendStatus(401)
 

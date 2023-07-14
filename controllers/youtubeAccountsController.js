@@ -11,9 +11,15 @@ async function addYoutubeAccount(req, res) {
             return res.status(400).json({ error: 'Email and password are required' });
         }
         
+        // Check if the email already exists in the database
+        const existingAccount = await YoutubeAccount.findOne({ email });
+        if (existingAccount) {
+            return res.status(400).json({ error: 'Email already exists' });
+        }
+        
         // Create a new YoutubeAccount instance
         const newYoutubeAccount = new YoutubeAccount({
-            user_id: req.user._id,
+            user_id: req.user.id,
             email,
             password,
             recovery_email: recoveryEmail
@@ -43,7 +49,7 @@ async function addYoutubeAccount(req, res) {
   // Get a single Youtube account by ID
   const getUsersYoutubeAccounts = async (req, res) => {
     try {
-      const { id } = req.params;
+      const id = req.user.id
       const youtubeAccounts = await YoutubeAccount.find({ user_id: id});
       
       res.json(youtubeAccounts);
