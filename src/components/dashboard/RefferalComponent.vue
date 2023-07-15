@@ -8,7 +8,7 @@
             </div>
             <div>
                 <p><small>Registration:</small></p>
-                <h4>{{ new Date(affiliate.registration_date).getFullYear() }}</h4>
+                <h4>{{ formatRegistrationDate }}</h4>
             </div>
             <div>
                 <p><small>Earned:</small></p>
@@ -18,6 +18,8 @@
     </div>
 </template>
 <script>
+import moment from 'moment'
+
 export default {
     name: 'ShortComponent',
     props: ['affiliate'],
@@ -32,6 +34,9 @@ export default {
             })
 
             return sum
+        },
+        formatRegistrationDate() {
+            return moment(this.$props.affiliate.registration_date).format('L')
         }
     },
 }

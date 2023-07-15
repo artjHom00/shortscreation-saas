@@ -3,7 +3,7 @@
         <ProfileNavigation :user="user"/>
         <h2>Dashboard</h2>
         <div class="filled-section">
-            <div class="filled-section-content" v-if="user?.subscription?.has_subscription === false">
+            <div class="filled-section-content" v-if="!user?.subscription?.has_subscription">
                 <h4>Your Subscription:</h4>
                 <h1>No Subscription</h1>
                 <br>
@@ -12,7 +12,7 @@
             <div class="filled-section-content" v-else>
                 <h4>Your Subscription:</h4>
                 <h1>{{ user?.subscription?.type }} Plan</h1>
-                <h3>{{ user?.subscription?.expires}} left</h3>
+                <h3>Expires: {{ getSubscriptionExpirationDate }}</h3>
             </div>
         </div>
 
@@ -45,6 +45,7 @@ import BtnComponent from '@/components/BtnComponent.vue';
 import ShortComponent from '@/components/dashboard/ShortComponent.vue';
 
 import axios from 'axios';
+import moment from 'moment';
 
 
 export default {
@@ -82,6 +83,11 @@ export default {
         },
  
     },
+    computed: {
+        getSubscriptionExpirationDate() {
+            return moment(this.$props.user?.subscription?.expires).format('Do MMM YYYY')
+        }
+    },  
     mounted() {
         
         axios.defaults.baseURL = this.$store.state.host

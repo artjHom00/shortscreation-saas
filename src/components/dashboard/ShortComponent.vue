@@ -7,14 +7,21 @@
             <p><small><b>To: {{ short.youtube_account.email }}</b></small></p>
         </div>
         <div class="short-date">
-            <small>{{ new Date(short.created_at).getFullYear() }}</small>
+            <small>{{ formatCreationDate }}</small>
         </div>
     </div>
 </template>
 <script>
+import moment from 'moment'
+
 export default {
     name: 'ShortComponent',
     props: ['short'],
+    computed: {
+        formatCreationDate() {
+            return moment(this.$props.short.created_at).format('YYYY.MM.DD')
+        }
+    }
 }
 </script>
 <style scoped lang="scss">
