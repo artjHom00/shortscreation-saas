@@ -240,7 +240,9 @@ async function getUserInfo(req, res) {
   try {
 
     if (req.user) {
-      res.json(req.user);
+      let user = await User.findById(req.user.id)
+      
+      res.json(user)
     } else {
       res.status(404).json({ error: 'User not found' });
     }
