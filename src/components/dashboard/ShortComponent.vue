@@ -1,14 +1,16 @@
 <template lang="">
-    <div class="short">
-        <img class="short-image" src="@/assets/images/dashboard/youtube.svg" alt="">
-        <div>
-            <a :href="short.link" target="_blank">Go To Video</a>
-            <p><small><b>From TikTok: @{{ short.author }}</b></small></p>
-            <p><small><b>To: {{ short.youtube_account.email }}</b></small></p>
-        </div>
-        <div class="short-date">
-            <small>{{ formatCreationDate }}</small>
-        </div>
+    <div>
+        <a :href="short.link" target="_blank" class="short">
+            <img class="short-image" src="@/assets/images/dashboard/youtube.svg" alt="">
+            <div>
+                <span>Go To Video</span>
+                <p><small><b>From TikTok: @{{ short.author }}</b></small></p>
+                <p><small><b>To: {{ short.youtube_account.email }}</b></small></p>
+            </div>
+            <div class="short-date">
+                <small>{{ formatCreationDate }}</small>
+            </div>
+        </a>
     </div>
 </template>
 <script>
@@ -37,8 +39,9 @@ export default {
         border-radius: 15px;
         border: 1px solid $gray-white;
         background: $white;
+        text-decoration: none;
         // max-width: 400px;
-        min-width: 220px;
+        min-width: 300px;
         & > div {
             & > h4, & > p {
                 margin: 0;
@@ -56,6 +59,11 @@ export default {
             height: 100%;
             font-size: 11px;
             white-space: nowrap;
+            align-self: flex-start;
+        }
+        transition: 0.2s opacity ease-in-out;
+        &:hover {
+            opacity: 0.75;
         }
     }
 

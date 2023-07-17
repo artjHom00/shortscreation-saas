@@ -36,7 +36,6 @@ export default {
     },
 
     setRefferalCookie() {
-      console.log("🚀 ~ file: App.vue:38 ~ setRefferalCookie ~ this.$route.query?.ref:", this.$route.query?.ref)
       if(this.$route.query?.ref) {
         this.$cookies.set('ref', this.$route.query?.ref)
       }

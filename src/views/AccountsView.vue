@@ -3,7 +3,7 @@
         <NotificationComponent :type="notification.type" :message="notification.message" v-if="notification.show"/>
     </Transition>
     <div class="dashboard container">
-        <ProfileNavigation/>
+        <ProfileNavigation :user="user"/>
         <h2>Accounts</h2>
 
         <div class="accounts">

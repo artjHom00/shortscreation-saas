@@ -1,6 +1,6 @@
 <template lang="">
     <div class="dashboard container">
-        <ProfileNavigation/>
+        <ProfileNavigation :user="user"/>
         <h2>Affiliate Program</h2>
 
         <div class="affiliate">
