@@ -45,6 +45,12 @@ const YoutubeAccountsSchema = new Schema({
             required: true,
             type: String,
             default: 'HERE DEFAULT PINNED COMMENT'
+        },
+        // in hours
+        uploadInterval: {
+            required: true,
+            type: Number,
+            default: 24
         }
     }
 });

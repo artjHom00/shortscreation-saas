@@ -38,6 +38,10 @@ const usersSchema = new Schema({
         type: String,
         default: 'user'
     },
+    last_upload: {
+        required: false,
+        type: Date
+    },
     subscription: {
         has_subscription: {
             type: Boolean,

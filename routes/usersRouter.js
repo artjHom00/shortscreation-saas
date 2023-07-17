@@ -1,5 +1,5 @@
 let router = require('express').Router()
-let { confirmUser, authUser, getUsersShorts, getUserAffiliates, getUserInfo, createUser, getUserById, getUsers, deleteUser, updateUser, getUsersAffiliates } = require('../controllers/usersController')
+let { confirmUser, authUser, getUsersShorts, getUsersAffiliates, getUserInfo, createUser, getUserById, getUsers, deleteUser, updateUser } = require('../controllers/usersController')
 let { authenticateToken } = require('../providers/jwt')
 
 router.post('/', createUser)
