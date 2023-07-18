@@ -1,21 +1,27 @@
 <template lang="">
     <div class="profile-nav">
         <div>
+            <Popper content="Log out" hover>
             <a class="logout" @click="logout()"><img src="@/assets/images/dashboard/logout.svg" alt=""></a>
+            </Popper>
         </div>
-        <router-link v-for="(button, index) in buttons" :key="index" :to="button.url">
-            <BtnComponent :type="getButtonType(index)" :icon="button.icon" @click="setPrimary(index)" v-if="!button.subscriptionRequired || this.$props.user?.subscription?.has_subscription"/>
-        </router-link>
+        <Popper v-for="(button, index) in buttons" :key="index"  :content="button.tooltip" hover>
+            <router-link :to="button.url">
+                    <BtnComponent class="nav-btn" :type="getButtonType(index)" :icon="button.icon" @click="setPrimary(index)" v-if="!button.subscriptionRequired || this.$props.user?.subscription?.has_subscription"/>
+            </router-link>
+        </Popper>
     </div>
 </template>
 <script>
 import BtnComponent from '@/components/BtnComponent.vue' 
+import Popper from 'vue3-popper';
 
 export default {
     name: 'ProfileNavigation',
     props: ['user'],
     components: {
-        BtnComponent
+        BtnComponent,
+        Popper
     },
     data() {
         return {
@@ -23,22 +29,26 @@ export default {
                 {
                     'url': '/dashboard',
                     'icon': 'dashboard/home.svg',
-                    'subscriptionRequired': false
+                    'subscriptionRequired': false,
+                    'tooltip': 'Dashboard'
                 },
                 {
                     'url': '/create-content',
                     'icon': 'dashboard/plus.svg',
-                    'subscriptionRequired': true
+                    'subscriptionRequired': true,
+                    'tooltip': 'Content Creation Settings'
                 },
                 {
                     'url': '/accounts',
                     'icon': 'dashboard/accounts.svg',
-                    'subscriptionRequired': false
+                    'subscriptionRequired': false,
+                    'tooltip': 'Manage Accounts'
                 },
                 {
                     'url': '/affiliate',
                     'icon': 'dashboard/refferals.svg',
-                    'subscriptionRequired': false
+                    'subscriptionRequired': false,
+                    'tooltip': 'Affiliate'
                 },
         ]
         }
@@ -86,20 +96,27 @@ export default {
         align-items: center;
         & .logout {
             cursor: pointer;
+            & > img {
+                width: 30px;
+            }
         }
-        & > * > * {
+        .nav-btn {
             margin: 0 25px;
             width: 30px;
-            height: 30px;
+            height: 60px;
+        }
+        & > * > * > * {
+            margin: 0 25px;
         }
     }
     @media(max-width: 750px) {
         .profile-nav {
             
-            & > * > button {
+            .nav-btn {
                 height: initial;
+                margin: 0 15px;
             }
-            & > * > * {
+            & > * > * > * {
                 margin: 0 10px;
             }
             & > * > a > img {

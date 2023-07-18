@@ -1,7 +1,7 @@
 <template lang="">
     <footer class="footer container">
         <div class="footer-logo">
-            <img src="../assets/images/footer-logo.svg" width="180" alt="">
+            <img src="../assets/images/footer-logo.svg" width="140" alt="">
         </div>
         <div class="footer-info">
             <h4>Since 2023</h4>
@@ -29,6 +29,9 @@ export default {
             width: 300px;
             & > h4 {
                 margin-top: 0;
+            }
+            & > p > small {
+                font-size: 13px;
             }
         }
     }

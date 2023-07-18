@@ -2,7 +2,7 @@
     <div class="dashboard container">
         <ProfileNavigation :user="user"/>
         <h2>Affiliate Program</h2>
-
+        <p>* Here you can get your affiliate link & withdraw earnings</p>
         <div class="affiliate">
 
             <div class="filled-section">
@@ -11,7 +11,9 @@
                     <h1>${{ getTotalEarnings }}</h1>
                     <h3>via {{ affiliateData?.affiliates?.length }} refferals</h3>
                 </div>
-                <btnComponent type="primary" icon="dashboard/copy.svg"/>
+                <Popper content="Copy link" hover>
+                    <btnComponent type="primary" icon="dashboard/copy.svg" />
+                </Popper>
             </div>
             
             <div class="refferals">
@@ -34,6 +36,7 @@
 import ProfileNavigation from '@/components/dashboard/ProfileNavigation.vue';
 import RefferalComponent from '@/components/dashboard/RefferalComponent.vue';
 import btnComponent from '@/components/BtnComponent.vue';
+import Popper from 'vue3-popper';
 
 import axios from 'axios'
 
@@ -49,6 +52,7 @@ export default {
         ProfileNavigation,
         RefferalComponent,
         btnComponent,
+        Popper,
     },
     computed: {
         getTotalEarnings() {
@@ -97,8 +101,14 @@ export default {
     @import '@/assets/styles/_variables.scss';
 
     .dashboard {
+        & > p {
+            margin-bottom: 40px;
+            opacity: 0.75;
+        }
+
         h2 {
-            margin-bottom: 70px;
+            margin-top: 50px;
+            margin-bottom: 0;
         }
         & .add-account {
             border-radius: 15px;

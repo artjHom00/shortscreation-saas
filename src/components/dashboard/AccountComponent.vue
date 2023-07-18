@@ -6,17 +6,23 @@
             <p><small>#{{ account?._id }}</small></p>
         </div>
         <div>
-            <img class="account-icon" :class="account.credentials_valid ? '' : 'notActive' " src="@/assets/images/dashboard/lightning.svg" alt="">
+            <Popper :content="account.credentials_valid ? 'Active' : 'Not active'" hover>
+                <img class="account-icon" :class="account.credentials_valid ? '' : 'notActive' " src="@/assets/images/dashboard/lightning.svg" alt="">
+            </Popper>
             <img class="account-icon--delete" src="@/assets/images/dashboard/delete.svg" alt="" @click="sendDeleteAccountEvent" v-if="editing">
             <img class="account-icon--edit" src="@/assets/images/dashboard/edit.svg" alt="" @click="sendEditAccountEvent" v-if="editing">
         </div>
     </div>
 </template>
 <script>
+import Popper from 'vue3-popper';
 
 export default {
     name: 'AccountComponent',
     props: ['account', 'editing'],
+    components: {
+      Popper,
+    },
     methods: {
         sendDeleteAccountEvent() {
             this.$emit('delete')

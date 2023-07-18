@@ -30,6 +30,7 @@
         right: 0px;
         top: 150px;
         color: $white;
+        z-index: 300000;
         padding: 15px 20px;
         border-top-left-radius: 15px;
         border-bottom-left-radius: 15px;

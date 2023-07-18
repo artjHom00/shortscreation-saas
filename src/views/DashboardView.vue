@@ -2,6 +2,7 @@
     <div class="dashboard container">
         <ProfileNavigation :user="user"/>
         <h2>Dashboard</h2>
+        <p>* Here you can access basic information about your subscription / dashboard</p>
         <div class="filled-section">
             <div class="filled-section-content" v-if="!user?.subscription?.has_subscription">
                 <h4>Your Subscription:</h4>
@@ -105,8 +106,14 @@ export default {
         & > .accounts, & > .last-shorts {
             margin-top: 50px;
         }
+        & > p {
+            margin-bottom: 40px;
+            opacity: 0.75;
+        }
+
         h2 {
-            margin-bottom: 70px;
+            margin-top: 50px;
+            margin-bottom: 0;
         }
         & .filled-section {
             width: calc(100% - 100px);

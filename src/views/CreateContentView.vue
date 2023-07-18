@@ -5,7 +5,7 @@
     <div class="dashboard container">
         <ProfileNavigation :user="user"/>
         <h2>Let’s Set Up Your content!</h2>
-
+        <p>* Here you can set default uploading settings for the account</p>
         <div class="accounts">
             <h4>Select an account:</h4>
             <div class="accounts-list">
@@ -16,6 +16,7 @@
                 <div class="forms" v-if="form.isActive">
                     <div class="form youtube-upload-settings">
                         <h3>YouTube Upload Settings</h3>
+                        <p><small>#{{ form.forAccount }}</small></p>
                         <inputComponent v-model="form.data.settings.uploadInterval" label="Upload Interval" placeholder="Every 24 hours"/>
                         <inputComponent v-model="form.data.settings.title" label="Enter a title for every video" placeholder="Enter a title... "/>
                         <inputComponent v-model="form.data.settings.pinnedComment" label="Enter a comment to pin under every video" placeholder="Enter a comment..." textarea="true"/>
@@ -25,6 +26,7 @@
                     </div>
                     <div class="form tiktok-accounts">
                         <h3>TikTok Accounts</h3>
+                        <p><small>#{{ form.forAccount }}</small></p>
                         <div class="tiktok-accounts-list">
                             <TikTokAccountComponent v-for="(tiktokAccount, index) in form.data.tiktokAccounts" :key="index" :account="tiktokAccount" @delete="deleteTikTokAccount(index)"/>
                         </div>
@@ -141,6 +143,12 @@ export default {
         }
     },
     methods: {
+        removeAtSymbol(string) {
+            if (string.startsWith('@')) {
+                return string.slice(1);
+            }
+            return string;
+        },
         getData() {
             axios.get(`youtube-accounts/`)
             .then(({ data }) => {
@@ -168,11 +176,14 @@ export default {
             
         },
         addTikTokAccount() {
-            this.form.data.tiktokAccounts = [...this.form.data.tiktokAccounts, this.newTikTokAccount]
+            let formattedTikTokAccount = this.removeAtSymbol(this.newTikTokAccount)
+
+            this.form.data.tiktokAccounts = [...this.form.data.tiktokAccounts, formattedTikTokAccount]
             axios.patch('youtube-accounts/' + this.form.forAccount, {
                 tiktok_accounts: this.form.data.tiktokAccounts
             }).then(() => {
                 this.showNotification('success', 'Tiktok source account successully added')
+                this.getData()
             }).catch(({ response: { data }}) => {
                 this.showNotification('fail', 'Error occured while adding')
 
@@ -227,9 +238,16 @@ export default {
     @import '@/assets/styles/_variables.scss';
 
     .dashboard {
-        h2 {
-            margin-bottom: 70px;
+        & > p {
+            margin-bottom: 40px;
+            opacity: 0.75;
         }
+
+        h2 {
+            margin-top: 50px;
+            margin-bottom: 0;
+        }
+        
         & .filled-section {
             width: calc(100% - 100px);
             background: $fade-w-image;
@@ -281,6 +299,14 @@ export default {
                 padding: 20px 40px;
                 width: calc(100% - 100px);
                 margin: 0 auto;
+                & > p {
+                    margin-top: 0;
+                    opacity: 0.8;
+                    margin-left: 4px;
+                }
+                & > h3 {
+                    margin-bottom: 0;
+                }
                 & .save-button {
                     margin: 0 auto;
                     width: 200px;

@@ -11,7 +11,7 @@
             </router-link>
         </div>
         <div>
-            <router-link to="/sign-in" class="no-decoration" v-if="!user.id">
+            <router-link to="/sign-in" class="no-decoration" v-if="!user._id">
                 <btnComponent class="pc" icon="person.svg" text="Sign In" type="dark"/>
                 <btnComponent class="mobile" icon="person.svg" type="dark"/>
             </router-link>

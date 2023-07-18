@@ -5,7 +5,7 @@
     <div class="dashboard container">
         <ProfileNavigation :user="user"/>
         <h2>Accounts</h2>
-
+        <p>⚠️ Notice, after <b> adding account / updating account's credentials </b> <br> it might show "Not active" till the next upload</p>
         <div class="accounts">
 
             <btnComponent type="primary" text="Add New Account" @click="changeStateOfForm"/>
@@ -164,8 +164,14 @@ export default {
     @import '@/assets/styles/_variables.scss';
 
     .dashboard {
+        & > p {
+            margin-bottom: 40px;
+            opacity: 0.75;
+        }
+
         h2 {
-            margin-bottom: 70px;
+            margin-top: 50px;
+            margin-bottom: 0;
         }
         & .add-account {
             border-radius: 15px;
