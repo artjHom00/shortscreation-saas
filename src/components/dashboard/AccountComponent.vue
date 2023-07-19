@@ -1,11 +1,11 @@
 <template lang="">
     <div class="account">
-        <img class="account-image" :class="account.credentials_valid ? '' : 'notActive' " src="@/assets/images/dashboard/kendrick.png" alt="">
-        <div>
+        <div class="account-image" :class="account.credentials_valid ? '' : 'notActive' ">{{ getAccountFirstLetter }}</div>
+        <div class="account-info">
             <h4>{{ account?.email }}</h4>
             <p><small>#{{ account?._id }}</small></p>
         </div>
-        <div>
+        <div class="account-icons">
             <Popper :content="account.credentials_valid ? 'Active' : 'Not active'" hover>
                 <img class="account-icon" :class="account.credentials_valid ? '' : 'notActive' " src="@/assets/images/dashboard/lightning.svg" alt="">
             </Popper>
@@ -29,6 +29,11 @@ export default {
         },
         sendEditAccountEvent() {
             this.$emit('edit')
+        }
+    },
+    computed: {
+        getAccountFirstLetter() {
+            return this.$props.account.email[0]
         }
     }
 }
@@ -55,19 +60,35 @@ export default {
             }
         }
         &-image {
+            background: $dark;
+            height: 50px;
+            display:flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: $white;
+            border-radius: 15px;
+            text-transform: uppercase;
             width: 50px;
             position: relative;
+        }
+        &-info {
+            overflow:auto;
+        }
+        &-icons {
+            display: flex;
+            flex-wrap: nowrap;
         }
         &-icon {
             width: 15px;
             &--delete, &--edit {
                 margin-left: 15px;
                 position: relative;
-                top: 1px;
+                top: -2px;
                 transition: 0.2s all ease-in-out;
                 &:hover {
                     cursor: pointer;
-                    top: -2px;
+                    top: -4px;
                     
                 }
             }
@@ -81,6 +102,14 @@ export default {
         .notActive {
                 filter: grayscale(100%);
                 opacity: 0.5;
+        }
+    }
+
+    @media(max-width: 500px) {
+        .account {
+            &-image {
+                display: none;
+            }
         }
     }
 </style>

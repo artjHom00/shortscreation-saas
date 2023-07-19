@@ -21,6 +21,15 @@
                         <inputComponent v-model="form.data.settings.title" label="Enter a title for every video" placeholder="Enter a title... "/>
                         <inputComponent v-model="form.data.settings.pinnedComment" label="Enter a comment to pin under every video" placeholder="Enter a comment..." textarea="true"/>
                         <inputComponent v-model="form.data.settings.description" label="Enter a description for every video" placeholder="Enter a description..." textarea="true"/>
+                        <h4>Background video</h4>
+                        <!--default html file upload button-->
+                        <input type="file" id="actual-btn" accept=".mp4" hidden/>
+
+                        <!--our custom file upload button-->
+                        <label for="actual-btn" id="file-upload">
+                            <img src="../assets/images/dashboard/upload.svg" alt=""><br>
+                            {{ form.data.background_video ? form.data.background_video : 'Upload a file' }}
+                        </label>
                         <br>
                         <btnComponent type="primary" text="Save" class="save-button" @click="updateSettings()"/>
                     </div>
@@ -39,60 +48,6 @@
                     </div>
                 </div>
             </Transition>
-            <!-- <div class="edit-account">
-                <div class="edit-account-form">
-                    <inputComponent label="TikTok Account" placeholder="Enter @uniqueid"/>
-                    <inputComponent label="Background Video" placeholder="YouTube video URL"/>
-                    <inputComponent label="Upload Interval" placeholder="Every 24h."/>
-                </div>
-                <btnComponent type="primary" text="Save"/>
-            </div>
-        </div>
-        <div class="settings-forms">
-            <div class="pinned">
-                <h4>Pinned comment:</h4>
-                <div class="pinned-form">
-                    <div class="pinned-form-wrapper">
-                        <inputComponent class="pinned-form--input" textarea="true" label="Enter a comment to pin under every video:" placeholder="Enter a comment..."/>
-                                                
-                        <div class="checkbox">
-                            <input type="checkbox" id="useDefault"/>
-                            <label for="useDefault"><small>Help us grow, use our default pinned comment</small></label>
-                        </div>
-                    </div>
-                    <btnComponent type="primary" text="Save"/>
-                </div>
-            </div>
-            <div class="title">
-                <h4>Videos title:</h4>
-                <div class="title-form">
-                    <div class="title-form-wrapper">
-                        <inputComponent class="title-form--input" textarea="true" label="Enter a title for every video" placeholder="Enter a title..."/>
-                        
-                        <div class="checkbox">
-                            <input type="checkbox" id="useDefault"/>
-                            <label for="useDefault"><small>Help us grow, use our default title</small></label>
-                        </div>
-                    </div>
-                        
-                    <btnComponent type="primary" text="Save"/>
-                </div>
-            </div>
-            <div class="description">
-                <h4>Videos descripion:</h4>
-                <div class="description-form">
-                    <div class="description-form-wrapper">
-                        <inputComponent class="description-form--input" textarea="true" label="Enter a description for every video" placeholder="Enter a description..."/>
-                                                
-                        <div class="checkbox">
-                            <input type="checkbox" id="useDefault"/>
-                            <label for="useDefault"><small>Help us grow, use our default description</small></label>
-                        </div>
-                    </div>
-                        
-                    <btnComponent type="primary" text="Save"/>
-                </div>
-            </div> -->
         </div>
     </div>
 </template>
@@ -132,6 +87,7 @@ export default {
                         description: null,
                         uploadInterval: null
                     },
+                    background_video: null
                 }
             },
             newTikTokAccount: null,
@@ -172,6 +128,7 @@ export default {
             })
 
             this.form.data.settings = account.settings
+            this.form.data.background_video = account?.background_video
             this.form.data.tiktokAccounts = account.tiktok_accounts
             
         },
@@ -184,7 +141,7 @@ export default {
             }).then(() => {
                 this.showNotification('success', 'Tiktok source account successully added')
                 this.getData()
-            }).catch(({ response: { data }}) => {
+            }).catch(() => {
                 this.showNotification('fail', 'Error occured while adding')
 
             })
@@ -195,7 +152,7 @@ export default {
                 tiktok_accounts: this.form.data.tiktokAccounts
             }).then(() => {
                 this.showNotification('success', 'Tiktok source account successully deleted')
-            }).catch(({ response: { data }}) => {
+            }).catch(() => {
                 this.showNotification('fail', 'Error occured while deleting')
 
             })
@@ -205,7 +162,7 @@ export default {
                 settings: this.form.data.settings
             }).then(() => {
                 this.showNotification('success', 'Account settings successully updated')
-            }).catch(({ response: { data }}) => {
+            }).catch(() => {
                 this.showNotification('fail', 'Error occured while updating account settings')
 
             })
@@ -238,6 +195,29 @@ export default {
     @import '@/assets/styles/_variables.scss';
 
     .dashboard {
+
+        #file-upload {
+            background: $dark-fade;
+            width: 70%;
+            display: block;
+            font-weight: bold;
+            text-align: center;
+            color: white;
+            padding: 30px 0;
+            font-family: sans-serif;
+            border-radius: 15px;
+            cursor: pointer;
+            margin: 0 auto;
+            margin-top: 1rem;
+            transition: 0.1s opacity ease-in-out;
+            & > img {
+                width: 30px;
+                margin-bottom: 5px;
+            }
+            &:hover {
+                opacity: 0.8;
+            }
+        }
         & > p {
             margin-bottom: 40px;
             opacity: 0.75;

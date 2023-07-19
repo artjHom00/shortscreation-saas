@@ -119,9 +119,9 @@ export default {
             & > * > * > * {
                 margin: 0 10px;
             }
-            & > * > a > img {
+            & .logout > img {
                 width: 25px;
-                height: 34px;
+                height: 20px;
             }
         }
     }

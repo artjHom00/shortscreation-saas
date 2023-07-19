@@ -15,6 +15,13 @@
                 <h1>{{ user?.subscription?.type }} Plan</h1>
                 <h3>Expires: {{ getSubscriptionExpirationDate }}</h3>
             </div>
+            <div v-if="user?.subscription?.has_subscription" class="next-upload">
+                <h4>Next upload:</h4>
+                <div>
+                    <h3>3 hours</h3>
+                    <h4>27 minutes</h4>
+                </div>
+            </div>
         </div>
 
         <div class="accounts">
@@ -122,12 +129,22 @@ export default {
             padding: 40px 50px;
             border-radius: 15px;
             color: $white;
+            display: flex;
+            justify-content: space-between;
             & > div {
                 & > h1, & > h3,  & > h4 {
                     margin: 0;
                 }
                 & > h4 {
                     margin-bottom: 20px
+                }
+            }
+            & > .next-upload {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                & > div > h3, h4 {
+                    margin: 0;
                 }
             }
         }

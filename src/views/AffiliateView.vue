@@ -1,8 +1,13 @@
 <template lang="">
+    <Transition>
+        <NotificationComponent :type="notification.type" :message="notification.message" v-if="notification.show"/>
+    </Transition>
     <div class="dashboard container">
         <ProfileNavigation :user="user"/>
         <h2>Affiliate Program</h2>
-        <p>* Here you can get your affiliate link & withdraw earnings</p>
+        <p>* Here you can get your affiliate link & withdraw earnings<br>
+            Withdraw available on <b>USDT, TRC20</b>
+        </p>
         <div class="affiliate">
 
             <div class="filled-section">
@@ -11,11 +16,23 @@
                     <h1>${{ getTotalEarnings }}</h1>
                     <h3>via {{ affiliateData?.affiliates?.length }} refferals</h3>
                 </div>
-                <Popper content="Copy link" hover>
-                    <btnComponent type="primary" icon="dashboard/copy.svg" />
-                </Popper>
+                <div>
+                    <Popper content="Copy link" class="action-btn" hover>
+                        <btnComponent type="primary" icon="dashboard/copy.svg" @click="copyLink"/>
+                    </Popper>
+                    <Popper content="Withdraw" class="action-btn" hover>
+                        <btnComponent type="primary" icon="dashboard/withdraw.svg" @click="changeFormState()"/>
+                    </Popper>
+                </div>
             </div>
-            
+            <Transition>
+                <div class="form" v-if="showForm">
+                    <inputComponent label="Wallet" placeholder="Enter your USDT Wallet Address"/>
+                    <inputComponent label="Amount" placeholder="Enter amount to withdraw"/>
+                    <br>
+                    <btnComponent type="primary" text="Send request" />
+                </div>
+            </Transition>
             <div class="refferals">
                 <h4>Your Refferals:</h4>
                 <div v-if="affiliateData?.affiliates?.length === 0">
@@ -35,7 +52,9 @@
 <script>
 import ProfileNavigation from '@/components/dashboard/ProfileNavigation.vue';
 import RefferalComponent from '@/components/dashboard/RefferalComponent.vue';
+import inputComponent from '@/components/InputComponent.vue';
 import btnComponent from '@/components/BtnComponent.vue';
+import NotificationComponent from '@/components/NotificationComponent.vue';
 import Popper from 'vue3-popper';
 
 import axios from 'axios'
@@ -45,13 +64,21 @@ export default {
     props: ['user'],
     data() {
         return {
-            affiliateData: {}
+            affiliateData: {},
+            showForm: false,
+            notification: {
+                show: false,
+                type: null,
+                message: null
+            }
         }
     },
     components: {
         ProfileNavigation,
         RefferalComponent,
         btnComponent,
+        inputComponent,
+        NotificationComponent,
         Popper,
     },
     computed: {
@@ -86,6 +113,26 @@ export default {
 
             })
         },
+        changeFormState() {
+            this.showForm = !this.showForm
+        },
+        copyLink() {
+            navigator.clipboard.writeText(this.$store.state.host + '?ref=' + this.$props.user._id)
+            this.showNotification('success', 'Link copied!')
+        },
+        showNotification(type, message) {
+
+            this.notification = {
+                show: true,
+                type,
+                message
+            }
+
+            setTimeout(() => {
+                this.notification.show = false
+            }, 3000)
+
+        }
     },
     mounted() {
 
@@ -130,7 +177,24 @@ export default {
             }
         }
         & .affiliate {
+            position: relative;
+            & .form {
+                position: absolute;
+                right: 0;
+                z-index: 3;
+                margin-top: -70px;
+                height: fit-content;
+                background: $white;
+                border-radius: 15px;
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+                padding: 30px 40px;
+                width: 300px;
+                margin-left: auto;
+            }
             & .filled-section {
+                position: relative;
+                z-index: 5;
                 width: calc(100% - 100px);
                 display: flex;
                 justify-content: space-between;
@@ -141,6 +205,9 @@ export default {
                 border-radius: 15px;
                 color: $white;
                 & > div {
+                    & .action-btn:last-child {
+                        padding-left: 10px;
+                    }
                     & > h1, & > h3,  & > h4 {
                         margin: 0;
                     }
@@ -184,6 +251,12 @@ export default {
     @media(max-width: 655px) {
         .dashboard {
             & .affiliate {
+                & .form {
+                    width: calc(100% - 80px);
+                    & > button {
+                        width: 100%;
+                    }
+                }
                 & .filled-section {
                     flex-wrap: wrap;
                     & > div {

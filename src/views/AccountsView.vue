@@ -72,9 +72,7 @@ export default {
         },
         createAccount() {
             axios.post('youtube-accounts/', {
-                email: this.newAccount.email,
-                password: this.newAccount.password,
-                recoveryEmail: this.newAccount.recoveryEmail
+                ...this.newAccount
             })
             .then(() => {
                 this.getData()
@@ -119,9 +117,10 @@ export default {
             })
 
             this.newAccount = {
-                    email: youtubeAccount.email,
-                    password: youtubeAccount.password,
-                    recoveryEmail: youtubeAccount.recoveryEmail
+                ...youtubeAccount,
+                email: youtubeAccount.email,
+                password: youtubeAccount.password,
+                recoveryEmail: youtubeAccount.recoveryEmail
             }
             
             this.showForm = true

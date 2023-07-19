@@ -2,7 +2,9 @@
     <nav class="nav container">
         <div>
             <router-link to="/" class="no-decoration">
-                <span class="nav_langChange">EN</span>
+                <Popper content="Contact Us" hover>
+                    <span class="nav_langChange"><img src="../assets/images/support.svg" alt=""></span>
+                </Popper>
             </router-link>
         </div>
         <div>
@@ -26,14 +28,15 @@
 
 <script>
 import btnComponent from '@/components/BtnComponent.vue' 
-
+import Popper from 'vue3-popper';
 // import axios from 'axios'
 
 export default {
     name: 'NavComponent',
     props: ['user'],
     components: {
-        btnComponent
+        btnComponent,
+        Popper
     },
 
 }
@@ -59,19 +62,25 @@ export default {
         }
         &_langChange {
             border-radius: 15px;
-            border: 3px solid $dark;
+            border: 2px solid $dark;
             color: $dark;
             font-size: 12px;
             display:flex;
             justify-content: center;
             align-items: center;
-            
+            position: relative;
+            top: 0;
             // -3px by border
             height: 40px;
             width: 40px;
 
             font-weight: 900;
             text-decoration: none;
+            
+            transition: 0.2s all ease-in-out;
+            &:hover {
+                top: -2px;
+            }
         }
         
     }
@@ -103,6 +112,9 @@ export default {
                 border: 2px solid $dark;
                 height: 30px;
                 width: 30px;
+                & > img {
+                    width: 15px
+                }
             }
         }
     }
