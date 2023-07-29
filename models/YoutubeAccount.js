@@ -30,6 +30,11 @@ const YoutubeAccountsSchema = new Schema({
         required: false,
         type: String,
     },
+    last_upload: {
+        required: true,
+        type: Date,
+        default: Date.now
+    },
     settings: {
         description: {
             required: true,

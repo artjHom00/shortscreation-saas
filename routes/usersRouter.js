@@ -1,10 +1,13 @@
 let router = require('express').Router()
-let { confirmUser, authUser, getUsersShorts, getUsersAffiliates, getUserInfo, createUser, getUserById, getUsers, deleteUser, updateUser } = require('../controllers/usersController')
+let { confirmUser, authUser, getUsersShorts, getUsersAffiliates, resetPasswordUsingMail, resendConfirmationMail, getUserInfo, createUser, getUserById, getUsers, deleteUser, updateUser } = require('../controllers/usersController')
 let { authenticateToken } = require('../providers/jwt')
+
 
 router.post('/', createUser)
 router.post('/auth', authUser)
-router.post('/confirm', confirmUser)
+router.post('/confirm', authenticateToken, confirmUser)
+router.post('/resend', authenticateToken, resendConfirmationMail)
+router.post('/forgot-password', resetPasswordUsingMail)
 
 router.get('/', authenticateToken, getUsers)
 router.get('/shorts', authenticateToken, getUsersShorts)

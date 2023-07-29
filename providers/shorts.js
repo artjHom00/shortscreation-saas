@@ -9,6 +9,7 @@ let puppeteer = require('puppeteer')
 let { addTikTokIfNotExists, getRandomTikTokByAuthor, setTikTokAsUsed } = require('../services/tiktok')
 let YoutubeAccount = require('../models/YoutubeAccount')
 let Short = require('../models/Short')
+let cron = require('node-cron')
 
 
 
@@ -247,6 +248,8 @@ async function generateAndUploadShort(youtubeAccountId) {
   }
 
 };
+
+// cron.schedule('')
 
 
 module.exports = {

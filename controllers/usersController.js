@@ -2,7 +2,7 @@ let User = require('../models/User')
 let Short = require('../models/Short')
 let Transaction = require('../models/Transaction')
 let { generateAccessToken } = require('../providers/jwt.js')
-let { sendConfirmationCode, confirmEmail } = require('../services/mailConfirmation.js')
+let { sendConfirmationCode, confirmEmail, sendRestorePasswordLink } = require('../services/mailConfirmation.js')
 
 // let bcrypt = require('bcrypt')
 
@@ -19,8 +19,56 @@ async function confirmUser(req, res) {
     res.json(confirmation)
     
   } catch (error) {
-    console.error('Error authenticating user:', error);
+    console.error('Error confirming user:', error);
     res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+async function resendConfirmationMail(req, res) {
+  try {
+    
+    if(req.user && req.user.email) {
+
+      let isSent = await sendConfirmationCode(req.user.email).catch((error) => {
+        res.status(500).json({ error: 'Error occured while sending email!' });
+        return false
+      })
+      
+      
+      if(isSent !== false) {
+
+        res.status(201).send(true);
+
+      }
+
+    }
+
+  } catch (error) {
+    console.error('Error resending message:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+async function resetPasswordUsingMail(req, res) {
+  try {
+
+    let { email } = req.body
+
+    let isSent = await sendRestorePasswordLink(email).catch((error) => {
+      res.status(500).json({ error: 'Error occured while sending email!' });
+      return false
+    })
+    
+    
+    if(isSent !== false) {
+
+      res.status(201).send(true);
+
+    }
+
+  } catch(error) {
+    console.log("🚀 ~ file: usersController.js:79 ~ createUser ~ error:", error)
+    res.status(500).json({ error });
   }
 }
 
@@ -62,7 +110,7 @@ async function createUser(req, res) {
       const existingUser = await User.findOne({ $or: [{ username }, { email }] });
 
       if (existingUser) {
-      return res.status(409).json({ error: 'Username or email already exists' });
+        return res.status(409).json({ error: 'Username or email already exists' });
       }
 
       
@@ -208,7 +256,13 @@ async function updateUser(req, res) {
   const { id } = req.params;
 
   try {
-    const updatedUser = await User.findByIdAndUpdate(id, req.body, { new: true });
+    let updatedUser = null;
+
+    if(id === 'me') {
+      updatedUser = await User.findByIdAndUpdate(req.user.id, req.body, { new: true });
+    } else {
+      updatedUser = await User.findByIdAndUpdate(id, req.body, { new: true });
+    }
     if (updatedUser) {
       res.json(updatedUser);
     } else {
@@ -254,6 +308,8 @@ async function getUserInfo(req, res) {
 
 
 module.exports = {
+  resendConfirmationMail,
+  resetPasswordUsingMail,
   confirmUser,
   authUser,
   createUser,

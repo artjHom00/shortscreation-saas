@@ -4,7 +4,7 @@ let YoutubeAccount = require('../models/YoutubeAccount')
 
 async function addYoutubeAccount(req, res) {
     try {
-        const { email, password, recoveryEmail } = req.body;
+        const { email, password, recoveryEmail, settings, tiktok_accounts } = req.body;
             
         // Check if email and password are provided
         if (!email || !password) {
@@ -22,7 +22,9 @@ async function addYoutubeAccount(req, res) {
             user_id: req.user.id,
             email,
             password,
-            recovery_email: recoveryEmail
+            recovery_email: recoveryEmail,
+            settings,
+            tiktok_accounts
         });
 
         // Save the YoutubeAccount to the database
@@ -63,7 +65,9 @@ async function addYoutubeAccount(req, res) {
   const updateYoutubeAccount = async (req, res) => {
     try {
       const { id } = req.params;
-      const {
+      
+      
+      let {
         user_id,
         email,
         password,
@@ -73,7 +77,15 @@ async function addYoutubeAccount(req, res) {
         background_video,
         settings
       } = req.body;
-  
+      
+      if(req.file) {
+        background_video = req.file.path
+      }
+
+      if(settings?.uploadInterval && !(settings?.uploadInterval === '3' || settings?.uploadInterval === '6' || settings?.uploadInterval === '12' || settings?.uploadInterval === '24')) {
+        return res.status(404).json({ error: 'Upload interval should be either 3 / 6 / 12 / 24 hours' });
+      }
+
       const updatedYoutubeAccount = await YoutubeAccount.findByIdAndUpdate(
         id,
         {

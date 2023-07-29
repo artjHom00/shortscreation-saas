@@ -29,6 +29,8 @@
     "https": "^1.0.0",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.3.1",
+    "multer": "^1.4.5-lts.1",
+    "node-cron": "^3.0.2",
     "nodemailer": "^6.9.3",
     "puppeteer": "^20.8.0",
     "puppeteer-extra": "^3.3.6",
