@@ -6,7 +6,8 @@
         <ProfileNavigation :user="user"/>
         <h2>Affiliate Program</h2>
         <p>* Here you can get your affiliate link & withdraw earnings<br>
-            Withdraw available on <b>USDT, TRC20</b>
+            Withdrawals proceed manually, contact us to withdraw. <br>
+            Withdrawal available on <b>USDT, TRC20</b>
         </p>
         <div class="affiliate">
 
@@ -21,7 +22,10 @@
                         <btnComponent type="primary" icon="dashboard/copy.svg" @click="copyLink"/>
                     </Popper>
                     <Popper content="Withdraw" class="action-btn" hover>
-                        <btnComponent type="primary" icon="dashboard/withdraw.svg" @click="changeFormState()"/>
+                        <a href="/" target="_blank">
+                            <btnComponent type="primary" icon="dashboard/withdraw.svg"/>
+                        </a>
+                        <!-- @click="changeFormState()" -->
                     </Popper>
                 </div>
             </div>

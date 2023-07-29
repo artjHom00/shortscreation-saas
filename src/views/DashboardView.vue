@@ -15,11 +15,11 @@
                 <h1>{{ user?.subscription?.type }} Plan</h1>
                 <h3>Expires: {{ getSubscriptionExpirationDate }}</h3>
             </div>
-            <div v-if="user?.subscription?.has_subscription" class="next-upload">
-                <h4>Next upload:</h4>
+            <div v-if="user?.subscription?.has_subscription && youtubeAccounts.length > 0" class="next-upload">
+                <h4>Next closest upload:</h4>
                 <div>
-                    <h3>3 hours</h3>
-                    <h4>27 minutes</h4>
+                    <h3>In {{ getClosestNextUpload.hours }} hours</h3>
+                    <h4>On {{ getClosestNextUpload.account }}</h4>
                 </div>
             </div>
         </div>
@@ -94,6 +94,31 @@ export default {
     computed: {
         getSubscriptionExpirationDate() {
             return moment(this.$props.user?.subscription?.expires).format('Do MMM YYYY')
+        },
+        getClosestNextUpload() {
+            let closest = {
+                account: null,
+                hours: null
+            }
+
+            let now = moment(new Date())
+            
+            this.youtubeAccounts.forEach((account) => {
+                let uploadTime = moment(account.last_upload)
+
+                let timePassed = moment.duration(now.diff(uploadTime))._data
+                if(timePassed.hours < closest.hours || closest.hours === null) {
+                    let nextUpload = account.settings.uploadInterval - timePassed.hours
+
+                    closest = {
+                        account: account.email,
+                        hours: nextUpload
+                    }
+
+                }
+            })
+
+            return closest
         }
     },  
     mounted() {
@@ -102,6 +127,10 @@ export default {
         axios.defaults.headers.common['Authorization'] = `Bearer ${this.$cookies.get('jwt_token')}`
         
         this.getData()
+
+        if(this.$props.user?.confirmation?.status === false) {
+            window.location.href = '/confirm-account'
+        }
         
     }
 }

@@ -12,7 +12,7 @@
         <div class="subscription-content container">
             <div class="subscription-content--el">
                 <h4>Number of accounts</h4>
-                <h3>10 accounts</h3>
+                <h3>2 accounts</h3>
             </div>
             <div class="subscription-content--el">
                 <h4>Consistency</h4>

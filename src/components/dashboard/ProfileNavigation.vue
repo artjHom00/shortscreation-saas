@@ -5,10 +5,11 @@
             <a class="logout" @click="logout()"><img src="@/assets/images/dashboard/logout.svg" alt=""></a>
             </Popper>
         </div>
-        <Popper v-for="(button, index) in buttons" :key="index"  :content="button.tooltip" hover>
-            <router-link :to="button.url">
-                    <BtnComponent class="nav-btn" :type="getButtonType(index)" :icon="button.icon" @click="setPrimary(index)" v-if="!button.subscriptionRequired || this.$props.user?.subscription?.has_subscription"/>
+        <Popper v-for="(button, index) in buttons" :key="index" :content="button.tooltip" hover>
+            <router-link :to="button.url" v-if="!button.subscriptionRequired || this.$props.user?.subscription?.has_subscription">
+                    <BtnComponent class="nav-btn" :type="getButtonType(index)" :icon="button.icon" @click="setPrimary(index)"/>
             </router-link>
+            <BtnComponent class="nav-btn" type="disabled" :icon="button.icon" v-else/>
         </Popper>
     </div>
 </template>
@@ -41,7 +42,7 @@ export default {
                 {
                     'url': '/accounts',
                     'icon': 'dashboard/accounts.svg',
-                    'subscriptionRequired': false,
+                    'subscriptionRequired': true,
                     'tooltip': 'Manage Accounts'
                 },
                 {

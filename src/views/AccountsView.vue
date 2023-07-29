@@ -25,7 +25,7 @@
 
             </transition>
 
-            <div>
+            <div v-if="youtubeAccounts.length > 0">
 
                 <h4>Your Accounts:</h4>
                 <div class="accounts-list">

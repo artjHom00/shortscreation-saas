@@ -5,12 +5,17 @@
     <div class="container">
 
         <div class="create">
-            <h3>Restore Your Password</h3>
+            <h3>Confirm Your Email</h3>
+            <p>Confirmation code has been sent to your email address. Enter confirmation code from a mail.</p>
             <div class="form">
-                <InputComponent v-model="email" label="Email" placeholder="Enter your email address"/>
+                <InputComponent label="Code" placeholder="Enter your confirmation code" v-model="code"/>
             </div>
-            <btnComponent type="primary" text="Restore" @click="sendRequest()"/>
-            <p>Remembered password? <router-link to="/sign-in" class="text-primary">Sign in!</router-link></p>
+            <btnComponent type="primary" text="Verify" @click="confirmAccount()"/>
+            <p>Don't see a code? 
+                <span class="resend text-primary" @click="resendConfirmation()" v-if="resendAvailable">Resend confirmation code</span>
+                <span class="text-primary" v-else>Wait 15 seconds until resending...</span>
+            
+            </p>
         </div>
     </div>
 </template>
@@ -20,6 +25,7 @@ import InputComponent from '@/components/InputComponent.vue'
 import BtnComponent from '@/components/BtnComponent.vue'
 import NotificationComponent from '@/components/NotificationComponent.vue'
 
+
 import axios from 'axios'
 
 export default {
@@ -27,29 +33,49 @@ export default {
     components: {
         InputComponent,
         BtnComponent,
-        NotificationComponent
+        NotificationComponent,
     },
+    props: ['user'],
     data() {
         return {
-            email: 'john@example.com',
+            code: null,
             notification: {
                 show: false,
                 type: null,
                 message: null
             },
+            resendAvailable: true
         }
     },
     methods: {
-        async sendRequest() {
-            if(this.email) {
-                axios.post('/users/forgot-password', {
-                    email: this.email
-                }).then(() => {
-                    this.showNotification('success', 'Restoring password link has been sent to your email!')
-                }).catch(() => {
-                    this.showNotification('fail', 'Error occured while restoring password!')
-                })
-            }
+        confirmAccount() {
+            axios.post('users/confirm', {
+                code: this.code
+            }).then(() => {
+            this.showNotification('success', 'Email confirmed, redirecting...')
+            
+            setTimeout(() => {
+                window.location.href = '/dashboard'
+            }, 1000)
+
+            }).catch(({ response: { data }}) => {
+            this.showNotification('fail', data.error)
+
+            })
+        },
+        resendConfirmation() {
+            axios.post('users/resend')
+            .then(() => {
+            this.showNotification('success', 'Message has been resent!')
+            }).catch(({ response: { data }}) => {
+            this.showNotification('fail', data.error)
+            }).finally(() => {
+                this.resendAvailable = false
+
+                setTimeout(() => {
+                    this.resendAvailable = true
+                }, 15000)
+            })
         },
         showNotification(type, message) {
 
@@ -65,13 +91,17 @@ export default {
 
         }
     },
-
     mounted() {
+
         axios.defaults.baseURL = this.$store.state.host
         axios.defaults.headers.common['Authorization'] = `Bearer ${this.$cookies.get('jwt_token')}`
 
-        // this.isJWTValid
-    }
+        if(this.$props.user?.confirmation?.status === true) {
+            window.location.href = '/dashboard'
+        }
+        
+
+    },
 }
 </script>
 <style scoped lang="scss">
@@ -98,6 +128,12 @@ export default {
         & > .form {
             & > * {
                 margin: 25px 0;
+            }
+        }
+        & .resend {
+            cursor: pointer;
+            &:hover {
+                text-decoration: underline;
             }
         }
         & > .options {

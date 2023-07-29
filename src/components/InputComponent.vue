@@ -7,6 +7,12 @@
         :placeholder="placeholder" 
         v-model="inputVal"
         v-if="textarea"></textarea>
+        <select v-model="inputVal" v-else-if="option">
+            <option value="3">Every 3 hours</option>
+            <option value="6">Every 6 hours</option>
+            <option value="12">Every 12 hours</option>
+            <option value="24">Every 24 hours</option>
+        </select>
         <input 
         type="text"
         v-model="inputVal"
@@ -19,7 +25,7 @@
 // https://stackoverflow.com/questions/47311936/v-model-and-child-components
 export default {
     name: 'InputComponent',
-    props: ['label', 'placeholder', 'textarea', 'modelValue'],
+    props: ['label', 'placeholder', 'textarea', 'option', 'modelValue'],
     computed: {
         inputVal: {
         get() {
@@ -36,7 +42,8 @@ export default {
     @import '@/assets/styles/_variables.scss';
 
     .input {
-        & > input, & > textarea {
+
+        & > input, & > textarea, & > select {
             resize: none;
             border: 0;
             font-family: Inter, Helvetica, Arial, sans-serif;
@@ -48,17 +55,23 @@ export default {
             transition: 0.1s background ease-in-out;
             &:focus {
                 outline: none;
-                background: $white;
             }
             &.textarea {
                 padding-bottom: 30px;
             }
         } 
+        & > input:focus, & > textarea:focus {
+            background: $white;
+        }
+        & > select {
+            width: 100%;
+            appearance: none;
+        }
     }
 
     @media(max-width: 750px) {
         .input {
-            & > input, & > textarea {
+            & > input, & > textarea, & > select {
                 padding: 15px;
                 width: calc(100% - 30px);
             }

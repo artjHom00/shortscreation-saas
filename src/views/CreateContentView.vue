@@ -8,22 +8,24 @@
         <p>* Here you can set default uploading settings for the account</p>
         <div class="accounts">
             <h4>Select an account:</h4>
-            <div class="accounts-list">
+            <div class="accounts-list" v-if="youtubeAccounts.length > 0">
                 <AccountComponent v-for="account in youtubeAccounts" :class="(account._id === form.forAccount) ? 'active' : ''" :key="account._id" :account="account" @click="changeFormState(account._id)"/>
             </div>
-            
+            <div v-else>
+                <h3>No accounts yet! :( <br>Add one in "Manage Accounts" tab</h3>
+            </div>
             <Transition>
                 <div class="forms" v-if="form.isActive">
                     <div class="form youtube-upload-settings">
                         <h3>YouTube Upload Settings</h3>
                         <p><small>#{{ form.forAccount }}</small></p>
-                        <inputComponent v-model="form.data.settings.uploadInterval" label="Upload Interval" placeholder="Every 24 hours"/>
+                        <inputComponent v-model="form.data.settings.uploadInterval" label="Upload Interval" placeholder="Every 24 hours" option="true"/>
                         <inputComponent v-model="form.data.settings.title" label="Enter a title for every video" placeholder="Enter a title... "/>
                         <inputComponent v-model="form.data.settings.pinnedComment" label="Enter a comment to pin under every video" placeholder="Enter a comment..." textarea="true"/>
                         <inputComponent v-model="form.data.settings.description" label="Enter a description for every video" placeholder="Enter a description..." textarea="true"/>
                         <h4>Background video</h4>
                         <!--default html file upload button-->
-                        <input type="file" id="actual-btn" accept=".mp4" hidden/>
+                        <input type="file" id="actual-btn" accept=".mp4" hidden @change="fileChange"/>
 
                         <!--our custom file upload button-->
                         <label for="actual-btn" id="file-upload">
@@ -36,9 +38,10 @@
                     <div class="form tiktok-accounts">
                         <h3>TikTok Accounts</h3>
                         <p><small>#{{ form.forAccount }}</small></p>
-                        <div class="tiktok-accounts-list">
+                        <div class="tiktok-accounts-list"  v-if="form.data.tiktokAccounts.length > 0">
                             <TikTokAccountComponent v-for="(tiktokAccount, index) in form.data.tiktokAccounts" :key="index" :account="tiktokAccount" @delete="deleteTikTokAccount(index)"/>
                         </div>
+                        <h4 v-else>No source accounts provided. Add one now!</h4>
                         <div class="input-flex">
                             <inputComponent v-model="newTikTokAccount" label="Unique Id" placeholder="@example" style="width: 80%;"/>
                             <btnComponent type="primary" icon="dashboard/plus.svg" class="add-button" style="width: calc(20% - 20px); margin-left: 20px" @click="addTikTokAccount"/>
@@ -95,10 +98,15 @@ export default {
                 show: false,
                 type: null,
                 message: null
-            }
+            },
+            noFiles: true,
         }
     },
     methods: {
+        fileChange(event) {
+            console.log("🚀 ~ file: CreateContentView.vue:106 ~ fileChange ~ event.target.files[0].name:", event.target.files[0].name)
+            this.form.data.background_video = event.target.files[0].name
+        },
         removeAtSymbol(string) {
             if (string.startsWith('@')) {
                 return string.slice(1);
@@ -135,10 +143,10 @@ export default {
         addTikTokAccount() {
             let formattedTikTokAccount = this.removeAtSymbol(this.newTikTokAccount)
 
-            this.form.data.tiktokAccounts = [...this.form.data.tiktokAccounts, formattedTikTokAccount]
             axios.patch('youtube-accounts/' + this.form.forAccount, {
-                tiktok_accounts: this.form.data.tiktokAccounts
+                tiktok_accounts: [...new Set([...this.form.data.tiktokAccounts, formattedTikTokAccount])]
             }).then(() => {
+                this.form.data.tiktokAccounts = [...new Set([...this.form.data.tiktokAccounts, formattedTikTokAccount])]
                 this.showNotification('success', 'Tiktok source account successully added')
                 this.getData()
             }).catch(() => {
@@ -158,10 +166,32 @@ export default {
             })
         },
         updateSettings() {
+
             axios.patch('youtube-accounts/' + this.form.forAccount, {
                 settings: this.form.data.settings
             }).then(() => {
-                this.showNotification('success', 'Account settings successully updated')
+                if(this.form.data.background_video) {
+                    var formData = new FormData();
+                    var video = document.querySelector('#actual-btn');
+                    formData.append("background_video", video.files[0]);
+
+                    axios.patch('youtube-accounts/' + this.form.forAccount, formData, {
+                        headers: {
+                        'Content-Type': 'multipart/form-data'
+                        }
+                    }).then(({ data }) => {
+                        this.form.data.background_video = data.background_video
+                        this.showNotification('success', 'Account settings successully updated')
+                    }).catch(() => {
+                        this.showNotification('fail', 'Error occured while uploading video')
+                    })
+                    
+                } else {
+                    
+                    this.showNotification('success', 'Account settings successully updated')
+                
+                }
+                
             }).catch(() => {
                 this.showNotification('fail', 'Error occured while updating account settings')
 

@@ -5,7 +5,7 @@
             <div>
                 <span>Go To Video</span>
                 <p><small><b>From TikTok: @{{ short.author }}</b></small></p>
-                <p><small><b>To: {{ short.youtube_account.email }}</b></small></p>
+                <p><small><b>To: {{ short.youtube_account?.email || 'Deleted Account' }}</b></small></p>
             </div>
             <div class="short-date">
                 <small>{{ formatCreationDate }}</small>

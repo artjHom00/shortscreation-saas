@@ -12,10 +12,10 @@
             </div>
             <div class="options">
                 <div>
-                    <input type="checkbox" id="rememberMe"/>
-                    <label for="rememberMe">Remember me</label>
+                    <!-- <input type="checkbox" id="rememberMe"/>
+                    <label for="rememberMe">Remember me</label> -->
                 </div>
-                <router-link to="/forgot-password" class="text-primary forgot">Forgot Your Password?</router-link>
+                <router-link style="text-align:right" to="/forgot-password"><span class="text-primary forgot">Forgot Your Password?</span></router-link>
             </div>
             <!-- <router-link to="/dashboard" class="no-decoration"> -->
                 <btnComponent type="primary" text="Log In" @click="authUser"/>
@@ -56,13 +56,21 @@ export default {
                 email: this.email,
                 password: this.password
             }).then(({ data }) => {
-
+                
                 this.$cookies.set('jwt_token', data.jwt_token)
                 this.showNotification('success', 'You’re authorized, redirecting')
+                if(data.confirmation.status === false) {
+                    setTimeout(() => {
+                        window.location.href = '/confirm-account'
+                    }, 1000)
+                } else {
+                    
+                    setTimeout(() => {
+                        window.location.href = '/dashboard'
+                    }, 1000)
 
-                setTimeout(() => {
-                    window.location.href = '/dashboard'
-                }, 1000)
+                }
+
 
             }).catch(({ response: { data }}) => {
                 console.log("🚀 ~ file: AuthView.vue:59 ~ authUser ~ data:", data)
@@ -106,7 +114,11 @@ export default {
             margin-bottom: 40px;
         }
         & .forgot {
-            text-align:right
+            text-align:right;
+            cursor: pointer;
+            &:hover {
+                text-decoration: underline;
+            }
         }
         & > h3, & > p {
             text-align: center;

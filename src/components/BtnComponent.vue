@@ -42,6 +42,11 @@ export default {
             background: $primary;
             box-shadow: 0px 0px 54px 0px rgba(211, 46, 89, 0.40);
         }
+        &.disabled {
+            background: $dark;
+            cursor: initial !important;
+            opacity: 0.5 !important;
+        }
         & > span {
             margin: 0 5px;
         }

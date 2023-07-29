@@ -4,6 +4,7 @@ import AuthView from '../views/AuthView.vue'
 import CreateAccountView from '../views/CreateAccountView.vue'
 import CreateContentView from '../views/CreateContentView.vue'
 import DashboardView from '../views/DashboardView.vue'
+import ConfirmAccountView from '../views/ConfirmAccountView.vue'
 import AccountsView from '../views/AccountsView.vue'
 import AffiliateView from '../views/AffiliateView.vue'
 import ForgotPasswordView from '../views/ForgotPasswordView.vue'
@@ -32,15 +33,15 @@ const routes = [
     props: true,
   },
   {
-    path: '/dashboard',
-    name: 'dashboard',
-    component: DashboardView,
+    path: '/confirm-account',
+    name: 'confirm-account',
+    component: ConfirmAccountView,
     props: true,
   },
   {
-    path: '/create-content',
-    name: 'create-content',
-    component: CreateContentView,
+    path: '/dashboard',
+    name: 'dashboard',
+    component: DashboardView,
     props: true,
   },
   {
