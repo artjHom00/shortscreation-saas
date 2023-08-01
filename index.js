@@ -4,8 +4,11 @@ let express = require('express')
 let cors = require('cors')
 let mongoose = require('mongoose')
 let bodyParser = require('body-parser')
-let https = require("https");
-let fs = require("fs");
+let https = require('https');
+const http = require('http');
+let fs = require('fs');
+
+// serve the API on 80 (HTTP) port
 
 
 require('dotenv').config({ path: `.env.local`, override: true })
@@ -30,11 +33,16 @@ app.get('/', function (req,res) {
 app.use('/users/', usersRoutes)
 app.use('/youtube-accounts/', youtubeAccountsRoutes)
 
-https
-  .createServer(app)
-  .listen(process.env.PORT, ()=>{
-    console.log(`[success] server live on port ${process.env.PORT}`)
-  });
+http.createServer(app).listen(80, () => {
+  console.log(`[success] http server live on port 80`)
+});
+
+https.createServer({
+  key: fs.readFileSync('/etc/letsencrypt/live/shortscreation.tech/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/shortscreation.tech/fullchain.pem'),
+}, app).listen(process.env.PORT, () => {
+  console.log(`[success] https server live on port ${process.env.PORT}`)
+});
 
 if (process.env.DB_URL) {
     mongoose.connect(process.env.DB_URL).then(() => {
