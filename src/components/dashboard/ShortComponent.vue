@@ -4,8 +4,10 @@
             <img class="short-image" src="@/assets/images/dashboard/youtube.svg" alt="">
             <div>
                 <span>Go To Video</span>
-                <p><small><b>From TikTok: @{{ short.author }}</b></small></p>
-                <p><small><b>To: {{ short.youtube_account?.email || 'Deleted Account' }}</b></small></p>
+                <div class="short-info">
+                    <p><small><b>From TikTok: @{{ short.author }}</b></small></p>
+                    <p><small><b>To: {{ short.youtube_account?.email || 'Deleted Account' }}</b></small></p>
+                </div>
             </div>
             <div class="short-date">
                 <small>{{ formatCreationDate }}</small>
@@ -21,7 +23,7 @@ export default {
     props: ['short'],
     computed: {
         formatCreationDate() {
-            return moment(this.$props.short.created_at).format('YYYY.MM.DD')
+            return moment(this.$props.short.created_at).format('MMMM Do YYYY, HH:mm')
         }
     }
 }
@@ -43,12 +45,19 @@ export default {
         // max-width: 400px;
         min-width: 300px;
         & > div {
-            & > h4, & > p {
+            & > h4, & > div > p {
                 margin: 0;
             }
-            & > p {
+            & > div > p {
                 font-size: 13px;
                 opacity: 0.75;
+            }
+        }
+        &-info {
+            max-width: 135px;
+            overflow:auto;
+            & > * {
+                white-space: nowrap;
             }
         }
         &-image {

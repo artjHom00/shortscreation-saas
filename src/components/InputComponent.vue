@@ -8,10 +8,7 @@
         v-model="inputVal"
         v-if="textarea"></textarea>
         <select v-model="inputVal" v-else-if="option">
-            <option value="3">Every 3 hours</option>
-            <option value="6">Every 6 hours</option>
-            <option value="12">Every 12 hours</option>
-            <option value="24">Every 24 hours</option>
+            <option v-for="(option, index) in availableOptions" :key="index" :value="option">Every {{ option }} hours</option>
         </select>
         <input 
         type="text"
@@ -25,15 +22,27 @@
 // https://stackoverflow.com/questions/47311936/v-model-and-child-components
 export default {
     name: 'InputComponent',
-    props: ['label', 'placeholder', 'textarea', 'option', 'modelValue'],
+    props: ['user', 'label', 'placeholder', 'textarea', 'option', 'modelValue'],
     computed: {
         inputVal: {
-        get() {
-            return this.modelValue;
+            get() {
+                return this.modelValue;
+            },
+            set(val) {
+                this.$emit('update:modelValue', val);
+            }
         },
-        set(val) {
-            this.$emit('update:modelValue', val);
-        }
+        availableOptions() {
+            if(this.$props.user.subscription.type === 'Basic') {
+                return [12, 24]
+            }
+            if(this.$props.user.subscription.type === 'Premium') {
+                return [6, 12, 24]
+            }
+            if(this.$props.user.subscription.type === 'Ultimate') {
+                return [3, 6, 12, 24]
+            }
+            return []
         }
     }
 }

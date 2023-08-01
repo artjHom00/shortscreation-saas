@@ -107,8 +107,9 @@ export default {
                 let uploadTime = moment(account.last_upload)
 
                 let timePassed = moment.duration(now.diff(uploadTime))._data
-                if(timePassed.hours < closest.hours || closest.hours === null) {
-                    let nextUpload = account.settings.uploadInterval - timePassed.hours
+                let nextUpload = account.settings.uploadInterval - timePassed.hours
+
+                if(nextUpload < closest.hours || closest.hours === null) {
 
                     closest = {
                         account: account.email,
@@ -222,6 +223,12 @@ export default {
     
     @media(max-width: 680px) {
         .dashboard {
+            & .filled-section {
+                flex-wrap: wrap;
+                & > * {
+                    margin: 30px 0;
+                }
+            }
             & .last-shorts {
                 &-list {
                     & > * {

@@ -1,23 +1,27 @@
 <template>
    <div class="home">
     <div class="main-section section container">
-      <h1>Automate & Earn on <span class="text-primary">YouTube Shorts</span></h1>
-      <h4>Generate engagement focused social media post creatives in a matter of minutes using Artificial Intelligence. Generate perfectly sized creatives for Facebook, Instagram, LinkedIn, Pinterest, Twitter and more!</h4>
+      <h1>Innovative Automated Production of <span class="text-primary">YouTube Shorts</span></h1>
+      <h4>Say goodbye to manual work and hello to efficiency, creativity, and growth. Elevate your YouTube channel to new heights with our solution, specially designed to integrate TikTok content seamlessly. Embrace the future of video creation!</h4>
       <BtnComponent text="Start Creating 🔗" type="primary"/>
       <div class="video placeholder"></div>
     </div>
     <div class="steps section container">
-      <h2>Your <span class="text-primary">Month’s Shorts Content in 3-Steps</span> - Here’s How It Works:</h2>
+      <h2>Unleash the Power of <span class="text-primary">TikTok</span> for Your <span class="text-primary">YouTube Channel</span>!</h2>
       <div class="steps-content">
-        <div class="image placeholder"></div>
+        <div class="image">
+          <img src="../assets/images/home/chart.svg">
+        </div>
         <div class="text">
-          <h3>One Word & Unlimited Possibilities</h3>
+          <h3>Exponential grow of your YouTube Channel!</h3>
           <h4>
-            We don’t just randomly generate content, we formulates them specifically for Instagram.
+            <a href="https://youtube.com/@Mariantic" target="_blank" class="text-primary">Check out one of channels, working with our script!</a>
             <br><br>
-            Our stunning algorithm collects the most up to date data and creates content that seems as if it’s written by humans.
+            Watch your channel thrive with visually stunning and trendsetting content with always-growing audience without you manually working on it's content.
+            <br><br>
+            The audience then can be used for affiliate marketing, selling products & creating your own brand
           </h4>
-          <BtnComponent type="primary" text="Create An Account"/>
+          <BtnComponent type="primary" text="Start Now"/>
         </div>
       </div>
     </div>
@@ -25,13 +29,14 @@
       <div class="wrapper container">
         <div class="text">
           <h2>
-            Looking to boost your income?
-            <span class="text-primary">Make money</span> with us!
+            <span class="text-primary">Maximize Your Reach and Earnings</span> with Our Affiliate Program!
           </h2>
             <h4>
-              Our affiliate program offers 5$ for each subscription purchased by your refferal link. Sign up, promote our products, and earn commissions.
-              <br><br>  
-              Create shorts, invite viewers to our service & make money
+              With our affiliate program, you have the opportunity to earn while you grow! 
+              <br><br>
+              <b>It's simple:</b> Produce more exceptional YouTube Shorts content using our SAAS solution, and watch as your clients multiply.
+              <b><span class="text-primary">For every subscription bought by a client referred by you, we offer $5</span></b> as a token of appreciation. 
+              As you create captivating videos and attract more users, your potential earnings rise! 
             </h4>
             <BtnComponent type="primary" text="Get Started"/>
         </div>
@@ -41,27 +46,27 @@
       </div>
     </div>
     <div class="howto section container">
-      <h2>How to use <span class="text-primary">ShortsCreation</span>?</h2>
+      <h2><span class="text-primary">ShortsCreation</span> Features</h2>
       <div class="wrapper">
         <div class="adv">
           <img src="../assets/images/home/person.png">
-          <h3>Send traffic to affiliate programms</h3>
-          <h4>“AdCreative.ai is more than just an AI company; they have one of the largest high-conversion ad creative databases, if not the largest.”</h4>
+          <h3>Seamless Automation</h3>
+          <h4>Streamline your content creation process with our seamless automation features. Say goodbye to manual tasks and embrace efficiency. Spend more time on your creative brilliance, and let our SAAS solution handle the rest: generating content & uploading it</h4>
         </div>
         <div class="adv">
           <img src="../assets/images/home/eye.png">
-          <h3>Gain views in short time</h3>
-          <h4>“AdCreative.ai is more than just an AI company; they have one of the largest high-conversion ad creative databases, if not the largest.”</h4>
+          <h3>Trend Insights</h3>
+          <h4>Stay ahead of the competition with real-time trend insights. Our platform provides valuable data and analytics from TikTok, ensuring your YouTube Shorts are always on-trend and captivating.</h4>
         </div>
         <div class="adv">
           <img src="../assets/images/home/short.png">
-          <h3>Gain views in short time</h3>
-          <h4>“AdCreative.ai is more than just an AI company; they have one of the largest high-conversion ad creative databases, if not the largest.”</h4>
+          <h3>Content Inspiration</h3>
+          <h4>Need a spark of inspiration? Look no further! Our SAAS solution offers an endless stream of content ideas, fueled by the creativity and diversity of TikTok's viral sensations.</h4>
         </div>
         <div class="adv">
           <img src="../assets/images/home/store.png">
-          <h3>Send traffic to affiliate programms</h3>
-          <h4>“AdCreative.ai is more than just an AI company; they have one of the largest high-conversion ad creative databases, if not the largest.”</h4>
+          <h3>Channel Growth</h3>
+          <h4>Witness exponential channel growth as you leverage the power of TikTok content. Engage your audience like never before, and enjoy the rewards of a thriving YouTube channel.</h4>
         </div>
       </div>
     </div>
@@ -69,33 +74,22 @@
       <div class="container">
         <div class="text">
           <h2>
-            Rated <span class="text-primary">5/5 Stars</span> In Over <span class="text-primary">100 Reviews</span>. <br>
-            Check Out What Content Creators Like You Are Saying
+            Check Out What <br><span>Our Clients</span> Are Saying!
           </h2>
         </div>
         <div class="wrapper">
           <div class="review-el">
-            <img src="../assets/images/home/kendrick.png" alt="">
-            <h3>SHAW</h3>
-            <p>Everyone in digital marketing is going to be using Social Studio. It’s literally Canva + AI, and it’s built by the most hardworking, humble & experienced people in the industry, take advantage of this savings now because you’re getting it eventually. </p>
+            <img src="../assets/images/home/avatars/Sarah.png" width="80" alt="">
+            <h3>Sarah T.</h3>
+            <small>6 accounts, 2.3k followers, 60k+ views</small>
+            <p>"I can't imagine managing my channel without ShortsCreation. The SAAS solution's integration with TikTok has saved me countless hours while boosting my content. The affiliate program is a brilliant addition, and I've earned extra income just by referring fellow creators. Highly recommended!"</p>
           </div>
 
           <div class="review-el">
-            <img src="../assets/images/home/kendrick.png" alt="">
-            <h3>SHAW</h3>
-            <p>Everyone in digital marketing is going to be using Social Studio. It’s literally Canva + AI, and it’s built by the most hardworking, humble & experienced people in the industry, take advantage of this savings now because you’re getting it eventually. </p>
-          </div>
-
-          <div class="review-el">
-            <img src="../assets/images/home/kendrick.png" alt="">
-            <h3>SHAW</h3>
-            <p>Everyone in digital marketing is going to be using Social Studio. It’s literally Canva + AI, and it’s built by the most hardworking, humble & experienced people in the industry, take advantage of this savings now because you’re getting it eventually. </p>
-          </div>
-
-          <div class="review-el">
-            <img src="../assets/images/home/kendrick.png" alt="">
-            <h3>SHAW</h3>
-            <p>Everyone in digital marketing is going to be using Social Studio. It’s literally Canva + AI, and it’s built by the most hardworking, humble & experienced people in the industry, take advantage of this savings now because you’re getting it eventually. </p>
+            <img src="../assets/images/home/avatars/Jervonte.png" width="80" alt="">
+            <h3>Jevonte K.</h3>
+            <small>2 accounts, 700 followers, 20k+ views</small>
+            <p>"As a content creator, time is of the essence. Thanks to ShortsCreation, I now have more time to focus on content strategy and creativity. The trend insights have been a game-changer, and my videos had seen a significant increase in views n likes."</p>
           </div>
         </div>
       </div>
@@ -103,13 +97,11 @@
 
     <div class="subscriptions section container">
       <h2>
-        Great ad performance.<br>
-        <small class="text-primary">Unbelievable Pricing</small>
+        Great performance.<br>
+        <small class="text-primary">Unbelievable Pricing.</small>
       </h2>
       <div class="subscriptions-list">
-        <subscriptionComponent type="dark" name="Basic" price="7"/>
-        <subscriptionComponent type="primary" name="Premium" price="12"/>
-        <subscriptionComponent type="dark" name="Ultimate" price="21"/>
+        <subscriptionComponent v-for="(subscription, index) of subscriptions" :key="index" :type="subscription.type" :videos="subscription.video" :accounts="subscription.accounts" :name="subscription.name" :price="subscription.price" :videoCost="subscription.videoCost" action="Get Started"/>
       </div>
     </div>
   </div>
@@ -124,6 +116,36 @@ export default {
   components: {
     BtnComponent,
     subscriptionComponent
+  },
+  data() {
+    return {
+      subscriptions: [
+        {
+          type: 'dark',
+          videos: '1-2',
+          accounts: '1',
+          name: 'Basic',
+          price: '24.99',
+          videoCost: '$0.42',
+        },
+        {
+          type: 'primary',
+          videos: '1-4',
+          accounts: '3',
+          name: 'Premium',
+          price: '39.99',
+          videoCost: '$0.11',
+        },
+        {
+          type: 'dark',
+          videos: '1-8',
+          accounts: '5',
+          name: 'Ultimate',
+          price: '69.99',
+          videoCost: '$0.06',
+        },
+      ]
+    }
   }
 }
 </script>
@@ -177,12 +199,11 @@ export default {
       
       & > div {
         margin: 0;
-        width: 48%;
+        width: 45%;
       }
-      & > .image {
-        height: 360px;
+      & > .image > img {
+        height: 350px;
         border-radius: 34px;
-        opacity: 0.6;
       }
       & > .text {
         & > button {
@@ -190,7 +211,7 @@ export default {
         }
 
         & > * {
-          margin: 50px 0;
+          margin: 30px 0;
         }
       }
     }
@@ -236,6 +257,11 @@ export default {
       & > .adv {
         width: 45%;
         padding: 20px;
+        & > h4 {
+          opacity: 0.75;
+          font-weight: 400;
+          font-size: 16px;
+        }
         & > img {
           width: 120px;
         }

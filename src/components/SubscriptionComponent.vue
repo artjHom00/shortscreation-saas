@@ -1,10 +1,15 @@
 <template lang="">
-    <div class="subscription" :class="type">
+    <div class="subscription" :class="[type, disabled ? 'disabled' : '']">
         <div class="subscription-header">
             <h3>{{ name }}</h3>
             
             <div>
-                <h2>{{ price }} USDT</h2>
+                <h2 v-if="!discount">{{ price }} USDT</h2>
+                <h2 v-else>
+                    <small style="opacity: 0.75;"><s>{{ oldPrice }} USDT</s></small>
+                    <br>
+                    {{ price }} USDT
+                </h2>
                 <p>Per Month</p>
             </div>
         </div>
@@ -12,11 +17,15 @@
         <div class="subscription-content container">
             <div class="subscription-content--el">
                 <h4>Number of accounts</h4>
-                <h3>2 accounts</h3>
+                <h3>{{ accounts }} accounts</h3>
             </div>
             <div class="subscription-content--el">
                 <h4>Consistency</h4>
-                <h3>5+ video / day</h3>
+                <h3>{{ videos }} videos / day</h3>
+            </div>
+            <div class="subscription-content--el">
+                <h4>Cost per video</h4>
+                <h3><small>{{ videoCost }}</small></h3>
             </div>
             <div class="subscription-content--el">
                 <h4>Fully automated content</h4>
@@ -25,7 +34,7 @@
                 </h3>
             </div>
             <div>
-                <btnComponent :type="type" text="Get Started"/>
+                <btnComponent :type="type" :text="action" v-if="!disabled"/>
             </div>
         </div>
         
@@ -39,7 +48,7 @@ export default {
     components: {
         btnComponent
     },
-    props: ['type', 'name', 'price', 'accounts', 'consistency'],
+    props: ['type', 'name', 'price', 'accounts', 'videos', 'videoCost', 'action', 'discount', 'oldPrice', 'disabled'],
 }
 </script>
 <style scoped lang="scss">

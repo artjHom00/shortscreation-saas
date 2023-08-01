@@ -19,7 +19,7 @@
                     <div class="form youtube-upload-settings">
                         <h3>YouTube Upload Settings</h3>
                         <p><small>#{{ form.forAccount }}</small></p>
-                        <inputComponent v-model="form.data.settings.uploadInterval" label="Upload Interval" placeholder="Every 24 hours" option="true"/>
+                        <inputComponent v-model="form.data.settings.uploadInterval" label="Upload Interval" placeholder="Every 24 hours" option="true" :user="user"/>
                         <inputComponent v-model="form.data.settings.title" label="Enter a title for every video" placeholder="Enter a title... "/>
                         <inputComponent v-model="form.data.settings.pinnedComment" label="Enter a comment to pin under every video" placeholder="Enter a comment..." textarea="true"/>
                         <inputComponent v-model="form.data.settings.description" label="Enter a description for every video" placeholder="Enter a description..." textarea="true"/>
@@ -94,18 +94,19 @@ export default {
                 }
             },
             newTikTokAccount: null,
+            uploadedFile: false,
             notification: {
                 show: false,
                 type: null,
                 message: null
             },
-            noFiles: true,
         }
     },
     methods: {
         fileChange(event) {
             console.log("🚀 ~ file: CreateContentView.vue:106 ~ fileChange ~ event.target.files[0].name:", event.target.files[0].name)
             this.form.data.background_video = event.target.files[0].name
+            this.uploadedFile = true
         },
         removeAtSymbol(string) {
             if (string.startsWith('@')) {
@@ -166,7 +167,6 @@ export default {
             })
         },
         updateSettings() {
-
             axios.patch('youtube-accounts/' + this.form.forAccount, {
                 settings: this.form.data.settings
             }).then(() => {
@@ -175,16 +175,23 @@ export default {
                     var video = document.querySelector('#actual-btn');
                     formData.append("background_video", video.files[0]);
 
-                    axios.patch('youtube-accounts/' + this.form.forAccount, formData, {
-                        headers: {
-                        'Content-Type': 'multipart/form-data'
-                        }
-                    }).then(({ data }) => {
-                        this.form.data.background_video = data.background_video
+                    if(this.uploadedFile) {
+
+                        axios.patch('youtube-accounts/' + this.form.forAccount, formData, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        }).then(({ data }) => {
+                            this.form.data.background_video = data.background_video
+                            this.uploadedFile = false
+                            this.showNotification('success', 'Account settings successully updated')
+                        }).catch(() => {
+                            this.showNotification('fail', 'Error occured while uploading video')
+                        })
+                    } else {
                         this.showNotification('success', 'Account settings successully updated')
-                    }).catch(() => {
-                        this.showNotification('fail', 'Error occured while uploading video')
-                    })
+                        this.uploadedFile = false
+                    }
                     
                 } else {
                     
@@ -192,8 +199,8 @@ export default {
                 
                 }
                 
-            }).catch(() => {
-                this.showNotification('fail', 'Error occured while updating account settings')
+            }).catch(({response: { data }}) => {
+                this.showNotification('fail', data.error)
 
             })
         },
@@ -209,6 +216,11 @@ export default {
                 this.notification.show = false
             }, 3000)
 
+        }
+    },
+    watch: {
+        'form.data.settings.uploadInterval': function(newVal) {
+            this.form.data.settings.uploadInterval = parseInt(newVal)
         }
     },
     mounted() {

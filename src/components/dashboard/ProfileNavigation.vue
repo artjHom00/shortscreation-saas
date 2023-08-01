@@ -51,6 +51,12 @@ export default {
                     'subscriptionRequired': false,
                     'tooltip': 'Affiliate'
                 },
+                {
+                    'url': '/subscriptions',
+                    'icon': 'dashboard/cart.svg',
+                    'subscriptionRequired': false,
+                    'tooltip': 'Buy a subscription'
+                },
         ]
         }
     },

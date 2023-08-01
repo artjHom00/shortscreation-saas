@@ -9,6 +9,7 @@ import AccountsView from '../views/AccountsView.vue'
 import AffiliateView from '../views/AffiliateView.vue'
 import ForgotPasswordView from '../views/ForgotPasswordView.vue'
 import ChangePasswordView from '../views/ChangePasswordView.vue'
+import SubscriptionsView from '../views/SubscriptionsView.vue'
 
 
 
@@ -16,69 +17,83 @@ import ChangePasswordView from '../views/ChangePasswordView.vue'
 const routes = [
   {
     path: '/',
-    name: 'home',
+    name: 'Home',
     component: HomeView,
     props: true,
   },
   {
     path: '/sign-in',
-    name: 'sign-in',
+    name: 'Sign In',
     component: AuthView,
     props: true,
   },
   {
     path: '/create-account',
-    name: 'create-account',
+    name: 'Create Account',
     component: CreateAccountView,
     props: true,
   },
   {
     path: '/confirm-account',
-    name: 'confirm-account',
+    name: 'Confirm Account',
     component: ConfirmAccountView,
     props: true,
   },
   {
     path: '/dashboard',
-    name: 'dashboard',
+    name: 'Dashboard',
     component: DashboardView,
     props: true,
   },
   {
+    path: '/subscriptions',
+    name: 'Buy a Subscription',
+    component: SubscriptionsView,
+    props: true,
+  },
+  {
     path: '/create-content',
-    name: 'create-content',
+    name: 'Set Up Content',
     component: CreateContentView,
     props: true,
   },
   {
     path: '/accounts',
-    name: 'accounts',
+    name: 'Manage Accounts',
     component: AccountsView,
     props: true,
   },
   {
     path: '/affiliate',
-    name: 'affiliate',
+    name: 'Affiliates',
     component: AffiliateView,
     props: true,
   },
   {
     path: '/forgot-password',
-    name: 'forgot-password',
+    name: 'Forgot Password',
     component: ForgotPasswordView,
     props: true,
   },
   {
     path: '/change-password',
-    name: 'change-password',
+    name: 'Set New Password',
     component: ChangePasswordView,
     props: true,
   }
 ]
 
+
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+
+
+router.afterEach((to) => {
+  const DEFAULT_TITLE = 'ShortsCreation'
+
+  document.title = to.name ? `${to.name} | ${DEFAULT_TITLE}` : DEFAULT_TITLE;
+});
 
 export default router

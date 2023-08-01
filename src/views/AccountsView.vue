@@ -5,10 +5,10 @@
     <div class="dashboard container">
         <ProfileNavigation :user="user"/>
         <h2>Accounts</h2>
-        <p>⚠️ Notice, after <b> adding account / updating account's credentials </b> <br> it might show "Not active" till the next upload</p>
+        <p>⚠️ Notice, after <b> adding account / updating account's credentials </b> <br> it might show "Not active" till the next upload & reset all account's settings</p>
         <div class="accounts">
 
-            <btnComponent type="primary" text="Add New Account" @click="changeStateOfForm"/>
+            <btnComponent type="primary" text="Add New Account" @click="changeStateOfForm" v-if="isAllowedToAddAccounts"/>
 
             <transition>
 
@@ -87,6 +87,7 @@ export default {
                 this.showNotification('success', 'Account successfully added!')
             }).catch(({ response: { data }}) => {
                 console.log("🚀 ~ file: DashboardView.vue:62 ~ .then ~ data:", data.error)
+                this.showNotification('fail', data.error)
                 // this.$router.push('/')
             })  
         },
@@ -150,6 +151,20 @@ export default {
         this.getData()
 
     },
+    computed: {
+        isAllowedToAddAccounts() {
+            if(this.$props.user?.subscription.type === 'Basic' && this.youtubeAccounts.length < 1) {
+                return true
+            }
+            if(this.$props.user?.subscription.type === 'Premium' && this.youtubeAccounts.length < 3) {
+                return true
+            }
+            if(this.$props.user?.subscription.type === 'Ultimate' && this.youtubeAccounts.length < 5) {
+                return true
+            }
+            return false
+        }
+    },  
     components: {
         ProfileNavigation,
         AccountComponent,
