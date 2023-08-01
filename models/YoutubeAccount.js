@@ -3,7 +3,8 @@ const { mongoose, Schema } = require('mongoose');
 const YoutubeAccountsSchema = new Schema({
     user_id: {
         required: true,
-        type: Schema.Types.ObjectId
+        type: Schema.Types.ObjectId,
+        ref: 'users', // Reference to the User model
     },
     email: {
         required: true,
@@ -57,8 +58,21 @@ const YoutubeAccountsSchema = new Schema({
             type: Number,
             default: 24
         }
+    },
+    last_log: {
+        required: false,
+        type: String
     }
 });
+
+// Add a virtual property to populate the full user info
+YoutubeAccountsSchema.virtual('user', {
+    ref: 'users',
+    localField: 'user_id',
+    foreignField: 'id',
+    justOne: true
+});
+
 
 const YoutubeAccount = mongoose.model('YoutubeAccounts', YoutubeAccountsSchema);
 

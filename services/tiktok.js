@@ -15,7 +15,8 @@ async function addTikTokIfNotExists(data) {
         
         return savedtikTok;
     } catch (error) {
-        throw new Error('Adding Tiktok to DB:', error);
+
+        throw new Error('Adding Tiktok to DB:' +error);
     }
 }
 

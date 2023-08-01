@@ -1,14 +1,31 @@
 let ShortsGenerator = require('../providers/shorts')
 let YoutubeAccount = require('../models/YoutubeAccount')
+let User = require('../models/User')
 
 
 async function addYoutubeAccount(req, res) {
     try {
         const { email, password, recoveryEmail, settings, tiktok_accounts } = req.body;
-            
+
+        const youtubeAccountsOfUser = await YoutubeAccount.find({
+          user_id: req.user.id
+        }).count()
+
+        const user = await User.findById(req.user.id)
+
+        if(user.subscription.type === 'Basic' && youtubeAccountsOfUser >= 1) {
+          return res.status(400).json({ error: 'Limit of accounts reached, buy subscription better!' });
+        }
+        if(user.subscription.type === 'Premium' && youtubeAccountsOfUser >= 3) {
+          return res.status(400).json({ error: 'Limit of accounts reached, buy subscription better!' });
+        }
+        if(user.subscription.type === 'Ultimate' && youtubeAccountsOfUser >= 5) {
+          return res.status(400).json({ error: 'Limit of accounts reached, buy subscription better!' });
+        }
+        
         // Check if email and password are provided
         if (!email || !password) {
-            return res.status(400).json({ error: 'Email and password are required' });
+          return res.status(400).json({ error: 'Email and password are required' });
         }
         
         // Check if the email already exists in the database
@@ -81,9 +98,20 @@ async function addYoutubeAccount(req, res) {
       if(req.file) {
         background_video = req.file.path
       }
+      const user = await User.findById(req.user.id)
+      
+      if(settings?.uploadInterval && !(settings?.uploadInterval === 3 || settings?.uploadInterval === 6 || settings?.uploadInterval === 12 || settings?.uploadInterval === 24)) {
+        return res.status(400).json({ error: 'Upload interval should be either 3 / 6 / 12 / 24 hours' });
+      }
 
-      if(settings?.uploadInterval && !(settings?.uploadInterval === '3' || settings?.uploadInterval === '6' || settings?.uploadInterval === '12' || settings?.uploadInterval === '24')) {
-        return res.status(404).json({ error: 'Upload interval should be either 3 / 6 / 12 / 24 hours' });
+      if(settings?.uploadInterval && (user.subscription.type === 'Basic' && settings?.uploadInterval < 12)) {
+        return res.status(400).json({ error: 'Upload interval should be higher, or upgrade your subscription!' });
+      }
+      if(settings?.uploadInterval && (user.subscription.type === 'Premium' && settings?.uploadInterval < 6)) {
+        return res.status(400).json({ error: 'Upload interval should be higher, or upgrade your subscription!' });
+      }
+      if(settings?.uploadInterval && (user.subscription.type === 'Ultimate' && settings?.uploadInterval < 3)) {
+        return res.status(400).json({ error: 'Upload interval should be higher, or upgrade your subscription!' });
       }
 
       const updatedYoutubeAccount = await YoutubeAccount.findByIdAndUpdate(
