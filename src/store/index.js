@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    host: 'http://localhost:80/',
+    host: 'https://shortscreation.tech:3000/',
   },
   getters: {
   },
