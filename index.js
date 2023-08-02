@@ -6,6 +6,7 @@ let mongoose = require('mongoose')
 let bodyParser = require('body-parser')
 let https = require('https');
 const http = require('http');
+const history = require('connect-history-api-fallback');
 let fs = require('fs');
 
 // serve the API on 80 (HTTP) port
@@ -22,6 +23,15 @@ let app = express()
 app.use(cors());
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+
+const staticFileMiddleware = express.static('views');
+app.use(staticFileMiddleware);
+app.use(history({
+  disableDotRule: true,
+  verbose: true
+}));
+app.use(staticFileMiddleware);
+
 
 app.use('/payment/', paymentsRoutes)
 app.use('/users/', usersRoutes)
