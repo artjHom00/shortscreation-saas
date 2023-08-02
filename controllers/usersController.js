@@ -114,16 +114,24 @@ async function createUser(req, res) {
       }
 
       
-      let isSent = await sendConfirmationCode(email).catch((error) => {
+      let code = await sendConfirmationCode(email).catch((error) => {
         res.status(500).json({ error: 'Error occured while sending email!' });
         return false
       })
       
       
-      if(isSent !== false) {
+      if(code !== false) {
 
         const newUser = new User(req.body);
         const savedUser = await newUser.save();
+
+
+        // Update the user's model with the confirmation code
+        await User.findOneAndUpdate(
+          { email },
+          { $set: { 'confirmation.code': code } },
+          { new: true }
+        );
 
         let userWithJWT = await generateAccessToken(savedUser)
   

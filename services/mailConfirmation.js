@@ -5,6 +5,13 @@ let { generateAccessToken } = require('../providers/jwt.js')
 
 // Create a transporter for sending emails
 const transporter = nodemailer.createTransport({
+  host: "smtp.yandex.ru",
+  port: 465,
+  secure: true, // true for 465, false for other ports
+  auth: {
+    user: "support@shortscreation.tech", // generated ethereal user
+    pass: "Morekbd8" // generated ethereal password
+  }
   // Configuration for your email provider (e.g., Gmail, Outlook, etc.)
 });
 
@@ -18,19 +25,8 @@ async function sendConfirmationCode(email) {
   try {
     const code = generateConfirmationCode();
 
-    // Update the user's model with the confirmation code
-    const user = await User.findOneAndUpdate(
-      { email },
-      { $set: { 'confirmation.code': code } },
-      { new: true }
-    );
-
-    if (!user) {
-      throw new Error('User not found.');
-    }
-
     const mailOptions = {
-      from: 'your_email@example.com', // Sender's email address
+      from: 'support@shortscreation.tech', // Sender's email address
       to: email, // Recipient's email address
       subject: 'Confirmation Code', // Email subject
       text: `Your confirmation code is: ${code}`, // Email body
@@ -39,7 +35,7 @@ async function sendConfirmationCode(email) {
     // Send the email
     const info = await transporter.sendMail(mailOptions);
     console.log('Confirmation code email sent:' + info.messageId);
-    return true
+    return code
 
   } catch (error) {
     throw new Error('Error sending confirmation code email:' + error);
@@ -62,7 +58,7 @@ async function sendRestorePasswordLink(email) {
     const restoreLink = process.env.HOST + '/change-password?token=' + userWithJWT.jwt_token
 
     const mailOptions = {
-      from: 'your_email@example.com', // Sender's email address
+      from: 'support@shortscreation.tech', // Sender's email address
       to: email, // Recipient's email address
       subject: 'Reset password link', // Email subject
       text: `We got a request from you to restore a password.
