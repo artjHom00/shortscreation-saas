@@ -121,10 +121,10 @@ export default {
             
             .nav-btn {
                 height: initial;
-                margin: 0 15px;
+                margin: 0 8px;
             }
             & > * > * > * {
-                margin: 0 10px;
+                margin: 0 4px;
             }
             & .logout > img {
                 width: 25px;
