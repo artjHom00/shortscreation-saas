@@ -9,6 +9,7 @@ let puppeteer = require('puppeteer')
 let { addTikTokIfNotExists, getRandomTikTokByAuthor, setTikTokAsUsed } = require('../services/tiktok')
 let YoutubeAccount = require('../models/YoutubeAccount')
 let Short = require('../models/Short')
+let User = require('../models/User')
 let cron = require('node-cron')
 let moment = require('moment')
 
@@ -342,6 +343,21 @@ cron.schedule('*/30 * * * *', async () => {
         })
         
       }
+      
+      // remove subscription
+      // from all users whose subscription expire
+      let users = await User.find({
+        'subscription.has_subscription': true
+      })
+            
+      users.forEach((user) => {
+        if(Date.now() - new Date(user.subscription.expires).getTime() >= 0) {
+          user.subscription.has_subscription = false
+          user.save()
+        }
+      })
+
+      
       
     } catch(e) {
       console.log('[cron] error, ' + e)
