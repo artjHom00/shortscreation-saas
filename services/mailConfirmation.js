@@ -60,7 +60,6 @@ async function sendRestorePasswordLink(email) {
     const userWithJWT = await generateAccessToken(user)
 
     const restoreLink = process.env.HOST + '/change-password?token=' + userWithJWT.jwt_token
-    console.log("🚀 ~ file: mailConfirmation.js:63 ~ sendRestorePasswordLink ~ restoreLink:", restoreLink)
 
     const mailOptions = {
       from: 'your_email@example.com', // Sender's email address

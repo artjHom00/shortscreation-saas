@@ -27,6 +27,18 @@ async function generateAccessToken(user) {
     }
 }
 
+async function verifyCryptoCloudToken(token) {
+    try {
+        jwt.verify(token, process.env.SECRET_CRYPTOCLOUD, (err, data) => {
+            if (err) throw new Error(err)
+            
+            return data
+        });
+    } catch(error) {
+        throw new Error(error)
+    }
+}
+
 // middleware
 async function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization']
@@ -46,4 +58,5 @@ async function authenticateToken(req, res, next) {
 module.exports = {
     generateAccessToken,
     authenticateToken,
+    verifyCryptoCloudToken
 }

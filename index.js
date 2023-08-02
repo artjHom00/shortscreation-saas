@@ -13,6 +13,7 @@ let fs = require('fs');
 
 require('dotenv').config({ path: `.env.local`, override: true })
 
+let paymentsRoutes = require('./routes/paymentsRouter')
 let usersRoutes = require('./routes/usersRouter')
 let youtubeAccountsRoutes = require('./routes/youtubeAccountsRouter')
 
@@ -22,14 +23,7 @@ app.use(cors());
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
-const path = __dirname + '/app/views/';
-app.use(express.static(path));
-
-app.get('/', function (req,res) {
-  res.sendFile(path + "index.html");
-});
-
-
+app.use('/payment/', paymentsRoutes)
 app.use('/users/', usersRoutes)
 app.use('/youtube-accounts/', youtubeAccountsRoutes)
 

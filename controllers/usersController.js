@@ -194,12 +194,12 @@ async function getUsersAffiliates(req, res) {
     // Get transaction info for each affiliate
     const affiliateIds = affiliates.map((affiliate) => affiliate._id);
 
-    const transactions = await Transaction.find({ user_id: { $in: affiliateIds } });
+    const transactions = await Transaction.find({ user_id: { $in: affiliateIds }, status: 'paid' });
 
     const affiliatesWithTransactions = affiliates.map((affiliate) => {
-      const affiliateTransactions = transactions.filter((transaction) =>
-        transaction.user_id.equals(affiliate._id)
-      );
+    const affiliateTransactions = transactions.filter((transaction) =>
+      transaction.user_id.equals(affiliate._id)
+    );
 
       return {
         _id: affiliate._id,

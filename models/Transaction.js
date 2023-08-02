@@ -5,6 +5,15 @@ const transactionsSchema = new Schema({
         required: true,
         type: Schema.Types.ObjectId,
     },
+    status:{
+        required: true,
+        type: String,
+        default: 'new'
+    },
+    order_id: {
+        required: true,
+        type: String
+    },
     type: {
         required: true,
         type: String,
