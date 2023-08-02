@@ -7,6 +7,7 @@ let bodyParser = require('body-parser')
 
 require('dotenv').config({ path: `.env.local`, override: true })
 
+let paymentsRoutes = require('./routes/paymentsRouter')
 let usersRoutes = require('./routes/usersRouter')
 let youtubeAccountsRoutes = require('./routes/youtubeAccountsRouter')
 
@@ -16,6 +17,7 @@ app.use(cors());
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
+app.use('/payment/', paymentsRoutes)
 app.use('/users/', usersRoutes)
 app.use('/youtube-accounts/', youtubeAccountsRoutes)
 
