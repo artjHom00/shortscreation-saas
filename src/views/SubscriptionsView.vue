@@ -73,7 +73,7 @@ export default {
                         videos: '1-4',
                         accounts: '3',
                         name: 'Premium',
-                        price: '2.5',
+                        price: '39.99',
                         videoCost: '$0.11',
                     },
                     {
