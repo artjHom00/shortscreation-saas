@@ -3,7 +3,7 @@
     <div class="main-section section container">
       <h1>Innovative Automated Production of <span class="text-primary">YouTube Shorts</span></h1>
       <h4>Say goodbye to manual work and hello to efficiency, creativity, and growth. Elevate your YouTube channel to new heights with our solution, specially designed to integrate TikTok content seamlessly. Embrace the future of video creation!</h4>
-      <BtnComponent text="Start Creating 🔗" type="primary"/>
+      <router-link to="/dashboard" class="no-decoration"><BtnComponent text="Start Creating 🔗" type="primary"/></router-link>
       <div class="video placeholder"></div>
     </div>
     <div class="steps section container">
@@ -21,7 +21,7 @@
             <br><br>
             The audience then can be used for affiliate marketing, selling products & creating your own brand
           </h4>
-          <BtnComponent type="primary" text="Start Now"/>
+          <router-link to="/dashboard" class="no-decoration"><BtnComponent type="primary" text="Start Now"/></router-link>
         </div>
       </div>
     </div>
@@ -38,7 +38,7 @@
               <b><span class="text-primary">For every subscription bought by a client referred by you, we offer $5</span></b> as a token of appreciation. 
               As you create captivating videos and attract more users, your potential earnings rise! 
             </h4>
-            <BtnComponent type="primary" text="Get Started"/>
+            <router-link to="/dashboard" class="no-decoration"><BtnComponent type="primary" text="Get Started"/></router-link>
         </div>
         <div class="image">
           <img src="../assets/images/home/notifications.svg" alt="">
@@ -101,7 +101,7 @@
         <small class="text-primary">Unbelievable Pricing.</small>
       </h2>
       <div class="subscriptions-list">
-        <subscriptionComponent v-for="(subscription, index) of subscriptions" :key="index" :type="subscription.type" :videos="subscription.video" :accounts="subscription.accounts" :name="subscription.name" :price="subscription.price" :videoCost="subscription.videoCost" action="Get Started"/>
+        <subscriptionComponent v-for="(subscription, index) of subscriptions" :key="index" :link="subscription.link" :type="subscription.type" :videos="subscription.video" :accounts="subscription.accounts" :name="subscription.name" :price="subscription.price" :videoCost="subscription.videoCost" action="Get Started"/>
       </div>
     </div>
   </div>
@@ -127,6 +127,7 @@ export default {
           name: 'Basic',
           price: '24.99',
           videoCost: '$0.42',
+          link: '/dashboard'
         },
         {
           type: 'primary',
@@ -135,6 +136,7 @@ export default {
           name: 'Premium',
           price: '39.99',
           videoCost: '$0.11',
+          link: '/dashboard'
         },
         {
           type: 'dark',
@@ -143,6 +145,7 @@ export default {
           name: 'Ultimate',
           price: '69.99',
           videoCost: '$0.06',
+          link: '/dashboard'
         },
       ]
     }
@@ -174,7 +177,7 @@ export default {
     margin-left: auto;
     margin-right: auto;
     text-align: center;
-    & > button {
+    & > * > button {
       margin-top: 35px;
       min-width: 250px;
       margin-left: auto;
@@ -206,7 +209,7 @@ export default {
         border-radius: 34px;
       }
       & > .text {
-        & > button {
+        & > * > button {
           min-width: 70%;
         }
 
@@ -232,7 +235,7 @@ export default {
         & > * {
           margin: 40px 0;
         }
-        & > button {
+        & > * > button {
           min-width: 50%;
         }
       }

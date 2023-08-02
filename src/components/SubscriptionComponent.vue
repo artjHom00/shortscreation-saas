@@ -34,7 +34,10 @@
                 </h3>
             </div>
             <div>
-                <btnComponent :type="type" :text="action" v-if="!disabled"/>
+                <router-link class="no-decoration" :to="link" v-if="!disabled && link">
+                    <btnComponent :type="type" :text="action"/>
+                </router-link>
+                <btnComponent @click="getInvoiceLink" :type="type" :text="action" v-else-if="!disabled && getInvoice"/>
             </div>
         </div>
         
@@ -42,13 +45,59 @@
 </template>
 <script>
 import btnComponent from '@/components/BtnComponent.vue'; 
+import axios from 'axios'
 
 export default {
     name: 'SubscriptionComponent',
     components: {
         btnComponent
     },
-    props: ['type', 'name', 'price', 'accounts', 'videos', 'videoCost', 'action', 'discount', 'oldPrice', 'disabled'],
+    props: ['user', 'type', 'name', 'price', 'accounts', 'videos', 'videoCost', 'action', 'discount', 'oldPrice', 'disabled', 'link', 'getInvoice'],
+    methods: {
+        getInvoiceLink() {
+            let orderId = this.$props.user?.email + Date.now()
+            this.$emit('notification', {
+                type: 'success',
+                message: 'Creating payment, redirecting...'
+            })
+            axios.post('https://api.cryptocloud.plus/v1/invoice/create', {
+                amount: this.$props.price,
+                shop_id: 'zhyCwMMOKR0A9I0u',
+                email: this.$props.user?.email,
+                order_id: orderId
+            }, {
+                'headers': {
+                    'Authorization': 'Token eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1dWlkIjoiTVRRMk9EUT0iLCJ0eXBlIjoicHJvamVjdCIsInYiOiJlMzQ5NzM1OWIyMjdiZGMwMDM3YWI2MGYzM2EwM2RhMDEzNGY5MGNjMmI0ZDg3MzM1YzEzOTJlYzdmMzdlMmMwIiwiZXhwIjo4ODA5MDg4MjU4OX0.14FJfVCWIFI0h_oWewOcFTzq5zvmaXU3PL-TAvTrQKI'
+                }
+            }).then(({ data: { status, pay_url } }) => {
+                if(status === 'success') {
+                    axios.post(this.$store.state.host + 'payment/create', {
+                        user_id: this.$props.user._id,
+                        type: this.$props.name,
+                        order_id: orderId,
+                        amount: this.$props.price 
+                    }).then(() => {
+                        
+                        window.location.href = pay_url
+                        console.log("🚀 ~ file: SubscriptionComponent.vue:67 ~ getInvoiceLink ~ pay_url:", pay_url)
+
+                    }).catch((e) => {
+                        console.log("🚀 ~ file: SubscriptionComponent.vue:85 ~ getInvoiceLink ~ e:", e)
+                        this.$emit('notification', {
+                            type: 'fail',
+                            message: 'Error while creating transaction'
+                        })
+                    })
+                }
+            }).catch((e) => {
+                console.log("🚀 ~ file: SubscriptionComponent.vue:92 ~ getInvoiceLink ~ e:", e)
+                this.$emit('notification', {
+                    type: 'fail',
+                    message: 'Error while creating transaction'
+                })
+            })
+        }
+    }
 }
 </script>
 <style scoped lang="scss">

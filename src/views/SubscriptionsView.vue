@@ -1,4 +1,7 @@
 <template lang="">
+    <Transition>
+        <NotificationComponent :type="notification.type" :message="notification.message" v-if="notification.show"/>
+    </Transition>
     <div class="subscriptions container">
         <ProfileNavigation :user="user"/>
         <h2>Buy a Subscription</h2>
@@ -11,7 +14,19 @@
         </div>
 
         <div class="subscriptions-elements">
-            <subscriptionComponent v-for="(subscription, index) of subscriptions[activeSection]" :key="index" :type="subscription.type" :videos="subscription.videos" :accounts="subscription.accounts" :name="subscription.name" :price="subscription.price" :videoCost="subscription.videoCost" :discount="activeSection === 'yearly'" :oldPrice="(subscriptions['monthly'][index].price*12).toFixed(2)" :disabled="user.subscription?.has_subscription && index <= getUserSubscriptionLevel" action="Purchase"/>
+            <subscriptionComponent 
+            v-for="(subscription, index) of subscriptions[activeSection]" 
+            :user="user" 
+            :key="index" 
+            :type="subscription.type" 
+            :videos="subscription.videos" 
+            :accounts="subscription.accounts" 
+            :name="subscription.name" :price="subscription.price" :videoCost="subscription.videoCost" :discount="activeSection === 'yearly'" 
+            :oldPrice="(subscriptions['monthly'][index].price*12).toFixed(2)" 
+            :disabled="user.subscription?.has_subscription && index <= getUserSubscriptionLevel" 
+            action="Purchase" 
+            getInvoice="true"
+            @notification="showNotification"/>
             <!-- <subscriptionComponent type="primary" videos="1-4" accounts="3" name="Premium" price="39.99" videoCost="$0.11" action="Purchase"/>
             <subscriptionComponent type="dark" videos="1-8" accounts="5" name="Ultimate" price="69.99" videoCost="$0.06" action="Purchase"/> -->
         </div>
@@ -21,6 +36,7 @@
 import ProfileNavigation from '@/components/dashboard/ProfileNavigation.vue';
 import BtnComponent from '@/components/BtnComponent.vue';
 import subscriptionComponent from '@/components/SubscriptionComponent.vue'; 
+import NotificationComponent from '@/components/NotificationComponent.vue'
 
 import axios from 'axios';
 
@@ -31,11 +47,17 @@ export default {
     components: {
         ProfileNavigation,
         BtnComponent,
-        subscriptionComponent
+        subscriptionComponent,
+        NotificationComponent
     },
     data() {
         return {
             activeSection: 'monthly',
+            notification: {
+                show: false,
+                type: null,
+                message: null
+            },
             subscriptions: {
                 monthly: [
                     {
@@ -51,7 +73,7 @@ export default {
                         videos: '1-4',
                         accounts: '3',
                         name: 'Premium',
-                        price: '39.99',
+                        price: '2.5',
                         videoCost: '$0.11',
                     },
                     {
@@ -90,6 +112,23 @@ export default {
                     },
                 ]
             },
+        }
+    },
+    methods: {
+        showNotification(data) {
+
+            let { type, message } = data
+
+            this.notification = {
+                show: true,
+                type,
+                message
+            }
+            
+            setTimeout(() => {
+                this.notification.show = false
+            }, 3000)
+
         }
     },
     computed: {
@@ -150,5 +189,13 @@ export default {
     }
     
     @media(max-width: 1200px) {
+        .subscriptions {
+            &-elements {
+                flex-wrap: wrap;
+                & > * {
+                    width: 100%;
+                }
+            }
+        }
     }
 </style>

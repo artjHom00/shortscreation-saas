@@ -8,7 +8,7 @@
                 <h4>Your Subscription:</h4>
                 <h1>No Subscription</h1>
                 <br>
-                <BtnComponent type="primary" text="Buy subscription"/>
+                <router-link to="/subscriptions" class="no-decoration"><BtnComponent type="primary" text="Buy subscription"/></router-link>
             </div>
             <div class="filled-section-content" v-else>
                 <h4>Your Subscription:</h4>
@@ -77,7 +77,10 @@ export default {
             .then(({ data }) => {
                 this.youtubeAccounts = data
             }).catch(({ response: { data }}) => {
-                console.log("🚀 ~ file: DashboardView.vue:62 ~ .then ~ data:", data.error)
+                // happens when token is 'Bearer null', which means user is not authorized
+                if(data.name === 'JsonWebTokenError') {
+                    window.location.href = '/create-account'
+                }
                 // this.$router.push('/')
             })
 
@@ -85,7 +88,10 @@ export default {
             .then(({ data }) => {
                 this.shorts = data
             }).catch(({ response: { data }}) => {
-                console.log("🚀 ~ file: DashboardView.vue:62 ~ .then ~ data:", data.error)
+                // happens when token is 'Bearer null', which means user is not authorized
+                if(data.name === 'JsonWebTokenError') {
+                    window.location.href = '/create-account'
+                }
                 // this.$router.push('/')
             })
         },
@@ -131,6 +137,11 @@ export default {
 
         if(this.$props.user?.confirmation?.status === false) {
             window.location.href = '/confirm-account'
+        }
+        
+
+        if(!this.$props.user) {
+            window.location.href = '/create-account'
         }
         
     }

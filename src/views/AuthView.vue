@@ -86,7 +86,7 @@ export default {
             
             setTimeout(() => {
                 this.notification.show = false
-            }, 3000)
+            }, 1000)
 
         }
     },
