@@ -152,6 +152,10 @@ async function editVideo(pathToTiktok, backgroundVideo) {
 
 async function uploadShortToYoutube(credentials, path, title, description, pinnedComment) {
   try {
+    function replaceShortsURL(url) {
+      const replacedURL = url.replace("youtube.com/shorts/", "youtube.com/watch?v=");
+      return replacedURL;
+    }
 
     const video = { 
       path: path,
@@ -162,7 +166,7 @@ async function uploadShortToYoutube(credentials, path, title, description, pinne
     }
 
     let link = await upload(credentials, [video], {
-      headless: false,
+      // headless: false,
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox'
@@ -170,10 +174,10 @@ async function uploadShortToYoutube(credentials, path, title, description, pinne
     })
 
     if(pinnedComment && pinnedComment !== '') {
-      const commentInfo = { link: link, comment: pinnedComment, pin: true }
+      const commentInfo = { link: replaceShortsURL(link[0]), comment: pinnedComment, pin: true }
 
       await comment(credentials, [commentInfo], {
-        headless: false,
+        // headless: false,
         args: [
           '--no-sandbox',
           '--disable-setuid-sandbox'
