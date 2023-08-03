@@ -22,7 +22,10 @@ ffmpeg.setFfprobePath(ffprobePath);
 async function scrapeFromTikTok(user) {
   
   const browser = await puppeteer.launch({
-    headless: false
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox'
+    ]
   });
 
 
