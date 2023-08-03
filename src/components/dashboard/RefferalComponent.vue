@@ -3,10 +3,6 @@
         <h4>{{ affiliate.username }}</h4>
         <div class="refferal-info">
             <div>
-                <p><small>Subscription:</small></p>
-                <h4>{{ affiliate.subscription?.expires || '-' }}</h4>
-            </div>
-            <div>
                 <p><small>Registration:</small></p>
                 <h4>{{ formatRegistrationDate }}</h4>
             </div>
@@ -30,7 +26,7 @@ export default {
             let transactions = this.$props.affiliate.transactions
 
             transactions.forEach(transaction => {
-                sum += transaction.amount
+                sum += transaction.amount/10
             })
 
             return sum

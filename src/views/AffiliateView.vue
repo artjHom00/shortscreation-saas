@@ -22,7 +22,7 @@
                         <btnComponent type="primary" icon="dashboard/copy.svg" @click="copyLink"/>
                     </Popper>
                     <Popper content="Withdraw" class="action-btn" hover>
-                        <a href="/" target="_blank">
+                        <a href="mailto:support@shortscreation.tech" target="_blank">
                             <btnComponent type="primary" icon="dashboard/withdraw.svg"/>
                         </a>
                         <!-- @click="changeFormState()" -->
@@ -95,7 +95,7 @@ export default {
                     let transactions = affiliate.transactions
 
                     transactions.forEach(transaction => {
-                        sum += transaction.amount
+                        sum += transaction.amount/10
                     })
                 })
     
@@ -110,7 +110,6 @@ export default {
         getData(page = 1) {
             axios.get('users/affiliates?page=' + page)
             .then(({ data }) => {
-                console.log("🚀 ~ file: AffiliateView.vue:53 ~ .then ~ data:", data)
                 this.affiliateData = data
             })
             .catch(() => {

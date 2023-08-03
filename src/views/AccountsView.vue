@@ -5,7 +5,11 @@
     <div class="dashboard container">
         <ProfileNavigation :user="user"/>
         <h2>Accounts</h2>
-        <p>⚠️ Notice, after <b> adding account / updating account's credentials </b> <br> it might show "Not active" till the next upload & reset all account's settings</p>
+        <p>
+            ⚠️ Notice, after <b> adding account / updating account's credentials </b> <br>
+            it might show "Not active" till the next upload & reset all account's settings <br><br>
+            <a href="/instruction.pdf" class="text-primary" target="_blank">Set up your youtube's upload default settings before adding here for correct working</a>
+        </p>
         <div class="accounts">
 
             <btnComponent type="primary" text="Add New Account" @click="changeStateOfForm" v-if="isAllowedToAddAccounts"/>
@@ -16,7 +20,7 @@
 
                 <div class="add-account-form">
                     <inputComponent v-model="newAccount.email" label="Email*" placeholder="Email"/>
-                    <inputComponent v-model="newAccount.password" label="Password*" placeholder="*********"/>
+                    <inputComponent v-model="newAccount.password" password="true" label="Password*" placeholder="*********"/>
                     <inputComponent v-model="newAccount.recoveryEmail" label="Recovery Email" placeholder="Recovery email"/>
                 </div>
                 <btnComponent type="primary" text="Save" @click="createAccount()"/>

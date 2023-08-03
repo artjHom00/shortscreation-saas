@@ -8,7 +8,7 @@
             <h3>Hello!</h3>
             <div class="form">
                 <InputComponent label="Email" v-model="email" placeholder="Enter your email address"/>
-                <InputComponent label="Password" v-model="password" placeholder="*********"/>
+                <InputComponent label="Password" password="true" v-model="password" placeholder="*********"/>
             </div>
             <div class="options">
                 <div>
@@ -36,8 +36,8 @@ export default {
     name: 'AuthView',
     data() {
         return {
-            email: 'john@example.com', 
-            password: 'secretpasswosrd',
+            email: null, 
+            password: null,
             notification: {
                 show: false,
                 type: null,

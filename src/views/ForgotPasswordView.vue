@@ -31,7 +31,7 @@ export default {
     },
     data() {
         return {
-            email: 'john@example.com',
+            email: null,
             notification: {
                 show: false,
                 type: null,

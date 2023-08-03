@@ -24,6 +24,7 @@
                         <inputComponent v-model="form.data.settings.pinnedComment" label="Enter a comment to pin under every video" placeholder="Enter a comment..." textarea="true"/>
                         <inputComponent v-model="form.data.settings.description" label="Enter a description for every video" placeholder="Enter a description..." textarea="true"/>
                         <h4>Background video</h4>
+                        <small>Recommended video aspect ratio: 9:16. Limit 300mb.</small>
                         <!--default html file upload button-->
                         <input type="file" id="actual-btn" accept=".mp4" hidden @change="fileChange"/>
 

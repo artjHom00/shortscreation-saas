@@ -1,11 +1,11 @@
 <template lang="">
     <nav class="nav container">
         <div>
-            <router-link to="/" class="no-decoration">
+            <a href="mailto:support@shortscreation.tech" target="_blank" class="no-decoration">
                 <Popper content="Contact Us" hover>
                     <span class="nav_langChange"><img src="../assets/images/support.svg" alt=""></span>
                 </Popper>
-            </router-link>
+            </a>
         </div>
         <div>
             <router-link to="/" class="no-decoration">

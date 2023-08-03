@@ -11,6 +11,12 @@
             <option v-for="(option, index) in availableOptions" :key="index" :value="option">Every {{ option }} hours</option>
         </select>
         <input 
+        type="password"
+        v-model="inputVal"
+        :placeholder="placeholder" 
+        autocomplete="off" 
+        v-else-if="password">
+        <input 
         type="text"
         v-model="inputVal"
         :placeholder="placeholder" 
@@ -22,7 +28,7 @@
 // https://stackoverflow.com/questions/47311936/v-model-and-child-components
 export default {
     name: 'InputComponent',
-    props: ['user', 'label', 'placeholder', 'textarea', 'option', 'modelValue'],
+    props: ['user', 'label', 'placeholder', 'textarea', 'option', 'password', 'modelValue'],
     computed: {
         inputVal: {
             get() {

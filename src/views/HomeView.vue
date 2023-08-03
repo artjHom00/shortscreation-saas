@@ -35,7 +35,7 @@
               With our affiliate program, you have the opportunity to earn while you grow! 
               <br><br>
               <b>It's simple:</b> Produce more exceptional YouTube Shorts content using our SAAS solution, and watch as your clients multiply.
-              <b><span class="text-primary">For every subscription bought by a client referred by you, we offer $5</span></b> as a token of appreciation. 
+              <b><span class="text-primary">For every subscription bought by a client referred by you, we offer $2.5-$70</span></b> as a token of appreciation. 
               As you create captivating videos and attract more users, your potential earnings rise! 
             </h4>
             <router-link to="/dashboard" class="no-decoration"><BtnComponent type="primary" text="Get Started"/></router-link>
@@ -101,7 +101,7 @@
         <small class="text-primary">Unbelievable Pricing.</small>
       </h2>
       <div class="subscriptions-list">
-        <subscriptionComponent v-for="(subscription, index) of subscriptions" :key="index" :link="subscription.link" :type="subscription.type" :videos="subscription.video" :accounts="subscription.accounts" :name="subscription.name" :price="subscription.price" :videoCost="subscription.videoCost" action="Get Started"/>
+        <subscriptionComponent v-for="(subscription, index) of subscriptions" :key="index" :link="subscription.link" :type="subscription.type" :videos="subscription.videos" :accounts="subscription.accounts" :name="subscription.name" :price="subscription.price" :videoCost="subscription.videoCost" action="Get Started"/>
       </div>
     </div>
   </div>

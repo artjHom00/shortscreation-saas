@@ -8,8 +8,8 @@
             <div class="form">
                 <InputComponent label="Username" placeholder="Enter your username" v-model="username"/>
                 <InputComponent label="Email" placeholder="Enter your email address" v-model="email"/>
-                <InputComponent label="Password" placeholder="*********" v-model="password"/>
-                <InputComponent label="Repeat password" placeholder="*********" v-model="repeatPassword"/>
+                <InputComponent label="Password" password="true" placeholder="*********" v-model="password"/>
+                <InputComponent label="Repeat password" password="true" placeholder="*********" v-model="repeatPassword"/>
                 <!-- <InputComponent label="What’s the use of this script?" placeholder="-" v-model="useOfTheScript"/> -->
             </div>
             <!-- <div class="options"> -->
@@ -63,17 +63,15 @@ export default {
                     password: this.password,
                     refferal: this.$cookies.get('ref')
                 }).then(({ data }) => {
-                    console.log("🚀 ~ file: CreateAccountView.vue:62 ~ createUser ~ data:", data)
     
                     this.$cookies.set('jwt_token', data.jwt_token)
                     this.showNotification('success', 'Account created, redirecting')
     
                     setTimeout(() => {
-                        window.location.href = '/confirmation'
+                        window.location.href = '/confirm-account'
                     }, 1000)
     
                 }).catch(({ response: { data }}) => {
-                    console.log("🚀 ~ file: AuthView.vue:59 ~ authUser ~ data:", data)
                     this.showNotification('fail', data.error)                
                 })
             } else {
