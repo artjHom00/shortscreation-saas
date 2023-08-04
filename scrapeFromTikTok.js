@@ -1,6 +1,7 @@
 let { scrapeFromTikTok } = require('./providers/shorts')
-let YoutubeAccount = require('../models/YoutubeAccount')
+let YoutubeAccount = require('./models/YoutubeAccount')
 let mongoose = require('mongoose')
+require('dotenv').config({ path: `.env.local`, override: true })
 
 if (process.env.DB_URL) {
     mongoose.connect(process.env.DB_URL).then(() => {
@@ -21,9 +22,10 @@ if (process.env.DB_URL) {
     })
   } else {
     console.log('Specify DB connection');
-  }
+  };
 
-function mergeArraysWithoutDuplicates(arr1, arr2) {
+(async () => {
+  function mergeArraysWithoutDuplicates(arr1, arr2) {
     // Merge the two arrays using concat
     const mergedArray = arr1.concat(arr2);
   
@@ -53,8 +55,9 @@ function mergeArraysWithoutDuplicates(arr1, arr2) {
 for await (tiktok of tiktoks) {
 
     await scrapeFromTikTok(tiktok).then(() => {
-        console.log(tiktok + 'succesfully parsed!')
+        console.log(tiktok + ' succesfully parsed!')
     }).catch(() => {
-        console.log(tiktok + 'error while parsing!')
+        console.log(tiktok + ' error while parsing!')
     })
 }
+})()
