@@ -6,6 +6,7 @@ const ffprobePath = require('@ffprobe-installer/ffprobe').path
 let { upload, comment } = require('youtube-videos-uploader')
 // https://github.com/n0l3r/tiktok-downloader/blob/main/index.js
 const fetch = require('node-fetch');
+const { Headers } = require('node-fetch');
 let puppeteer = require('puppeteer')
 let { addTikTokIfNotExists, getRandomTikTokByAuthor, setTikTokAsUsed } = require('../services/tiktok')
 let YoutubeAccount = require('../models/YoutubeAccount')
@@ -14,7 +15,8 @@ let User = require('../models/User')
 let cron = require('node-cron')
 let moment = require('moment')
 
-
+const headers = new Headers();
+headers.append('User-Agent', 'TikTok 26.2.0 rv:262018 (iPhone; iOS 14.4.2; en_US) Cronet');
 
 ffmpeg.setFfmpegPath(ffmpegPath);
 ffmpeg.setFfprobePath(ffprobePath);
