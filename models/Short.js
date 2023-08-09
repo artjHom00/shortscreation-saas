@@ -8,7 +8,6 @@ const shortsSchema = new Schema({
     youtube_account_id: {
         required: true,
         type: Schema.Types.ObjectId,
-        ref: 'YoutubeAccounts' // Reference the YoutubeAccount model
     },
     author: {
         required: true,
@@ -25,13 +24,6 @@ const shortsSchema = new Schema({
     },
 });
 
-// Add a virtual property to populate the full Youtube account info
-shortsSchema.virtual('youtube_account', {
-    ref: 'YoutubeAccounts',
-    localField: 'youtube_account_id',
-    foreignField: 'id',
-    justOne: true
-});
 
 const Short = mongoose.model('shorts', shortsSchema);
 
