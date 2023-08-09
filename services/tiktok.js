@@ -7,7 +7,7 @@ async function addTikTokIfNotExists(data) {
         const existingtikTok = await TikTok.findOne({ link: data.link });
 
         if (existingtikTok) {
-            throw new Error({ error: 'TikTok already exists' });
+            return { error: 'TikTok already exists' };
         }
 
         const newtikTok = new TikTok(data);
@@ -16,7 +16,7 @@ async function addTikTokIfNotExists(data) {
         return savedtikTok;
     } catch (error) {
 
-        throw new Error('Adding Tiktok to DB:' +error);
+        throw new Error('Adding Tiktok to DB:' + error);
     }
 }
 
