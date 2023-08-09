@@ -5,9 +5,9 @@ const shortsSchema = new Schema({
         required: true,
         type: Schema.Types.ObjectId
     },
-    youtube_account_email: {
+    youtube_account_id: {
         required: true,
-        type: String,
+        type: Schema.Types.ObjectId,
         ref: 'YoutubeAccounts' // Reference the YoutubeAccount model
     },
     author: {
@@ -28,8 +28,8 @@ const shortsSchema = new Schema({
 // Add a virtual property to populate the full Youtube account info
 shortsSchema.virtual('youtube_account', {
     ref: 'YoutubeAccounts',
-    localField: 'youtube_account_email',
-    foreignField: 'email',
+    localField: 'youtube_account_id',
+    foreignField: 'id',
     justOne: true
 });
 

@@ -6,21 +6,14 @@ const YoutubeAccountsSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'users', // Reference to the User model
     },
-    email: {
+    event_trigger_url: {
         required: true,
-        type: String
-    },
-    password: {
-        required: true,
-        type: String
+        type: String,
     },
     credentials_valid: {
-        required: false,
-        type: Boolean
-    },
-    recovery_email: {
-        required: false,
-        type: String
+        required: true,
+        type: Boolean,
+        default: false 
     },
     tiktok_accounts: {
         required: true,
