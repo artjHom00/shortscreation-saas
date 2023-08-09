@@ -177,17 +177,17 @@ export default {
                     formData.append("background_video", video.files[0]);
 
                     if(this.uploadedFile) {
-
+                        this.showNotification('success', "Started uploading your file. Don't close this page, it might take 3-10 minutes!")
+                        this.uploadedFile = false
                         axios.patch('youtube-accounts/' + this.form.forAccount, formData, {
                             headers: {
                                 'Content-Type': 'multipart/form-data'
                             }
                         }).then(({ data }) => {
                             this.form.data.background_video = data.background_video
-                            this.uploadedFile = false
                             this.showNotification('success', 'Account settings successully updated')
                         }).catch(() => {
-                            this.showNotification('fail', 'Error occured while uploading video')
+                            this.showNotification('fail', 'Error occured while uploading video.')
                         })
                     } else {
                         this.showNotification('success', 'Account settings successully updated')

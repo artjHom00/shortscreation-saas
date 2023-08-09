@@ -2,7 +2,7 @@
     <div class="account">
         <div class="account-image" :class="account.credentials_valid ? '' : 'notActive' ">{{ getAccountFirstLetter }}</div>
         <div class="account-info">
-            <h4>{{ account?.email }}</h4>
+            <h4>{{ extractedSubstring }}</h4>
             <p><small>#{{ account?._id }}</small></p>
         </div>
         <div class="account-icons">
@@ -36,8 +36,17 @@ export default {
     },
     computed: {
         getAccountFirstLetter() {
-            return this.$props.account.email[0]
-        }
+            return this.$props.account.event_trigger_url[7] || '-'
+        },
+        extractedSubstring() {
+            //eslint-disable-next-line
+            const match = this.account?.event_trigger_url.match(/https:\/\/([^\.]+)\.m\.pipedream\.net/);
+            if (match && match[1]) {
+                return match[1]
+            } else {
+                return "Not found";
+            }
+        },
     },
 }
 </script>

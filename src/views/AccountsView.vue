@@ -8,7 +8,7 @@
         <p>
             ⚠️ Notice, after <b> adding account / updating account's credentials </b> <br>
             it might show "Not active" till the next upload & reset all account's settings <br><br>
-            <a href="/instruction.pdf" class="text-primary" target="_blank">Set up your youtube's upload default settings before adding here for correct working</a>
+            <a href="/instruction.pdf" class="text-primary" target="_blank">Instruction how to add your youtube account here</a>
         </p>
         <div class="accounts">
 
@@ -19,10 +19,12 @@
             <div class="add-account" v-if="showForm">
 
                 <div class="add-account-form">
-                    <inputComponent v-model="newAccount.email" label="Email*" placeholder="Email"/>
-                    <inputComponent v-model="newAccount.password" password="true" label="Password*" placeholder="*********"/>
-                    <inputComponent v-model="newAccount.recoveryEmail" label="Recovery Email" placeholder="Recovery email"/>
+                    <inputComponent label="Event Trigger URL" placeholder="Enter Event Trigger URL" v-model="newAccount.event_trigger_url"/>
+                    <!-- <inputComponent v-model="newAccount.email" label="Email*" placeholder="Email"/>
+                        <inputComponent v-model="newAccount.password" password="true" label="Password*" placeholder="*********"/>
+                        <inputComponent v-model="newAccount.recoveryEmail" label="Recovery Email" placeholder="Recovery email"/> -->
                 </div>
+                <a href="/instruction.pdf" class="text-primary" target="_blank">What is "Event Trigger URL" and where to get it?</a>
                 <btnComponent type="primary" text="Save" @click="createAccount()"/>
 
             </div>
@@ -59,9 +61,7 @@ export default {
             showForm: false,
             youtubeAccounts: [],
             newAccount: {
-                email: null,
-                password: null,
-                recoveryEmail: null
+                event_trigger_url: null,
             },
             notification: {
                 show: false,
@@ -83,9 +83,7 @@ export default {
                 this.showForm = false
 
                 this.newAccount = {
-                    email: null,
-                    password: null,
-                    recoveryEmail: null
+                    event_trigger_url: null
                 }
 
                 this.showNotification('success', 'Account successfully added!')
@@ -157,13 +155,13 @@ export default {
     },
     computed: {
         isAllowedToAddAccounts() {
-            if(this.$props.user?.subscription.type === 'Basic' && this.youtubeAccounts.length < 1) {
+            if(this.$props.user?.subscription?.type === 'Basic' && this.youtubeAccounts.length < 1) {
                 return true
             }
-            if(this.$props.user?.subscription.type === 'Premium' && this.youtubeAccounts.length < 3) {
+            if(this.$props.user?.subscription?.type === 'Premium' && this.youtubeAccounts.length < 3) {
                 return true
             }
-            if(this.$props.user?.subscription.type === 'Ultimate' && this.youtubeAccounts.length < 5) {
+            if(this.$props.user?.subscription?.type === 'Ultimate' && this.youtubeAccounts.length < 5) {
                 return true
             }
             return false
@@ -199,14 +197,15 @@ export default {
                 display:flex;
                 justify-content: space-between;
                 // flex-wrap: wrap;
-                margin-bottom: 30px;
+                margin-bottom: 10px;
                 & > div {
-                    width: 30%;
+                    width: 100%;
                 }
             }
             & > button {
                 text-align: center;
                 margin: 0 auto;
+                margin-top: 30px;
                 width: 200px;
             }
         }

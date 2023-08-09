@@ -6,7 +6,7 @@
                 <span>Go To Video</span>
                 <div class="short-info">
                     <p><small><b>From TikTok: @{{ short.author }}</b></small></p>
-                    <p><small><b>To: {{ short.youtube_account?.email || 'Deleted Account' }}</b></small></p>
+                    <p><small><b>To: {{ short.youtube_account_id || 'Deleted Account' }}</b></small></p>
                 </div>
             </div>
             <div class="short-date">

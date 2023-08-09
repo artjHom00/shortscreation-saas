@@ -118,7 +118,7 @@ export default {
                 if(nextUpload < closest.hours || closest.hours === null) {
 
                     closest = {
-                        account: account.email,
+                        account: account._id,
                         hours: nextUpload
                     }
 
