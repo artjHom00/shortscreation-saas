@@ -204,7 +204,7 @@ async function editVideo(pathToTiktok, backgroundVideo) {
           // deletes downloaded tiktok clip
           fs.unlinkSync(pathToTiktok)
 
-          resolve(process.env.DEFAULT_OUTPUT_PATH + outputName)
+          resolve(outputName)
 
         })
         .run();
