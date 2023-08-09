@@ -158,16 +158,35 @@ async function getUsers(req, res) {
 // Get all user's shorts
 async function getUsersShorts(req, res) {
   try {
+    
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 6;
 
     const shorts = await Short.find({
       user_id: req.user.id
-    }).populate('youtube_account')
+    })
+    .sort({
+      created_at: 'desc'
+    })
+    .skip((page - 1) * limit)
+    .limit(limit)
+    .exec()
 
-    const populatedShorts = shorts.map(short => ({
-      ...short._doc,
-      youtube_account: short.youtube_account // Access the populated youtube_account property
-    }));
-    res.json(populatedShorts);
+    const totalShorts = await Short.countDocuments({ user_id: req.user.id }).exec();
+    
+    // Calculate total pages based on totalAffiliates and limit
+    const totalPages = Math.ceil(totalShorts / limit);
+
+  
+    res.json({
+      shorts: shorts,
+      pagination: {
+        page,
+        limit,
+        totalShorts,
+        totalPages, // Include the total pages in the pagination object
+      },
+    });
   } catch (error) {
     console.log("🚀 ~ file: usersController.js:100 ~ getUsersShorts ~ error:", error)
     res.status(500).json({ error });

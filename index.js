@@ -27,8 +27,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 const staticFileMiddleware = express.static('views');
 app.use(staticFileMiddleware);
 app.use(history({
-  disableDotRule: true,
-  verbose: true
+  disableDotRule: true
 }));
 app.use(staticFileMiddleware);
 

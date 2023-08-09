@@ -41,6 +41,7 @@ const getIdVideo = (url) => {
 const getVideoNoWM = async (url) => {
 
   const idVideo = await getIdVideo(url)
+  console.log('extracted id: ' + idVideo + ' from url: ' + url)
   const API_URL = `https://api16-normal-c-useast1a.tiktokv.com/aweme/v1/feed/?aweme_id=${idVideo}`;
 
   const request = await fetch(API_URL, {
@@ -69,6 +70,7 @@ const getVideoNoWM = async (url) => {
 async function scrapeFromTikTok(user) {
   
   const browser = await puppeteer.launch({
+    headless: 'new',
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox'
@@ -249,7 +251,7 @@ async function uploadShortToYoutube(event_trigger_url, path, title, description,
 
 async function generateAndUploadShort(youtubeAccountId) {
   try {
-    console.log('started for', youtubeAccountId)
+    console.log('started for #', youtubeAccountId)
     let getRandomElementFromArray = (array) => {
       if (array.length === 0) {
         return undefined; // Return undefined if the array is empty
@@ -289,9 +291,11 @@ async function generateAndUploadShort(youtubeAccountId) {
     let randomTikTokInDb = await getRandomTikTokByAuthor(randomTikTokAccount, scrapeFromTikTok)
 
     let fileName = await downloadTiktokToFile(randomTikTokInDb.link)
+    console.log('tiktok downloaded: ' + randomTikTokInDb.link)
+
     let output = await editVideo(fileName, backgroundVideo)
 
-    console.log('Video edited, ' + output)
+    console.log('video edited: ' + output)
     
     let link = await uploadShortToYoutube(foundYoutubeAccount.event_trigger_url, output, title, description, pinnedComment)
     .catch(async (e) => {
