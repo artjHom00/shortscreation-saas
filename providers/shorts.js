@@ -24,13 +24,13 @@ ffmpeg.setFfprobePath(ffprobePath);
 
 const getIdVideo = (url) => {
   try {
-    const matching = url.includes("/video/")
-    if(!matching){
-        console.log(chalk.red("[X] Error: URL not found"));
-        exit();
+    const pattern = /\/(\d+)\/?$/;
+    const match = url.match(pattern);
+    if (match) {
+        return match[1];
+    } else {
+        return null;
     }
-    const idVideo = url.substring(url.indexOf("/video/") + 7, url.length);
-    return (idVideo.length > 19) ? idVideo.substring(0, idVideo.indexOf("?")) : idVideo;
   } catch(e) {
       throw new Error(e)
   }
@@ -229,7 +229,7 @@ async function uploadShortToYoutube(event_trigger_url, path, title, description,
       // video: 'http://shortscreation.tech/1691418605957.mp4'
     })
 
-    await fs.unlinkSync(path)
+    await fs.unlinkSync(process.env.DEFAULT_OUTPUT_PATH + path)
 
     if(!response.data.video) {
       return {
@@ -240,7 +240,7 @@ async function uploadShortToYoutube(event_trigger_url, path, title, description,
     return response.data.video
 
   } catch(e) {
-    deleteFileIfExists(path)
+    deleteFileIfExists(process.env.DEFAULT_OUTPUT_PATH + path)
     throw new Error(e)
   }
     
