@@ -5,7 +5,7 @@ let User = require('../models/User')
 
 async function addYoutubeAccount(req, res) {
     try {
-        const { email, password, recoveryEmail, settings, tiktok_accounts } = req.body;
+        const { event_trigger_url, settings, tiktok_accounts } = req.body;
 
         const youtubeAccountsOfUser = await YoutubeAccount.find({
           user_id: req.user.id
@@ -23,23 +23,21 @@ async function addYoutubeAccount(req, res) {
           return res.status(400).json({ error: 'Limit of accounts reached, buy subscription better!' });
         }
         
-        // Check if email and password are provided
-        if (!email || !password) {
-          return res.status(400).json({ error: 'Email and password are required' });
+        // Check if event_trigger_email exists & matches regex
+        if (!event_trigger_url || !event_trigger_url.match(/https:\/\/[^.]+\.m\.pipedream\.net/)) {
+          return res.status(400).json({ error: 'Event trigger URL is required' });
         }
         
-        // Check if the email already exists in the database
-        const existingAccount = await YoutubeAccount.findOne({ email });
+        // Check if the url already exists in the database
+        const existingAccount = await YoutubeAccount.findOne({ event_trigger_url });
         if (existingAccount) {
-            return res.status(400).json({ error: 'Email already exists' });
+            return res.status(400).json({ error: 'Event Trigger Url already exists' });
         }
         
         // Create a new YoutubeAccount instance
         const newYoutubeAccount = new YoutubeAccount({
             user_id: req.user.id,
-            email,
-            password,
-            recovery_email: recoveryEmail,
+            event_trigger_url,
             settings,
             tiktok_accounts
         });

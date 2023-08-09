@@ -3,13 +3,13 @@ const fs = require('fs')
 const ffmpeg = require('fluent-ffmpeg')
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path
 const ffprobePath = require('@ffprobe-installer/ffprobe').path
-let { upload, comment } = require('youtube-videos-uploader')
 // https://github.com/n0l3r/tiktok-downloader/blob/main/index.js
 const fetch = require('node-fetch');
 const { Headers } = require('node-fetch');
 let puppeteer = require('puppeteer')
 let { addTikTokIfNotExists, getRandomTikTokByAuthor, setTikTokAsUsed } = require('../services/tiktok')
 let YoutubeAccount = require('../models/YoutubeAccount')
+let axios = require('axios')
 let Short = require('../models/Short')
 let User = require('../models/User')
 let cron = require('node-cron')
@@ -147,6 +147,22 @@ async function downloadTiktokToFile(tiktokUrl) {
   })
 }
 
+function deleteFileIfExists(filePath) {
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      console.error(`File "${filePath}" does not exist.`);
+    } else {
+      fs.unlink(filePath, (unlinkErr) => {
+        if (unlinkErr) {
+          console.error(`Error deleting "${filePath}":`, unlinkErr);
+        } else {
+          console.log(`File "${filePath}" deleted successfully.`);
+        }
+      });
+    }
+  });
+}
+
 // https://stackoverflow.com/questions/40014785/node-js-ffmpeg-complexfilter-overlay-another-video
 async function editVideo(pathToTiktok, backgroundVideo) {
   return new Promise((resolve, reject) => {
@@ -195,54 +211,36 @@ async function editVideo(pathToTiktok, backgroundVideo) {
       });
 
     } catch(e) {
+      deleteFileIfExists(pathToTiktok)
       reject('Error while editing TikTok: ' + e)
     }
 
     })
 }
 
-async function uploadShortToYoutube(credentials, path, title, description, pinnedComment) {
+async function uploadShortToYoutube(event_trigger_url, path, title, description, pinnedComment) {
   try {
-    function replaceShortsURL(url) {
-      const replacedURL = url.replace("youtube.com/shorts/", "youtube.com/watch?v=");
-      return replacedURL;
-    }
 
-    const video = { 
-      path: path,
-      title: title,
-      isAgeRestriction: false,
-      isNotForKid: true,
-      description: description
-    }
 
-    let link = await upload(credentials, [video], {
-      // headless: false,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox'
-      ]
+    let response = await axios.post(event_trigger_url, {
+      title,
+      description,
+      video: process.env.HOST + '/' + path
+      // video: 'http://shortscreation.tech/1691418605957.mp4'
     })
 
-    if(pinnedComment && pinnedComment !== '') {
-      const commentInfo = { link: replaceShortsURL(link[0]), comment: pinnedComment, pin: true }
+    await fs.unlinkSync(path)
 
-      await comment(credentials, [commentInfo], {
-        // headless: false,
-        args: [
-          '--no-sandbox',
-          '--disable-setuid-sandbox'
-        ]
-      })  
-
+    if(!response.data.video) {
+      return {
+        success: false
+      }
     }
 
-    await fs.unlinkSync(video.path)
-
-    return link
+    return response.data.video
 
   } catch(e) {
-
+    deleteFileIfExists(path)
     throw new Error(e)
   }
     
@@ -279,12 +277,6 @@ async function generateAndUploadShort(youtubeAccountId) {
     }
     
     let { title, description, pinnedComment } = foundYoutubeAccount.settings
-  
-    let credentials = {
-      email: foundYoutubeAccount.email,
-      pass: foundYoutubeAccount.password,
-      recoveryemail: foundYoutubeAccount.recovery_email
-    }
     
     let randomTikTokAccount = getRandomElementFromArray(tiktokAccounts)
     
@@ -301,15 +293,23 @@ async function generateAndUploadShort(youtubeAccountId) {
 
     console.log('Video edited, ' + output)
     
-    let link = await uploadShortToYoutube(credentials, output, title, description, pinnedComment)
+    let link = await uploadShortToYoutube(foundYoutubeAccount.event_trigger_url, output, title, description, pinnedComment)
     .catch(async (e) => {
-
+      
       foundYoutubeAccount.credentials_valid = false
       foundYoutubeAccount.last_log = 'Error occured while uploading tiktok' + e
       await foundYoutubeAccount.save()
       throw new Error(e)
       
     })
+
+    if(link.success === false) {
+      foundYoutubeAccount.last_log = 'Error occured while uploading tiktok'
+      await foundYoutubeAccount.save()
+
+      throw new Error('Error occured')
+    }
+
     foundYoutubeAccount.credentials_valid = true
     await foundYoutubeAccount.save()
 
@@ -317,9 +317,9 @@ async function generateAndUploadShort(youtubeAccountId) {
 
     let newShort = new Short({
       user_id: foundYoutubeAccount.user_id,
-      youtube_account_email: foundYoutubeAccount.email,
+      youtube_account_id: foundYoutubeAccount.id,
       author: randomTikTokAccount,
-      link: link[0],
+      link: link,
     })
 
     let savedShort = await newShort.save();
