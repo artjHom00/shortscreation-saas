@@ -7,7 +7,7 @@ const ffprobePath = require('@ffprobe-installer/ffprobe').path
 let puppeteer = require('puppeteer')
 let { addTikTokIfNotExists, getRandomTikTokByAuthor, setTikTokAsUsed } = require('../services/tiktok')
 let YoutubeAccount = require('../models/YoutubeAccount')
-let axios = require('axios')
+let axios = require('axios-https-proxy-fix')
 let Short = require('../models/Short')
 let User = require('../models/User')
 let cron = require('node-cron')
@@ -48,7 +48,11 @@ const getVideoNoWM = async (url) => {
       proxy: {
         protocol: 'http',
         host: process.env.PROXY_HOST,
-        port: process.env.PROXY_PORT
+        port: process.env.PROXY_PORT,
+        auth: {
+          username: process.env.PROXY_USERNAME,
+          password: process.env.PROXY_PASSWORD
+        }
       }
     });
 
