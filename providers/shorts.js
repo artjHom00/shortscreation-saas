@@ -4,8 +4,6 @@ const ffmpeg = require('fluent-ffmpeg')
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path
 const ffprobePath = require('@ffprobe-installer/ffprobe').path
 // https://github.com/n0l3r/tiktok-downloader/blob/main/index.js
-const fetch = require('node-fetch');
-const { Headers } = require('node-fetch');
 let puppeteer = require('puppeteer')
 let { addTikTokIfNotExists, getRandomTikTokByAuthor, setTikTokAsUsed } = require('../services/tiktok')
 let YoutubeAccount = require('../models/YoutubeAccount')
@@ -14,9 +12,6 @@ let Short = require('../models/Short')
 let User = require('../models/User')
 let cron = require('node-cron')
 let moment = require('moment')
-
-const headers = new Headers();
-headers.append('User-Agent', 'TikTok 26.2.0 rv:262018 (iPhone; iOS 14.4.2; en_US) Cronet');
 
 ffmpeg.setFfmpegPath(ffmpegPath);
 ffmpeg.setFfprobePath(ffprobePath);
@@ -44,20 +39,23 @@ const getVideoNoWM = async (url) => {
   console.log('extracted id: ' + idVideo + ' from url: ' + url)
   const API_URL = `https://api16-normal-c-useast1a.tiktokv.com/aweme/v1/feed/?aweme_id=${idVideo}`;
 
-  const request = await fetch(API_URL, {
-      method: "GET",
-      headers : headers
+  console.log("🚀 ~ file: shorts.js:47 ~ getVideoNoWM ~ API_URL:", API_URL)
+  const resp = await axios.get(API_URL, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Safari/605.1.15'
+      }
   });
 
-  const body = await request.text();
-
   try {
-    var res = JSON.parse(body);
+    var res = JSON.parse(resp.data);
   } catch (err) {
       console.error("Error:", err);
       console.error("Response body:", body);
   }
+
   const urlMedia = res.aweme_list[0].video.play_addr.url_list[0]
+  console.log("🚀 ~ file: shorts.js:62 ~ getVideoNoWM ~ urlMedia:", urlMedia)
+
   const data = {
       url: urlMedia,
       id: idVideo
@@ -380,7 +378,8 @@ cron.schedule('*/30 * * * *', async () => {
         
         let timePassed = moment.duration(now.diff(uploadTime))
         
-        if(timePassed >= uploadIntervalInMs) {
+        // timepassed-7min because of delay for processing vid
+        if(timePassed-300000 >= uploadIntervalInMs) {
           await generateAndUploadShort(account.id).then((res) => {
           console.log("🚀 ~ file: shorts.js:308 ~ awaitgenerateAndUploadShort ~ res:", res)
           }).catch((e) => {
