@@ -18,8 +18,8 @@
             <div v-if="user?.subscription?.has_subscription && youtubeAccounts.length > 0" class="next-upload">
                 <h4>Next closest upload:</h4>
                 <div>
-                    <h3>In {{ getClosestNextUpload.hours }} hours</h3>
-                    <h4>On {{ getClosestNextUpload.account }}</h4>
+                    <h3>In {{ getClosestNextUpload?.date?.hours }} hours</h3>
+                    <h4>and {{ getClosestNextUpload?.date?.minutes }} minutes</h4>
                 </div>
             </div>
         </div>
@@ -41,7 +41,8 @@
                 <h3 >No shorts yet! :(</h3>
             </div>
             <div class="last-shorts-list" v-else>
-                <ShortComponent v-for="short in shorts" :key="short._id" :short="short"/>
+                <ShortComponent v-for="short in shorts.shorts" :key="short._id" :short="short"/>
+                <btnComponent style="text-align: center; margin: 0 auto;" class="loadmore" type="primary" text="Load More" @click="getData(shorts?.pagination?.page + 1)" v-if="shorts?.pagination?.page < shorts?.pagination?.totalPages"/>
             </div>
         </div>
     </div>
@@ -72,7 +73,7 @@ export default {
         }
     },
     methods: {
-        getData() {
+        getData(page = 1) {
             axios.get(`youtube-accounts/`)
             .then(({ data }) => {
                 this.youtubeAccounts = data
@@ -84,7 +85,7 @@ export default {
                 // this.$router.push('/')
             })
 
-            axios.get(`users/shorts/`)
+            axios.get(`users/shorts?page=` + page)
             .then(({ data }) => {
                 this.shorts = data
             }).catch(({ response: { data }}) => {
@@ -102,30 +103,73 @@ export default {
             return moment(this.$props.user?.subscription?.expires).format('Do MMM YYYY')
         },
         getClosestNextUpload() {
+            function padTo2Digits(num) {
+                return num.toString().padStart(2, '0');
+            }
+            function convertMsToHM(milliseconds) {
+                let seconds = Math.floor(milliseconds / 1000);
+                let minutes = Math.floor(seconds / 60);
+                let hours = Math.floor(minutes / 60);
+
+                seconds = seconds % 60;
+                // 👇️ if seconds are greater than 30, round minutes up (optional)
+                minutes = seconds >= 30 ? minutes + 1 : minutes;
+
+                minutes = minutes % 60;
+
+                // 👇️ If you don't want to roll hours over, e.g. 24 to 00
+                // 👇️ comment (or remove) the line below
+                // commenting next line gets you `24:00:00` instead of `00:00:00`
+                // or `36:15:31` instead of `12:15:31`, etc.
+                // hours = hours % 24;
+
+                return {
+                    hours: padTo2Digits(hours),
+                    minutes: padTo2Digits(minutes)
+                };
+            }
             let closest = {
                 account: null,
-                hours: null
+                date: null,
+                ms: null
             }
 
             let now = moment(new Date())
             
-            this.youtubeAccounts.forEach((account) => {
+            for(let account of this.youtubeAccounts) {
                 let uploadTime = moment(account.last_upload)
-
-                let timePassed = moment.duration(now.diff(uploadTime))._data
-                let nextUpload = account.settings.uploadInterval - timePassed.hours
-
-                if(nextUpload < closest.hours || closest.hours === null) {
-
+    
+                let timePassed = moment.duration(now.diff(uploadTime))
+                let uploadInterval = account.settings.uploadInterval*60*60*1000; // in milliseconds
+    
+                if(uploadInterval - timePassed._milliseconds <= 0) {
+                    return {
+                        account: account._id,
+                        date: {
+                            hours: 0,
+                            minutes: 'less than 30'
+                        },
+                        ms: null
+                    }
+                }
+                
+                let nextUpload = uploadInterval - timePassed._milliseconds
+                // console.log("🚀 ~ file: DashboardView.vue:164 ~ this.youtubeAccounts.forEach ~ account: account._id:", account._id)
+                // console.log("🚀 ~ file: DashboardView.vue:159 ~ this.youtubeAccounts.forEach ~ convertMsToHM(nextUpload):", convertMsToHM(nextUpload))
+    
+                if(nextUpload < closest.ms || closest.ms === null) {
+    
                     closest = {
                         account: account._id,
-                        hours: nextUpload
+                        date: convertMsToHM(nextUpload),
+                        ms: nextUpload
                     }
-
+    
                 }
-            })
-
+                
+            }
             return closest
+            
         }
     },  
     mounted() {
@@ -207,18 +251,31 @@ export default {
             }
         }
         & .last-shorts {
-            &-list {
-                display: flex;
-                justify-content: space-between;
-                flex-wrap: wrap;
-                & > * {
-                    margin-bottom: 20px;
-                    width: calc(30% - 30px);
+                &-list {
+                    display: flex;
+                    justify-content: space-between;
+                    flex-wrap: wrap;
+                    & > * {
+                        margin-bottom: 20px;
+                        width: calc(30% - 30px);
+                    }
                 }
-            }
         }
     }
 
+    @media(max-width: 1200px) {
+        .dashboard {
+
+            & .last-shorts {
+                    &-list {
+                        & > * {
+                            width: 100%;
+                        }
+                    }
+                }
+                
+        }
+    }
     @media(max-width: 978px) {
         .dashboard {
             & .accounts {

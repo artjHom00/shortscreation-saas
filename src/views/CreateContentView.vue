@@ -21,7 +21,7 @@
                         <p><small>#{{ form.forAccount }}</small></p>
                         <inputComponent v-model="form.data.settings.uploadInterval" label="Upload Interval" placeholder="Every 24 hours" option="true" :user="user"/>
                         <inputComponent v-model="form.data.settings.title" label="Enter a title for every video" placeholder="Enter a title... "/>
-                        <inputComponent v-model="form.data.settings.pinnedComment" label="Enter a comment to pin under every video" placeholder="Enter a comment..." textarea="true"/>
+                        <!-- <inputComponent v-model="form.data.settings.pinnedComment" label="Enter a comment to pin under every video" placeholder="Enter a comment..." textarea="true"/> -->
                         <inputComponent v-model="form.data.settings.description" label="Enter a description for every video" placeholder="Enter a description..." textarea="true"/>
                         <h4>Background video</h4>
                         <small>Recommended video aspect ratio: 9:16. Limit 300mb.</small>
@@ -417,6 +417,9 @@ export default {
 
     @media(max-width: 990px) {
         .dashboard {
+            #file-upload {
+                width: 100%;
+            }
             .accounts {
                 &-list {
                     display: block;

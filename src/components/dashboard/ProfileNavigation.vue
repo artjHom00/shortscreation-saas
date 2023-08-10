@@ -120,7 +120,7 @@ export default {
         .profile-nav {
             
             .nav-btn {
-                height: initial;
+                height: 40px;
                 margin: 0 8px;
             }
             & > * > * > * {

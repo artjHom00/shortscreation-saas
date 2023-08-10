@@ -67,6 +67,8 @@ export default {
             border-radius: 10px;
             background: $gray-white;
             box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.25);
+            -webkit-appearance: none;
+            -webkit-box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.25);
             transition: 0.1s background ease-in-out;
             &:focus {
                 outline: none;

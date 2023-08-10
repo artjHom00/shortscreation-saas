@@ -3,7 +3,7 @@
         <div class="account-image" :class="account.credentials_valid ? '' : 'notActive' ">{{ getAccountFirstLetter }}</div>
         <div class="account-info">
             <h4>{{ extractedSubstring }}</h4>
-            <p><small>#{{ account?._id }}</small></p>
+            <p><small>#{{ shortenId }}</small></p>
         </div>
         <div class="account-icons">
             <Popper :content="account.credentials_valid ? 'Active' : 'Not active'" hover>
@@ -47,6 +47,9 @@ export default {
                 return "Not found";
             }
         },
+        shortenId() {
+            return this.$props.account?._id.slice(-5)
+        }
     },
 }
 </script>

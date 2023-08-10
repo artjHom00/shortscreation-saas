@@ -109,7 +109,7 @@ export default {
             &_langChange {
                 font-weight: 700;
                 border-radius: 10px;
-                border: 2px solid $dark;
+                border: 1.4px solid $dark;
                 height: 30px;
                 width: 30px;
                 & > img {
