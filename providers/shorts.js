@@ -34,33 +34,36 @@ const getIdVideo = (url) => {
 
 
 const getVideoNoWM = async (url) => {
+  
+  try {
 
-  const idVideo = await getIdVideo(url)
-  console.log('extracted id: ' + idVideo + ' from url: ' + url)
-  const API_URL = `https://api16-normal-c-useast1a.tiktokv.com/aweme/v1/feed/?aweme_id=${idVideo}`;
-
-  console.log("🚀 ~ file: shorts.js:47 ~ getVideoNoWM ~ API_URL:", API_URL)
-  const resp = await axios.get(API_URL, {
+    const idVideo = await getIdVideo(url)
+    console.log('extracted id: ' + idVideo + ' from url: ' + url)
+    const API_URL = `https://api16-normal-c-useast1a.tiktokv.com/aweme/v1/feed/?aweme_id=${idVideo}`;
+    
+    const resp = await axios.get(API_URL, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Safari/605.1.15'
+      },
+      proxy: {
+        protocol: 'http',
+        host: process.env.PROXY_HOST,
+        port: process.env.PROXY_PORT
       }
-  });
+    });
 
-  try {
-    var res = JSON.parse(resp.data);
-  } catch (err) {
-      console.error("Error:", err);
-      console.error("Response body:", body);
+    const urlMedia = resp.data.aweme_list[0].video.play_addr.url_list[0]
+    console.log("🚀 ~ file: shorts.js:62 ~ getVideoNoWM ~ urlMedia:", urlMedia)
+
+    const data = {
+        url: urlMedia,
+        id: idVideo
+    }
+    return data
+
+  } catch(e) {
+    throw new Error(e)
   }
-
-  const urlMedia = res.aweme_list[0].video.play_addr.url_list[0]
-  console.log("🚀 ~ file: shorts.js:62 ~ getVideoNoWM ~ urlMedia:", urlMedia)
-
-  const data = {
-      url: urlMedia,
-      id: idVideo
-  }
-  return data
 
 }
 
