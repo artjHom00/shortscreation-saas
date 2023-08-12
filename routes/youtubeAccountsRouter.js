@@ -30,7 +30,7 @@ const upload = multer({ storage, limits: {
 
 router.post('/', authenticateToken, addYoutubeAccount)
 
-router.get('/', authenticateToken, getYoutubeAccounts)
+// router.get('/', authenticateToken, getYoutubeAccounts)
 router.get('/', authenticateToken, getUsersYoutubeAccounts)
 
 router.delete('/:id', authenticateToken, deleteYoutubeAccount)
