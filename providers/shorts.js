@@ -46,14 +46,7 @@ const getVideoNoWM = async (url) => {
       }
   });
 
-  try {
-    var res = JSON.parse(resp.data);
-  } catch (err) {
-      console.error("Error:", err);
-      console.error("Response body:", body);
-  }
-
-  const urlMedia = res.aweme_list[0].video.play_addr.url_list[0]
+  const urlMedia = resp.data.aweme_list[0].video.play_addr.url_list[0]
   console.log("🚀 ~ file: shorts.js:62 ~ getVideoNoWM ~ urlMedia:", urlMedia)
 
   const data = {
