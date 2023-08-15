@@ -225,9 +225,12 @@ async function editVideo(pathToTiktok, backgroundVideo) {
     })
 }
 
-async function uploadShortToYoutube(event_trigger_url, path, title, description, pinnedComment) {
+async function uploadShortToYoutube(event_trigger_url, path, title, description, pinnedComment, hashtags) {
   try {
 
+    if(hashtags) {
+      title = title + ' ' + hashtags
+    }
 
     let response = await axios.post(event_trigger_url, {
       title,
@@ -292,8 +295,16 @@ async function generateAndUploadShort(youtubeAccountId) {
       foundYoutubeAccount.save()
       throw new Error('No tiktok accounts to scrape from provided')
     }
-
+    
     let randomTikTokInDb = await getRandomTikTokByAuthor(randomTikTokAccount, scrapeFromTikTok)
+
+    if(foundYoutubeAccount.use_tiktok_title && randomTikTokInDb.description !== "") {
+      title = randomTikTokInDb.description
+    }
+
+    if(foundYoutubeAccount.settings.hashtags) {
+      var hashtags = foundYoutubeAccount.settings.hashtags
+    }
 
     let fileName = await downloadTiktokToFile(randomTikTokInDb.link)
     console.log('tiktok downloaded: ' + randomTikTokInDb.link)
@@ -302,7 +313,7 @@ async function generateAndUploadShort(youtubeAccountId) {
 
     console.log('video edited: ' + output)
     
-    let link = await uploadShortToYoutube(foundYoutubeAccount.event_trigger_url, output, title, description, pinnedComment)
+    let link = await uploadShortToYoutube(foundYoutubeAccount.event_trigger_url, output, title, description, pinnedComment, hashtags)
     .catch(async (e) => {
       
       foundYoutubeAccount.credentials_valid = false
@@ -349,9 +360,6 @@ async function generateAndUploadShort(youtubeAccountId) {
         throw new Error('No youtube account found in DB')
     }
 
-    foundYoutubeAccount.last_upload = Date.now()
-    await foundYoutubeAccount.save()
-
   }
 
 };
@@ -379,27 +387,39 @@ cron.schedule('*/30 * * * *', async () => {
     
       let now = moment(new Date())
       let tiktoks = []
+      let nowInDateFormat = Date.now()
 
-      for await(account of youtubeAccountsOfUsersWithSubscription) {
-
-        tiktoks = mergeArraysWithoutDuplicates(tiktoks, account.tiktok_accounts)
+      
+      let uploadingAccounts = youtubeAccountsOfUsersWithSubscription.filter((account) => {
         
         let uploadIntervalInMs = account.settings.uploadInterval*60*60*1000
         let uploadTime = moment(account.last_upload)
         
         let timePassed = moment.duration(now.diff(uploadTime))
-        
-        // timepassed-7min because of delay for processing vid
-        if(timePassed-300000 >= uploadIntervalInMs) {
-          await generateAndUploadShort(account.id).then((res) => {
-          console.log("🚀 ~ file: shorts.js:308 ~ awaitgenerateAndUploadShort ~ res:", res)
-          }).catch((e) => {
-          console.log("🚀 ~ file: shorts.js:296 ~ youtubeAccountsOfUsersWithSubscription.forEach ~ e:", e)
 
-          })
+        if(timePassed-5*60*1000 >= uploadIntervalInMs) {
+          account.last_upload = nowInDateFormat
+          account.save()
+          return true
+        }
+        return false
+
+      })
+      
+      console.log("🚀 ~ file: shorts.js:390 ~ uploadingAccounts ~ uploadingAccounts:", uploadingAccounts)
+
+      for await(account of uploadingAccounts) {
+
+        tiktoks = mergeArraysWithoutDuplicates(tiktoks, account.tiktok_accounts)
+
+        await generateAndUploadShort(account.id).then((res) => {
+          console.log("🚀 ~ file: shorts.js:308 ~ awaitgenerateAndUploadShort ~ res:", res)
+        }).catch((e) => {
+          console.log("🚀 ~ file: shorts.js:296 ~ youtubeAccountsOfUsersWithSubscription.forEach ~ e:", e)
+        })
+
         }
 
-      }
   
       for await (tiktok of tiktoks) {
 
