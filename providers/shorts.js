@@ -296,7 +296,7 @@ async function generateAndUploadShort(youtubeAccountId) {
       throw new Error('No tiktok accounts to scrape from provided')
     }
     
-    let randomTikTokInDb = await getRandomTikTokByAuthor(randomTikTokAccount, scrapeFromTikTok)
+    let randomTikTokInDb = await getRandomTikTokByAuthor(randomTikTokAccount, foundYoutubeAccount)
 
     if(foundYoutubeAccount.use_tiktok_title && randomTikTokInDb.description !== "") {
       title = randomTikTokInDb.description
@@ -421,13 +421,13 @@ cron.schedule('*/30 * * * *', async () => {
         }
 
   
-      for await (tiktok of tiktoks) {
+      // for await (tiktok of tiktoks) {
 
-        await scrapeFromTikTok(tiktok).catch(() => {
+      //   await scrapeFromTikTok(tiktok).catch(() => {
           
-        })
+      //   })
         
-      }
+      // }
       
       // remove subscription
       // from all users whose subscription expire

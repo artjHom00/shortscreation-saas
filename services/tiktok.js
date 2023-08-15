@@ -20,11 +20,14 @@ async function addTikTokIfNotExists(data) {
     }
 }
 
-async function getRandomTikTokByAuthor(author, scrapeFunc) {
+async function getRandomTikTokByAuthor(author, foundYoutubeAccount) {
     const count = await TikTok.countDocuments({ author, is_used: false });
   
     if (count === 0) {
-      await scrapeFunc(author)
+        foundYoutubeAccount.last_log = 'No tiktoks parsed!'
+        foundYoutubeAccount.save()
+        
+        throw new Error('No tiktoks available!')
     }
   
     const randomIndex = Math.floor(Math.random() * count);
