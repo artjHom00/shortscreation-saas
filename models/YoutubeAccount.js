@@ -29,6 +29,11 @@ const YoutubeAccountsSchema = new Schema({
         type: Date,
         default: Date.now
     },
+    use_tiktok_title: {
+        required: true,
+        type: Boolean,
+        default: false
+    },
     settings: {
         description: {
             required: true,
@@ -44,6 +49,11 @@ const YoutubeAccountsSchema = new Schema({
             required: true,
             type: String,
             default: 'HERE DEFAULT PINNED COMMENT'
+        },
+        hashtags: {
+            required: false,
+            type: String,
+            default: '#shorts #tiktok #viral #trending'
         },
         // in hours
         uploadInterval: {
