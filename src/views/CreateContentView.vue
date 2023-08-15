@@ -21,6 +21,14 @@
                         <p><small>#{{ form.forAccount }}</small></p>
                         <inputComponent v-model="form.data.settings.uploadInterval" label="Upload Interval" placeholder="Every 24 hours" option="true" :user="user"/>
                         <inputComponent v-model="form.data.settings.title" label="Enter a title for every video" placeholder="Enter a title... "/>
+                        <div class="checkbox">
+                            <input type="checkbox" v-model="form.useDefaultTitle" id="default"/>
+                            <label for="default"><small>Set title as tiktok's title</small></label>
+                        </div>
+                        <inputComponent v-model="form.data.settings.hashtags" label="Enter default hashtags for every video" placeholder="Enter hashtags... "/>
+                        <p class="input-caption"><small>Hashtags will increase your chances to get into recommended section<br>
+                        Example: #shorts #comedy #tiktok
+                        </small></p>
                         <!-- <inputComponent v-model="form.data.settings.pinnedComment" label="Enter a comment to pin under every video" placeholder="Enter a comment..." textarea="true"/> -->
                         <inputComponent v-model="form.data.settings.description" label="Enter a description for every video" placeholder="Enter a description..." textarea="true"/>
                         <h4>Background video</h4>
@@ -83,13 +91,15 @@ export default {
             form: {
                 isActive: false,
                 forAccount: 0,
+                useDefaultTitle: true,
                 data: {
                     tiktokAccounts: [],
                     settings: {
                         title: null,
                         pinnedComment: null,
                         description: null,
-                        uploadInterval: null
+                        uploadInterval: null,
+                        hashtags: []
                     },
                     background_video: null
                 }
@@ -169,6 +179,7 @@ export default {
         },
         updateSettings() {
             axios.patch('youtube-accounts/' + this.form.forAccount, {
+                use_default_title: this.form.useDefaultTitle,
                 settings: this.form.data.settings
             }).then(() => {
                 if(this.form.data.background_video) {
@@ -236,7 +247,6 @@ export default {
 </script>
 <style scoped lang="scss">
     @import '@/assets/styles/_variables.scss';
-
     .dashboard {
 
         #file-upload {
@@ -261,6 +271,7 @@ export default {
                 opacity: 0.8;
             }
         }
+
         & > p {
             margin-bottom: 40px;
             opacity: 0.75;
@@ -322,6 +333,9 @@ export default {
                 padding: 20px 40px;
                 width: calc(100% - 100px);
                 margin: 0 auto;
+                & .checkbox, & .input-caption {
+                    margin-top: 10px;
+                }
                 & > p {
                     margin-top: 0;
                     opacity: 0.8;

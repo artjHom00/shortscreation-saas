@@ -19,7 +19,7 @@
                 <h4>Next closest upload:</h4>
                 <div>
                     <h3>In {{ getClosestNextUpload?.date?.hours }} hours</h3>
-                    <h4>and {{ getClosestNextUpload?.date?.minutes }} minutes</h4>
+                    <h4>and {{ getClosestNextUpload?.date?.minutes }} minutes for <i>#{{ shortenId(getClosestNextUpload?.account) }}</i></h4>
                 </div>
             </div>
         </div>
@@ -37,7 +37,7 @@
 
         <div class="last-shorts">
             <h4>Last shorts:</h4>
-            <div v-if="shorts.length === 0">
+            <div v-if="!shorts?.shorts || shorts?.shorts?.length === 0">
                 <h3 >No shorts yet! :(</h3>
             </div>
             <div class="last-shorts-list" v-else>
@@ -73,6 +73,9 @@ export default {
         }
     },
     methods: {
+        shortenId(id) {
+            return id.slice(-5)
+        },
         getData(page = 1) {
             axios.get(`youtube-accounts/`)
             .then(({ data }) => {

@@ -9,7 +9,7 @@
             <Popper :content="account.credentials_valid ? 'Active' : 'Not active'" hover>
                 <img class="account-icon" :class="account.credentials_valid ? '' : 'notActive' " src="@/assets/images/dashboard/lightning.svg" alt="">
             </Popper>
-            <Popper :content="`Last upload log: ${account.last_log}`" hover v-if="!editing">
+            <Popper :content="`${formatUploadDate}, ${account.last_log}`" hover v-if="!editing">
                 <img class="account-icon--info" src="@/assets/images/dashboard/info.svg" alt="">
             </Popper>
             <img class="account-icon--delete" src="@/assets/images/dashboard/delete.svg" alt="" @click="sendDeleteAccountEvent" v-if="editing">
@@ -19,6 +19,7 @@
 </template>
 <script>
 import Popper from 'vue3-popper';
+import moment from 'moment';
 
 export default {
     name: 'AccountComponent',
@@ -37,6 +38,9 @@ export default {
     computed: {
         getAccountFirstLetter() {
             return this.$props.account.event_trigger_url[7] || '-'
+        },
+        formatUploadDate() {
+            return moment(this.$props.account.last_upload).format('MMMM Do YYYY, HH:mm')
         },
         extractedSubstring() {
             //eslint-disable-next-line
