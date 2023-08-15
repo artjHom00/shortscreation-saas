@@ -88,6 +88,7 @@ async function addYoutubeAccount(req, res) {
         password,
         recovery_email,
         tiktok_provider_instance,
+        use_tiktok_title,
         tiktok_accounts,
         background_video,
         settings
@@ -120,6 +121,7 @@ async function addYoutubeAccount(req, res) {
           password,
           recovery_email,
           tiktok_provider_instance,
+          use_tiktok_title,
           tiktok_accounts,
           background_video,
           settings
