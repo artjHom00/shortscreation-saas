@@ -22,7 +22,7 @@
                         <inputComponent v-model="form.data.settings.uploadInterval" label="Upload Interval" placeholder="Every 24 hours" option="true" :user="user"/>
                         <inputComponent v-model="form.data.settings.title" label="Enter a title for every video" placeholder="Enter a title... "/>
                         <div class="checkbox">
-                            <input type="checkbox" v-model="form.useDefaultTitle" id="default"/>
+                            <input type="checkbox" v-model="form.useTiktokTitle" id="default"/>
                             <label for="default"><small>Set title as tiktok's title</small></label>
                         </div>
                         <inputComponent v-model="form.data.settings.hashtags" label="Enter default hashtags for every video" placeholder="Enter hashtags... "/>
@@ -91,7 +91,7 @@ export default {
             form: {
                 isActive: false,
                 forAccount: 0,
-                useDefaultTitle: true,
+                useTiktokTitle: false,
                 data: {
                     tiktokAccounts: [],
                     settings: {
@@ -135,6 +135,8 @@ export default {
             })
         },
         changeFormState(accountId) {
+            this.getData()
+            
             if(this.form.forAccount === accountId) {
                 this.form.forAccount = false
                 this.form.isActive = false
@@ -147,6 +149,7 @@ export default {
                 return obj._id === accountId
             })
 
+            this.form.useTiktokTitle = account.use_tiktok_title
             this.form.data.settings = account.settings
             this.form.data.background_video = account?.background_video
             this.form.data.tiktokAccounts = account.tiktok_accounts
@@ -179,7 +182,7 @@ export default {
         },
         updateSettings() {
             axios.patch('youtube-accounts/' + this.form.forAccount, {
-                use_default_title: this.form.useDefaultTitle,
+                use_tiktok_title: this.form.useTiktokTitle,
                 settings: this.form.data.settings
             }).then(() => {
                 if(this.form.data.background_video) {
