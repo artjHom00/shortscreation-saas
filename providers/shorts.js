@@ -210,9 +210,27 @@ async function editVideo(pathToTiktok, backgroundVideo) {
 async function uploadShortToYoutube(event_trigger_url, path, title, description, pinnedComment, hashtags) {
   try {
 
+    // youtube title has only 100 chars limit, so we cut the title to the last complete word
+    function limitStringToLastWord(inputString, maxLength) {
+      if (inputString.length <= maxLength) {
+        return inputString;
+      } else {
+        const trimmedString = inputString.substring(0, maxLength);
+        const lastSpaceIndex = trimmedString.lastIndexOf(' ');
+        if (lastSpaceIndex !== -1) {
+          return trimmedString.substring(0, lastSpaceIndex);
+        } else {
+          // If there are no spaces, just return the trimmed string
+          return trimmedString;
+        }
+      }
+    }
+
     if(hashtags) {
       title = title + ' ' + hashtags
     }
+
+    title = limitStringToLastWord(title, 100)
 
     let response = await axios.post(event_trigger_url, {
       title,
