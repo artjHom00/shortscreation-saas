@@ -25,6 +25,7 @@ async function getRandomTikTokByAuthor(author, foundYoutubeAccount) {
   
     if (count === 0) {
         foundYoutubeAccount.last_log = 'No tiktoks parsed!'
+        foundYoutubeAccount.credentials_valid = false
         foundYoutubeAccount.save()
         
         throw new Error('No tiktoks available!')
