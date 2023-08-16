@@ -171,7 +171,7 @@ function deleteFileIfExists(filePath) {
 }
 
 // https://stackoverflow.com/questions/40014785/node-js-ffmpeg-complexfilter-overlay-another-video
-async function editVideo(pathToTiktok, backgroundVideo) {
+async function editVideo(pathToTiktok, backgroundVideo, foundYoutubeAccount) {
   return new Promise((resolve, reject) => {
     try {
 
@@ -204,7 +204,12 @@ async function editVideo(pathToTiktok, backgroundVideo) {
         ])
         .output(process.env.DEFAULT_OUTPUT_PATH + outputName)
         .on("error", (er) => {
-          console.log("error occured: " + er.message);
+          console.log("[FFMPEG] Error occured: " + er.message)
+
+          foundYoutubeAccount.last_log = er.message
+          foundYoutubeAccount.save()
+
+          throw new Error(er.message)
         })
         .on("end", () => {
           
@@ -277,7 +282,7 @@ async function uploadShortToYoutube(event_trigger_url, path, title, description,
 
 async function generateAndUploadShort(youtubeAccountId) {
   try {
-    console.log('started for #', youtubeAccountId)
+    console.log('[generating] started for #', youtubeAccountId)
     let getRandomElementFromArray = (array) => {
       if (array.length === 0) {
         return undefined; // Return undefined if the array is empty
@@ -290,8 +295,6 @@ async function generateAndUploadShort(youtubeAccountId) {
     let foundYoutubeAccount = await YoutubeAccount.findById(youtubeAccountId)
 
     if(!foundYoutubeAccount) {
-        foundYoutubeAccount.last_log = 'No youtube account found in DB'
-        foundYoutubeAccount.save()
         throw new Error('No youtube account found in DB')
     }
 
@@ -299,16 +302,26 @@ async function generateAndUploadShort(youtubeAccountId) {
     let backgroundVideo = foundYoutubeAccount.background_video
     
     if(!backgroundVideo) {
+      foundYoutubeAccount.credentials_valid = false
       foundYoutubeAccount.last_log = 'No background video provided'
       foundYoutubeAccount.save()
       throw new Error('No background video provided')
     }
     
+    if(!foundYoutubeAccount.settings.title || !foundYoutubeAccount.settings.description) {
+      foundYoutubeAccount.credentials_valid = false
+      foundYoutubeAccount.last_log = 'No title / description provided'
+      foundYoutubeAccount.save()
+      throw new Error('No title / description provided')
+    }
+    
     let { title, description, pinnedComment } = foundYoutubeAccount.settings
+
     
     let randomTikTokAccount = getRandomElementFromArray(tiktokAccounts)
     
     if(!randomTikTokAccount) {
+      foundYoutubeAccount.credentials_valid = false
       foundYoutubeAccount.last_log = 'No tiktok accounts to scrape from provided'
       foundYoutubeAccount.save()
       throw new Error('No tiktok accounts to scrape from provided')
@@ -325,11 +338,11 @@ async function generateAndUploadShort(youtubeAccountId) {
     }
 
     let fileName = await downloadTiktokToFile(randomTikTokInDb.link)
-    console.log('tiktok downloaded: ' + randomTikTokInDb.link)
+    console.log('[generating] tiktok downloaded: ' + randomTikTokInDb.link)
 
-    let output = await editVideo(fileName, backgroundVideo)
+    let output = await editVideo(fileName, backgroundVideo, foundYoutubeAccount)
 
-    console.log('video edited: ' + output)
+    console.log('[generating] video edited: ' + output)
     
     let link = await uploadShortToYoutube(foundYoutubeAccount.event_trigger_url, output, title, description, pinnedComment, hashtags)
     .catch(async (e) => {
