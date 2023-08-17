@@ -364,8 +364,8 @@ async function generateAndUploadShort(youtubeAccountId) {
 
 };
 
-// cron.schedule('*/30 * * * *', async () => { 
-(async () => {
+cron.schedule('*/30 * * * *', async () => { 
+// (async () => {
   try {
     console.log(`[${moment().format('MMMM Do YYYY, h:mm:ss a')}] started process`)
     function mergeArraysWithoutDuplicates(arr1, arr2) {
@@ -448,9 +448,9 @@ async function generateAndUploadShort(youtubeAccountId) {
     console.log('[cron] error, ' + e)
   }
 
-})()
+// })()
 
-// });
+});
 
 module.exports = {
   scrapeFromTikTok,
