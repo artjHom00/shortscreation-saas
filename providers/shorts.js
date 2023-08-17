@@ -437,6 +437,8 @@ cron.schedule('*/30 * * * *', async () => {
 
       })
       
+      console.log(`[${moment().format('MMMM Do YYYY, h:mm:ss a')}] uploading for ${uploadingAccounts.length} accounts`)
+      
       for await(account of uploadingAccounts) {
 
         tiktoks = mergeArraysWithoutDuplicates(tiktoks, account.tiktok_accounts)
