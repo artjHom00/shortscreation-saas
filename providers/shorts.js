@@ -397,6 +397,7 @@ async function generateAndUploadShort(youtubeAccountId) {
 
 cron.schedule('*/30 * * * *', async () => { 
     try {
+      console.log(`[${moment().format('MMMM Do YYYY, h:mm:ss a')}] started process`)
       function mergeArraysWithoutDuplicates(arr1, arr2) {
         // Merge the two arrays using concat
         const mergedArray = arr1.concat(arr2);
@@ -412,26 +413,23 @@ cron.schedule('*/30 * * * *', async () => {
 
       let youtubeAccounts = await YoutubeAccount.find().populate('user_id')
     
-      let youtubeAccountsOfUsersWithSubscription = youtubeAccounts.filter((obj) => {
-        return obj.user_id?.subscription?.has_subscription === true
-      });
-    
       let now = moment(new Date())
       let tiktoks = []
       let nowInDateFormat = Date.now()
 
       
-      let uploadingAccounts = youtubeAccountsOfUsersWithSubscription.filter((account) => {
+      let uploadingAccounts = youtubeAccounts.filter((account) => {
         
         let uploadIntervalInMs = account.settings.uploadInterval*60*60*1000
         let uploadTime = moment(account.last_upload)
         
         let timePassed = moment.duration(now.diff(uploadTime))
 
-        if(timePassed-5*60*1000 >= uploadIntervalInMs) {
+        if(timePassed-5*60*1000 >= uploadIntervalInMs && account.user_id?.subscription?.has_subscription === true) {
           account.last_upload = nowInDateFormat
           account.save()
-          console.log('[account updated] #' + account.id + ' last_upload updated. starting to generate for this account')
+
+          console.log(`[${moment().format('MMMM Do YYYY, h:mm:ss a')}] #${account.id} last_upload updated. starting to generate for this account'`)
           return true
         }
         return false
@@ -443,9 +441,9 @@ cron.schedule('*/30 * * * *', async () => {
         tiktoks = mergeArraysWithoutDuplicates(tiktoks, account.tiktok_accounts)
 
         await generateAndUploadShort(account.id).then((res) => {
-          console.log("🚀 ~ file: shorts.js:308 ~ awaitgenerateAndUploadShort ~ res:", res)
+          console.log(`[${moment().format('MMMM Do YYYY, h:mm:ss a')}] successfully generated & uploaded`)
         }).catch((e) => {
-          console.log("🚀 ~ file: shorts.js:296 ~ youtubeAccountsOfUsersWithSubscription.forEach ~ e:", e)
+          console.log(`[${moment().format('MMMM Do YYYY, h:mm:ss a')}] error occured while generating/uploaded: ${e}`)
         })
 
         }
