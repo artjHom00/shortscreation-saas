@@ -421,7 +421,7 @@ cron.schedule('*/30 * * * *', async () => {
       let nowInDateFormat = Date.now()
 
       
-      let uploadingAccounts = youtubeAccountsOfUsersWithSubscription.filter(async (account) => {
+      let uploadingAccounts = youtubeAccountsOfUsersWithSubscription.filter((account) => {
         
         let uploadIntervalInMs = account.settings.uploadInterval*60*60*1000
         let uploadTime = moment(account.last_upload)
@@ -430,7 +430,7 @@ cron.schedule('*/30 * * * *', async () => {
 
         if(timePassed-5*60*1000 >= uploadIntervalInMs) {
           account.last_upload = nowInDateFormat
-          await account.save()
+          account.save()
           console.log('[account updated] #' + account.id + ' last_upload updated. starting to generate for this account')
           return true
         }
