@@ -36,18 +36,18 @@ const getIdVideo = (url) => {
 const getVideoNoWM = async (url) => {
 
   const idVideo = await getIdVideo(url)
-  console.log('extracted id: ' + idVideo + ' from url: ' + url)
+  console.log(`[${moment().format('MMMM Do YYYY, h:mm:ss a')}] extracted id ${idVideo} for ${url}`)
   const API_URL = `https://api16-normal-c-useast1a.tiktokv.com/aweme/v1/feed/?aweme_id=${idVideo}`;
 
-  console.log("🚀 ~ file: shorts.js:47 ~ getVideoNoWM ~ API_URL:", API_URL)
+  console.log(`[${moment().format('MMMM Do YYYY, h:mm:ss a')}] aweme api url: ${API_URL}`)
   const resp = await axios.get(API_URL, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Safari/605.1.15'
-      }
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Safari/605.1.15'
+    }
   });
-
+  
   const urlMedia = resp.data.aweme_list[0].video.play_addr.url_list[0]
-  console.log("🚀 ~ file: shorts.js:62 ~ getVideoNoWM ~ urlMedia:", urlMedia)
+  console.log(`[${moment().format('MMMM Do YYYY, h:mm:ss a')}] link to video without WM: ${urlMedia}`)
 
   const data = {
       url: urlMedia,
@@ -259,7 +259,7 @@ async function uploadShortToYoutube(event_trigger_url, path, title, description,
 
 async function generateAndUploadShort(youtubeAccountId) {
   try {
-    console.log('started for #', youtubeAccountId)
+    console.log(`[${moment().format('MMMM Do YYYY, h:mm:ss a')}] started for #${youtubeAccountId}`)
     let getRandomElementFromArray = (array) => {
       if (array.length === 0) {
         return undefined; // Return undefined if the array is empty
@@ -364,90 +364,93 @@ async function generateAndUploadShort(youtubeAccountId) {
 
 };
 
-cron.schedule('*/30 * * * *', async () => { 
-    try {
-      console.log(`[${moment().format('MMMM Do YYYY, h:mm:ss a')}] started process`)
-      function mergeArraysWithoutDuplicates(arr1, arr2) {
-        // Merge the two arrays using concat
-        const mergedArray = arr1.concat(arr2);
-      
-        // Create a Set from the merged array to remove duplicates
-        const uniqueSet = new Set(mergedArray);
-      
-        // Convert the Set back to an array
-        const mergedWithoutDuplicates = Array.from(uniqueSet);
-      
-        return mergedWithoutDuplicates;
-      }
-
-      let youtubeAccounts = await YoutubeAccount.find().populate('user_id')
+// cron.schedule('*/30 * * * *', async () => { 
+(async () => {
+  try {
+    console.log(`[${moment().format('MMMM Do YYYY, h:mm:ss a')}] started process`)
+    function mergeArraysWithoutDuplicates(arr1, arr2) {
+      // Merge the two arrays using concat
+      const mergedArray = arr1.concat(arr2);
     
-      let now = moment(new Date())
-      let tiktoks = []
-      let nowInDateFormat = Date.now()
-
-      
-      let uploadingAccounts = youtubeAccounts.filter((account) => {
-        
-        let uploadIntervalInMs = account.settings.uploadInterval*60*60*1000
-        let uploadTime = moment(account.last_upload)
-        
-        let timePassed = moment.duration(now.diff(uploadTime))
-
-        if(timePassed-5*60*1000 >= uploadIntervalInMs && account.user_id?.subscription?.has_subscription === true) {
-          account.last_upload = nowInDateFormat
-          account.save()
-
-          console.log(`[${moment().format('MMMM Do YYYY, h:mm:ss a')}] #${account.id} last_upload updated. starting to generate for this account'`)
-          return true
-        }
-        return false
-
-      })
-      
-      console.log("🚀 ~ file: shorts.js:390 ~ uploadingAccounts ~ uploadingAccounts:", uploadingAccounts)
-
-      for await(account of uploadingAccounts) {
-
-        tiktoks = mergeArraysWithoutDuplicates(tiktoks, account.tiktok_accounts)
-
-        await generateAndUploadShort(account.id).then((res) => {
-          console.log(`[${moment().format('MMMM Do YYYY, h:mm:ss a')}] successfully generated & uploaded`)
-        }).catch((e) => {
-          console.log(`[${moment().format('MMMM Do YYYY, h:mm:ss a')}] error occured while generating/uploaded: ${e}`)
-        })
-
-        }
-
-  
-      for await (tiktok of tiktoks) {
-
-        await scrapeFromTikTok(tiktok).catch(() => {
-          
-        })
-        
-      }
-      
-      // remove subscription
-      // from all users whose subscription expire
-      let users = await User.find({
-        'subscription.has_subscription': true
-      })
-            
-      users.forEach((user) => {
-        if(Date.now() - new Date(user.subscription.expires).getTime() >= 0) {
-          user.subscription.has_subscription = false
-          user.save()
-        }
-      })
-
-      
-      
-    } catch(e) {
-      console.log('[cron] error, ' + e)
+      // Create a Set from the merged array to remove duplicates
+      const uniqueSet = new Set(mergedArray);
+    
+      // Convert the Set back to an array
+      const mergedWithoutDuplicates = Array.from(uniqueSet);
+    
+      return mergedWithoutDuplicates;
     }
 
-});
+    let youtubeAccounts = await YoutubeAccount.find().populate('user_id')
+  
+    let now = moment(new Date())
+    let tiktoks = []
+    let nowInDateFormat = Date.now()
+
+    
+    let uploadingAccounts = await youtubeAccounts.filter((account) => {
+      
+      let uploadIntervalInMs = account.settings.uploadInterval*60*60*1000
+      let uploadTime = moment(account.last_upload)
+      
+      let timePassed = moment.duration(now.diff(uploadTime))
+
+      if(timePassed-5*60*1000 >= uploadIntervalInMs && account.user_id?.subscription?.has_subscription === true) {
+        account.last_upload = nowInDateFormat
+        account.save()
+
+        console.log(`[${moment().format('MMMM Do YYYY, h:mm:ss a')}] #${account.id} last_upload updated. starting to generate for this account'`)
+        return true
+      }
+      return false
+
+    })
+    
+    console.log(`[${moment().format('MMMM Do YYYY, h:mm:ss a')}] uploading for ${uploadingAccounts.length} accounts`)
+
+    for await(account of uploadingAccounts) {
+
+      tiktoks = mergeArraysWithoutDuplicates(tiktoks, account.tiktok_accounts)
+
+      await generateAndUploadShort(account.id).then((res) => {
+        console.log(`[${moment().format('MMMM Do YYYY, h:mm:ss a')}] successfully generated & uploaded`)
+      }).catch((e) => {
+        console.log(`[${moment().format('MMMM Do YYYY, h:mm:ss a')}] error occured while generating/uploaded: ${e}`)
+      })
+
+      }
+
+
+    for await (tiktok of tiktoks) {
+
+      await scrapeFromTikTok(tiktok).catch(() => {
+        
+      })
+      
+    }
+    
+    // remove subscription
+    // from all users whose subscription expire
+    let users = await User.find({
+      'subscription.has_subscription': true
+    })
+          
+    users.forEach((user) => {
+      if(Date.now() - new Date(user.subscription.expires).getTime() >= 0) {
+        user.subscription.has_subscription = false
+        user.save()
+      }
+    })
+
+    
+    
+  } catch(e) {
+    console.log('[cron] error, ' + e)
+  }
+
+})()
+
+// });
 
 module.exports = {
   scrapeFromTikTok,
