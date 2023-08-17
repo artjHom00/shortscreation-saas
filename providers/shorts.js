@@ -38,8 +38,9 @@ const getVideoNoWM = async (url) => {
   try {
 
     const idVideo = await getIdVideo(url)
-    console.log('extracted id: ' + idVideo + ' from url: ' + url)
+    console.log(`[${moment().format('MMMM Do YYYY, h:mm:ss a')}] extracted id ${idVideo} for ${url}`) 
     const API_URL = `https://api16-normal-c-useast1a.tiktokv.com/aweme/v1/feed/?aweme_id=${idVideo}`;
+    console.log(`[${moment().format('MMMM Do YYYY, h:mm:ss a')}] aweme api url: ${API_URL}`)
     
     const resp = await axios.get(API_URL, {
       headers: {
@@ -282,7 +283,7 @@ async function uploadShortToYoutube(event_trigger_url, path, title, description,
 
 async function generateAndUploadShort(youtubeAccountId) {
   try {
-    console.log('[generating] started for #', youtubeAccountId)
+    console.log(`[${moment().format('MMMM Do YYYY, h:mm:ss a')}] started for #${youtubeAccountId}`)
     let getRandomElementFromArray = (array) => {
       if (array.length === 0) {
         return undefined; // Return undefined if the array is empty
