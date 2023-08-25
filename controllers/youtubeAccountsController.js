@@ -16,11 +16,8 @@ async function addYoutubeAccount(req, res) {
         if(user.subscription.type === 'Basic' && youtubeAccountsOfUser >= 1) {
           return res.status(400).json({ error: 'Limit of accounts reached, buy subscription better!' });
         }
-        if(user.subscription.type === 'Premium' && youtubeAccountsOfUser >= 3) {
-          return res.status(400).json({ error: 'Limit of accounts reached, buy subscription better!' });
-        }
-        if(user.subscription.type === 'Ultimate' && youtubeAccountsOfUser >= 5) {
-          return res.status(400).json({ error: 'Limit of accounts reached, buy subscription better!' });
+        if(youtubeAccountsOfUser >= 3) {
+          return res.status(400).json({ error: 'Limit of accounts reached!' });
         }
         
         // Check if event_trigger_email exists & matches regex
