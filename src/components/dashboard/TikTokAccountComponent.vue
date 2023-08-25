@@ -31,9 +31,8 @@ export default {
         border-radius: 15px;
         border: 1px solid $gray-white;
         background: $white;
-        // max-width: 350px;
         min-width: 150px;
-        width: 20%;
+        width: auto;
         & > div {
             & > h4, & > p {
                 margin: 0;

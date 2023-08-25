@@ -141,10 +141,10 @@ export default {
         {
           type: 'dark',
           videos: '1-8',
-          accounts: '5',
+          accounts: '3',
           name: 'Ultimate',
           price: '69.99',
-          videoCost: '$0.06',
+          videoCost: '$0.09',
           link: '/dashboard'
         },
       ]

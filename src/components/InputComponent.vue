@@ -64,6 +64,7 @@ export default {
             font-family: Inter, Helvetica, Arial, sans-serif;
             width: calc(100% - 60px);
             padding: 20px 30px;
+            color: $dark;
             border-radius: 10px;
             background: $gray-white;
             box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.25);
@@ -77,6 +78,9 @@ export default {
                 padding-bottom: 30px;
             }
         } 
+        & > select {
+            width: 100% !important;
+        }
         & > input:focus, & > textarea:focus {
             background: $white;
         }
