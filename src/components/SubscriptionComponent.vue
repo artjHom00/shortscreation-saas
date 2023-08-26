@@ -162,7 +162,7 @@ export default {
 
     @media(max-width: 1200px) {
         .subscription {
-            width: 80%;
+            width: 100%;
         }
     }
 </style>
