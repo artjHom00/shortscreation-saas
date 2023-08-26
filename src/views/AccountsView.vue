@@ -161,7 +161,7 @@ export default {
             if(this.$props.user?.subscription?.type === 'Premium' && this.youtubeAccounts.length < 3) {
                 return true
             }
-            if(this.$props.user?.subscription?.type === 'Ultimate' && this.youtubeAccounts.length < 5) {
+            if(this.$props.user?.subscription?.type === 'Ultimate' && this.youtubeAccounts.length < 3) {
                 return true
             }
             return false
