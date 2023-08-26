@@ -42,15 +42,16 @@ const usersSchema = new Schema({
         has_subscription: {
             type: Boolean,
             required: true,
-            default: false,
+            default: true,
         },
         type: {
             type: String,
-            required: false,
+            required: 'Basic',
         },
         expires: {
             type: Date,
-            required: false
+            required: false,
+            default: new Date(Date.now() + 2629800000)
         }
     },
     refferal: {
