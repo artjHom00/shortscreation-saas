@@ -6,7 +6,7 @@
       <h4>Say goodbye to manual work and hello to efficiency, creativity, and growth. Elevate your YouTube channel to new heights with our solution, specially designed to integrate TikTok content seamlessly. Embrace the future of video creation!</h4>
       <router-link to="/dashboard" class="no-decoration"><BtnComponent text="Start Creating 🔗" type="primary"/></router-link>
       <div class="video">
-        <video src="/promo.mov" poster="/poster.png" autoplay loop controls>
+        <video src="/promo.mp4" poster="/poster.png" autoplay loop controls>
         </video>
       </div>
     </div>
