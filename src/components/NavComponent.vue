@@ -45,7 +45,7 @@ export default {
 <style scoped lang="scss">
     @import '@/assets/styles/_variables.scss';
     .nav {
-        margin-top: 40px;
+        margin-top: 60px;
         display: flex;
         justify-content: space-between;
         align-items: center;

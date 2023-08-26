@@ -1,4 +1,5 @@
 <template>
+  <AlertComponent v-if="showAlert"/>
    <div class="home">
     <div class="main-section section container">
       <h1>Innovative Automated Production of <span class="text-primary">YouTube Shorts</span></h1>
@@ -13,11 +14,11 @@
           <img src="../assets/images/home/chart.svg">
         </div>
         <div class="text">
-          <h3>Exponential grow of your YouTube Channel!</h3>
+          <h3>Automated & Exponential grow of your YouTube Channel!</h3>
           <h4>
             <a href="https://youtube.com/@Mariantic" target="_blank" class="text-primary">Check out one of channels, working with our script!</a>
             <br><br>
-            Watch your channel thrive with visually stunning and trendsetting content with always-growing audience without you manually working on it's content.
+            Watch your channel fill with content from TikTok & always-growing audience without you manually working on it's content.
             <br><br>
             The audience then can be used for affiliate marketing, selling products & creating your own brand
           </h4>
@@ -29,14 +30,12 @@
       <div class="wrapper container">
         <div class="text">
           <h2>
-            <span class="text-primary">Maximize Your Reach and Earnings</span> with Our Affiliate Program!
+            <span class="text-primary">Start Making $10k per Month</span> with Our Affiliate Program!
           </h2>
             <h4>
-              With our affiliate program, you have the opportunity to earn while you grow! 
-              <br><br>
-              <b>It's simple:</b> Produce more exceptional YouTube Shorts content using our SAAS solution, and watch as your clients multiply.
-              <b><span class="text-primary">For every subscription bought by a client referred by you, we offer $2.5-$70</span></b> as a token of appreciation. 
-              As you create captivating videos and attract more users, your potential earnings rise! 
+              <b>It's simple:</b> Produce more YouTube Shorts content using our SAAS solution, and earn <b><span class="text-primary">10% [$2.5 - $60]</span> for each client who purchases a subscription</b> from your link!
+              <br><br>  
+              Just add your refferal link into pinned comment on your shorts / in description & start making money now!
             </h4>
             <router-link to="/dashboard" class="no-decoration"><BtnComponent type="primary" text="Get Started"/></router-link>
         </div>
@@ -49,28 +48,31 @@
       <h2><span class="text-primary">ShortsCreation</span> Features</h2>
       <div class="wrapper">
         <div class="adv">
-          <img src="../assets/images/home/person.png">
-          <h3>Seamless Automation</h3>
-          <h4>Streamline your content creation process with our seamless automation features. Say goodbye to manual tasks and embrace efficiency. Spend more time on your creative brilliance, and let our SAAS solution handle the rest: generating content & uploading it</h4>
+          <div style="font-size: 84px;">🔌</div>
+          <!-- <img src="../assets/images/home/person.png"> -->
+          <h3>100% Automated</h3>
+          <h4>Our SAAS solution handle the full process of growing your YouTube account: generating content, setting it's title and description & uploading it</h4>
         </div>
         <div class="adv">
-          <img src="../assets/images/home/eye.png">
-          <h3>Trend Insights</h3>
-          <h4>Stay ahead of the competition with real-time trend insights. Our platform provides valuable data and analytics from TikTok, ensuring your YouTube Shorts are always on-trend and captivating.</h4>
+          <div style="font-size: 84px;">📌</div>
+          <!-- <img src="../assets/images/home/eye.png"> -->
+          <h3>First & Only</h3>
+          <h4>We are the first to allow you create a network of fully automated YouTube Channels. Monetize all the traffic that you gain automatically & start making money!</h4>
         </div>
         <div class="adv">
-          <img src="../assets/images/home/short.png">
-          <h3>Content Inspiration</h3>
-          <h4>Need a spark of inspiration? Look no further! Our SAAS solution offers an endless stream of content ideas, fueled by the creativity and diversity of TikTok's viral sensations.</h4>
+          <div style="font-size: 84px;">🎉</div>
+          <!-- <img src="../assets/images/home/short.png"> -->
+          <h3>Free trial</h3>
+          <h4>Get the free trial for 1 month without adding your cards / personal info to test our service before paying!</h4>
         </div>
-        <div class="adv">
+        <!-- <div class="adv">
           <img src="../assets/images/home/store.png">
           <h3>Channel Growth</h3>
           <h4>Witness exponential channel growth as you leverage the power of TikTok content. Engage your audience like never before, and enjoy the rewards of a thriving YouTube channel.</h4>
-        </div>
+        </div> -->
       </div>
     </div>
-    <div class="reviews section">
+    <!-- <div class="reviews section">
       <div class="container">
         <div class="text">
           <h2>
@@ -93,7 +95,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div class="subscriptions section container">
       <h2>
@@ -110,15 +112,18 @@
 <script>
 import BtnComponent from '@/components/BtnComponent.vue'; 
 import subscriptionComponent from '@/components/SubscriptionComponent.vue'; 
+import AlertComponent from '@/components/AlertComponent.vue'
 
 export default {
   name: 'HomeView',
   components: {
     BtnComponent,
-    subscriptionComponent
+    subscriptionComponent,
+    AlertComponent
   },
   data() {
     return {
+      showAlert: true,
       subscriptions: [
         {
           type: 'dark',
@@ -223,7 +228,7 @@ export default {
   .affiliate {
     background: $fade-w-image;
     background-size: cover;
-    padding: 35px 0;
+    padding: 75px 0;
     color: $gray-white;
     & > .wrapper {
       display: flex;
@@ -232,6 +237,9 @@ export default {
       justify-content: space-between;
       & > .text {
         width: 50%;
+        & > h2 {
+          margin-top: 0;
+        }
         & > * {
           margin: 40px 0;
         }
@@ -257,8 +265,9 @@ export default {
     & > .wrapper {
       display: flex;
       flex-wrap: wrap;
+      justify-content: space-between;
       & > .adv {
-        width: 45%;
+        width: 25%;
         padding: 20px;
         & > h4 {
           opacity: 0.75;
