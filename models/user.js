@@ -46,7 +46,8 @@ const usersSchema = new Schema({
         },
         type: {
             type: String,
-            required: 'Basic',
+            required: false,
+            default: 'Basic'
         },
         expires: {
             type: Date,
