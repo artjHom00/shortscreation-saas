@@ -2,13 +2,16 @@
   <AlertComponent v-if="showAlert"/>
    <div class="home">
     <div class="main-section section container">
-      <h1>Innovative Automated Production of <span class="text-primary">YouTube Shorts</span></h1>
+      <h1>Create a network of fully automated <span class="text-primary">YouTube Channels</span></h1>
       <h4>Say goodbye to manual work and hello to efficiency, creativity, and growth. Elevate your YouTube channel to new heights with our solution, specially designed to integrate TikTok content seamlessly. Embrace the future of video creation!</h4>
       <router-link to="/dashboard" class="no-decoration"><BtnComponent text="Start Creating 🔗" type="primary"/></router-link>
-      <div class="video placeholder"></div>
+      <div class="video">
+        <video src="/promo.mov" poster="/poster.png" autoplay loop controls>
+        </video>
+      </div>
     </div>
     <div class="steps section container">
-      <h2>Unleash the Power of <span class="text-primary">TikTok</span> for Your <span class="text-primary">YouTube Channel</span>!</h2>
+      <h2>Unleash the Power of <span class="text-primary">TikTok & YouTube Shorts</span> for Your YouTube Channel!</h2>
       <div class="steps-content">
         <div class="image">
           <img src="../assets/images/home/chart.svg">
@@ -168,11 +171,13 @@ export default {
     opacity: 0.6;
     background: $fade-w-image;
   }
-  .video {
+  .video, video {
+    margin: 0 auto;
     margin-top: 80px;
-    width: 70%;
-    height: 350px;
-    max-width: 720px;
+    width: 100%;
+    max-width: 960px;
+    display: block;
+    border-radius: 13px;
   }
   .section {
     margin-top: 100px;
