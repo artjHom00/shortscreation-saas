@@ -27,7 +27,10 @@
         <div class="accounts">
             <h4>Your Accounts:</h4>
             <div v-if="youtubeAccounts.length === 0">
-                <h3 >No accounts yet! :( <br></h3>
+                <h3 >No accounts yet! :(<br>
+                <small>To get started, connect your first YouTube account in <router-link class="text-primary" to="/accounts">"Manage Accounts"</router-link> tab, <br>
+                using instruction provided there </small>
+                </h3>
             </div>
             
             <div class="accounts-list" v-else>
