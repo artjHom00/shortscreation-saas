@@ -34,16 +34,16 @@ export default {
                     'tooltip': 'Dashboard'
                 },
                 {
-                    'url': '/create-content',
-                    'icon': 'dashboard/plus.svg',
-                    'subscriptionRequired': true,
-                    'tooltip': 'Content Creation Settings'
-                },
-                {
                     'url': '/accounts',
                     'icon': 'dashboard/accounts.svg',
                     'subscriptionRequired': true,
                     'tooltip': 'Manage Accounts'
+                },
+                {
+                    'url': '/create-content',
+                    'icon': 'dashboard/plus.svg',
+                    'subscriptionRequired': true,
+                    'tooltip': 'Content Creation Settings'
                 },
                 {
                     'url': '/affiliate',
