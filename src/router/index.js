@@ -10,7 +10,7 @@ import AffiliateView from '../views/AffiliateView.vue'
 import ForgotPasswordView from '../views/ForgotPasswordView.vue'
 import ChangePasswordView from '../views/ChangePasswordView.vue'
 import SubscriptionsView from '../views/SubscriptionsView.vue'
-
+// import axios from 'axios'
 
 
 
@@ -43,6 +43,7 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: DashboardView,
+    meta: { isAuthRequired: true },
     props: true,
   },
   {
@@ -89,6 +90,13 @@ const router = createRouter({
   routes
 })
 
+// adding middleware on authenication
+// router.beforeEach((to) => {
+  
+//   let isAuthRequired = to.matched.some(record => record.meta.isAuthRequired)
+//   if(!isAuthRequired) next()
+
+// })
 
 router.afterEach((to) => {
   const DEFAULT_TITLE = 'ShortsCreation'

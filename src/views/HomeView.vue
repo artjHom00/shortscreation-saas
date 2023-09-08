@@ -52,53 +52,21 @@
       <div class="wrapper">
         <div class="adv">
           <div style="font-size: 84px;">🔌</div>
-          <!-- <img src="../assets/images/home/person.png"> -->
           <h3>100% Automated</h3>
           <h4>Our SAAS solution handle the full process of growing your YouTube account: generating content, setting it's title and description & uploading it</h4>
         </div>
         <div class="adv">
           <div style="font-size: 84px;">📌</div>
-          <!-- <img src="../assets/images/home/eye.png"> -->
           <h3>First & Only</h3>
           <h4>We are the first to allow you create a network of fully automated YouTube Channels. Monetize all the traffic that you gain automatically & start making money!</h4>
         </div>
         <div class="adv">
           <div style="font-size: 84px;">🎉</div>
-          <!-- <img src="../assets/images/home/short.png"> -->
           <h3>Free trial</h3>
           <h4>Get the free trial for 1 month without adding your cards / personal info to test our service before paying!</h4>
         </div>
-        <!-- <div class="adv">
-          <img src="../assets/images/home/store.png">
-          <h3>Channel Growth</h3>
-          <h4>Witness exponential channel growth as you leverage the power of TikTok content. Engage your audience like never before, and enjoy the rewards of a thriving YouTube channel.</h4>
-        </div> -->
       </div>
     </div>
-    <!-- <div class="reviews section">
-      <div class="container">
-        <div class="text">
-          <h2>
-            Check Out What <br><span>Our Clients</span> Are Saying!
-          </h2>
-        </div>
-        <div class="wrapper">
-          <div class="review-el">
-            <img src="../assets/images/home/avatars/Sarah.png" width="80" alt="">
-            <h3>Sarah T.</h3>
-            <small>6 accounts, 2.3k followers, 60k+ views</small>
-            <p>"I can't imagine managing my channel without ShortsCreation. The SAAS solution's integration with TikTok has saved me countless hours while boosting my content. The affiliate program is a brilliant addition, and I've earned extra income just by referring fellow creators. Highly recommended!"</p>
-          </div>
-
-          <div class="review-el">
-            <img src="../assets/images/home/avatars/Jervonte.png" width="80" alt="">
-            <h3>Jevonte K.</h3>
-            <small>2 accounts, 700 followers, 20k+ views</small>
-            <p>"As a content creator, time is of the essence. Thanks to ShortsCreation, I now have more time to focus on content strategy and creativity. The trend insights have been a game-changer, and my videos had seen a significant increase in views n likes."</p>
-          </div>
-        </div>
-      </div>
-    </div> -->
 
     <div class="subscriptions section container">
       <h2>

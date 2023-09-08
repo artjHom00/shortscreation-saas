@@ -84,10 +84,11 @@ export default {
             .then(({ data }) => {
                 this.youtubeAccounts = data
             }).catch(({ response: { data }}) => {
+                console.log("🚀 ~ file: DashboardView.vue:87 ~ .then ~ data:", data)
                 // happens when token is 'Bearer null', which means user is not authorized
-                if(data.name === 'JsonWebTokenError') {
-                    window.location.href = '/create-account'
-                }
+                // if(data.name === 'JsonWebTokenError') {
+                //     window.location.href = '/create-account'
+                // }
                 // this.$router.push('/')
             })
 
@@ -95,10 +96,11 @@ export default {
             .then(({ data }) => {
                 this.shorts = data
             }).catch(({ response: { data }}) => {
+                console.log("🚀 ~ file: DashboardView.vue:99 ~ .then ~ data:", data)
                 // happens when token is 'Bearer null', which means user is not authorized
-                if(data.name === 'JsonWebTokenError') {
-                    window.location.href = '/create-account'
-                }
+                // if(data.name === 'JsonWebTokenError') {
+                //     window.location.href = '/create-account'
+                // }
                 // this.$router.push('/')
             })
         },
@@ -186,12 +188,12 @@ export default {
         this.getData()
 
         if(this.$props.user?.confirmation?.status === false) {
-            window.location.href = '/confirm-account'
+            // window.location.href = '/confirm-account'
         }
         
 
         if(!this.$props.user) {
-            window.location.href = '/create-account'
+            // window.location.href = '/create-account'
         }
         
     }
