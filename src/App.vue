@@ -1,5 +1,5 @@
 <template>
-  <NavComponent/>
+  <NavComponent v-if="!isLoading"/>
   <router-view/>
   <FooterComponent/>
 </template>
@@ -18,7 +18,7 @@ export default {
   },
   data() {
     return {
-      user: {}
+      isLoading: true
     }
   },
   methods: {
@@ -48,12 +48,11 @@ export default {
   watch: {
     async '$route' () {
       const _isUpdated = await this.updateJWTIfNeeded(this.$cookies.get('jwt_token'))
-      console.log("🚀 ~ file: App.vue:51 ~ _isUpdated:", _isUpdated)
 
       if(_isUpdated) {
-        
-        let user = await this.me()
-        console.log("🚀 ~ file: App.vue:60 ~ this.me ~ user:", user)
+        this.isLoading = true
+        await this.me()
+        this.isLoading = false
 
       }
     }

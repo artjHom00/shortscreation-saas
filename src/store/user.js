@@ -16,16 +16,16 @@ module.exports = {
                 headers: {
                     'Authorization': ctx.getters.getJWT
                 } 
-            }).catch(({ response}) => {
+            }).catch((response) => {
                 return response
                 // this.$router.push('/')
-            }).finally(() => {
-            //   this.setRefferalCookie()
             })
+            
+            ctx.commit('updateUser', data ? data : {})
+        
 
             if(data?.error || data?.message) return null
 
-            ctx.commit('updateUser', data)
             return data
 
         }
@@ -34,11 +34,14 @@ module.exports = {
         updateJWT(state, jwt) {
             state.jwt_token_cookie = jwt
         },
-        updateUser(state, newUser) {
+        patchUser(state, newUser) {
             state.user = {
                 ...state.user,
-                newUser
+                ...newUser
             }
+        },
+        updateUser(state, newUser) {
+            state.user = newUser
         },
     },
     state: {

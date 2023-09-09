@@ -13,7 +13,7 @@
             </router-link>
         </div>
         <div>
-            <router-link to="/sign-in" class="no-decoration" v-if="!user?._id">
+            <router-link to="/sign-in" class="no-decoration" v-if="!getUser?.id">
                 <btnComponent class="pc" icon="person.svg" text="Sign In" type="dark"/>
                 <btnComponent class="mobile" icon="person.svg" type="dark"/>
             </router-link>
@@ -30,14 +30,18 @@
 import btnComponent from '@/components/BtnComponent.vue' 
 import Popper from 'vue3-popper';
 // import axios from 'axios'
+import { mapGetters } from 'vuex'
 
 export default {
     name: 'NavComponent',
-    props: ['user'],
+    computed: mapGetters(['getUser']),
     components: {
         btnComponent,
         Popper
     },
+    mounted() {
+        
+    }
 
 }
 </script>
