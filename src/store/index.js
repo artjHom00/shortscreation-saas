@@ -6,6 +6,10 @@ export default createStore({
     host: 'https://shortscreation.tech',
   },
   modules: {
-    user: require('./user.js')
+    user: {
+      namespaced: true,
+      ...require('./user.js')
+    },
+    youtubeAccounts: require('./youtubeAccounts.js')
   }
 })

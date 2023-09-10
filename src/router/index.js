@@ -103,11 +103,11 @@ router.beforeEach(async (to, from, next) => {
   // restore user data
   if(jwt_token) {
     
-    let _isUpdated = await store.dispatch('updateJWTIfNeeded', jwt_token)
+    let _isUpdated = await store.dispatch('user/updateJWTIfNeeded', jwt_token)
     
     if(_isUpdated) {
       // save user data in store
-      await store.dispatch('me')
+      await store.dispatch('user/me')
     }
 
   }

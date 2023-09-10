@@ -9,7 +9,6 @@ import NavComponent from '@/components/NavComponent.vue'
 import FooterComponent from '@/components/FooterComponent.vue'
 
 // import axios from 'axios'
-import { mapMutations, mapActions } from 'vuex'
 
 export default {
   components: {
@@ -22,21 +21,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['me', 'updateJWTIfNeeded']),
-    ...mapMutations(['updateJWT']),
-    // getData() {
-
-    // axios.get('users/me')
-    // .then(({ data }) => {
-    //     this.user = data
-    // }).catch(({ response: { data }}) => {
-    //     console.log("🚀 ~ file: DashboardView.vue:62 ~ .then ~ data:", data.error)
-    //     // this.$router.push('/')
-    // }).finally(() => {
-    //   this.setRefferalCookie()
-    // })
-    
-    // },
 
     setRefferalCookie() {
       if(this.$route.query?.ref) {
@@ -45,26 +29,6 @@ export default {
     }
  
   },
-  watch: {
-    // async '$route' () {
-    //   const _isUpdated = await this.updateJWTIfNeeded(this.$cookies.get('jwt_token'))
-
-    //   if(_isUpdated) {
-    //     this.isLoading = true
-    //     await this.me()
-    //     this.isLoading = false
-
-    //   }
-    // }
-  },
-  async mounted() {
-      
-    // axios.defaults.baseURL = this.$store.state.host
-    // axios.defaults.headers.common['Authorization'] = `Bearer ${this.$cookies.get('jwt_token')}`
-
-    
-    // this.getData()
-  }
 }
 </script>
 <style lang="scss">

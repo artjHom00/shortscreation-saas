@@ -52,7 +52,7 @@ export default {
             }
         },
         shortenId() {
-            return this.$props.account?._id.slice(-5)
+            return this.$props.account?.id.slice(-5)
         }
     },
 }

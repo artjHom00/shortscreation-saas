@@ -34,7 +34,9 @@ import { mapGetters } from 'vuex'
 
 export default {
     name: 'NavComponent',
-    computed: mapGetters(['getUser']),
+    computed: mapGetters({
+        getUser: 'user/getUser'
+    }),
     components: {
         btnComponent,
         Popper

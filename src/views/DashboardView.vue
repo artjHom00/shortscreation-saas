@@ -1,21 +1,23 @@
 <template lang="">
     <div class="dashboard container">
-        <ProfileNavigation :user="user"/>
+        <ProfileNavigation :user="getUser"/>
         <h2>Dashboard</h2>
         <p>* Here you can access basic information about your subscription / dashboard</p>
         <div class="filled-section">
-            <div class="filled-section-content" v-if="!user?.subscription?.has_subscription">
+            <div class="filled-section-content" v-if="!getUser?.subscription?.has_subscription">
                 <h4>Your Subscription:</h4>
                 <h1>No Subscription</h1>
                 <br>
-                <router-link to="/subscriptions" class="no-decoration"><BtnComponent type="primary" text="Buy subscription"/></router-link>
+                <router-link to="/subscriptions" class="no-decoration">
+                    <BtnComponent type="primary" text="Buy subscription"/>
+                </router-link>
             </div>
             <div class="filled-section-content" v-else>
                 <h4>Your Subscription:</h4>
-                <h1>{{ user?.subscription?.type }} Plan</h1>
+                <h1>{{ getUser?.subscription?.type }} Plan</h1>
                 <h3>Expires: {{ getSubscriptionExpirationDate }}</h3>
             </div>
-            <div v-if="user?.subscription?.has_subscription && youtubeAccounts.length > 0" class="next-upload">
+            <div v-if="getUser?.subscription?.has_subscription && youtubeAccounts.length > 0" class="next-upload">
                 <h4>Next closest upload:</h4>
                 <div>
                     <h3>In {{ getClosestNextUpload?.date?.hours }} hours</h3>
@@ -26,15 +28,15 @@
 
         <div class="accounts">
             <h4>Your Accounts:</h4>
-            <div v-if="youtubeAccounts.length === 0">
+            <div v-if="youtubeAccounts?.length === 0">
                 <h3 >No accounts yet! :(<br>
-                <small>To get started, connect your first YouTube account in <router-link class="text-primary" to="/accounts">"Manage Accounts"</router-link> tab, <br>
+                <small>Connect your first YouTube account in <router-link class="text-primary" to="/accounts">"Manage Accounts"</router-link> tab, <br>
                 using instruction provided there </small>
                 </h3>
             </div>
             
             <div class="accounts-list" v-else>
-                <router-link to="/accounts" v-for="account in youtubeAccounts" :key="account._id">
+                <router-link to="/accounts" v-for="account in getYoutubeAccountsPreview" :key="account._id">
                     <AccountComponent :account="account"/>
                 </router-link>
             </div>
@@ -61,10 +63,10 @@ import ShortComponent from '@/components/dashboard/ShortComponent.vue';
 import axios from 'axios';
 import moment from 'moment';
 
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: 'DashboardView',
-    props: ['user'],
     components: {
         ProfileNavigation,
         AccountComponent,
@@ -73,11 +75,11 @@ export default {
     },
     data() {
         return {
-            youtubeAccounts: [],
             shorts: [],
         }
     },
     methods: {
+        ...mapActions(['getYoutubeAccounts']),
         shortenId(id) {
             return id.slice(-5)
         },
@@ -109,8 +111,12 @@ export default {
  
     },
     computed: {
+        ...mapGetters({
+            getYoutubeAccountsPreview: 'getYoutubeAccountsPreview', 
+            getUser: 'user/getUser'
+        }),
         getSubscriptionExpirationDate() {
-            return moment(this.$props.user?.subscription?.expires).format('Do MMM YYYY')
+            return moment(this.getUser.subscription?.expires).format('Do MMM YYYY')
         },
         getClosestNextUpload() {
             function padTo2Digits(num) {
@@ -182,21 +188,18 @@ export default {
             
         }
     },  
-    mounted() {
+    async mounted() {
         
-        axios.defaults.baseURL = this.$store.state.host
-        axios.defaults.headers.common['Authorization'] = `Bearer ${this.$cookies.get('jwt_token')}`
-        
-        this.getData()
+        await this.getYoutubeAccounts()
 
-        if(this.$props.user?.confirmation?.status === false) {
-            // window.location.href = '/confirm-account'
-        }
+        // if(this.$props.user?.confirmation?.status === false) {
+        //     // window.location.href = '/confirm-account'
+        // }
         
 
-        if(!this.$props.user) {
-            // window.location.href = '/create-account'
-        }
+        // if(!this.$props.user) {
+        //     // window.location.href = '/create-account'
+        // }
         
     }
 }

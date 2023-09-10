@@ -122,6 +122,7 @@ export default {
             .nav-btn {
                 height: 40px;
                 margin: 0 8px;
+                border-radius: 10px;
             }
             & > * > * > * {
                 margin: 0 4px;
