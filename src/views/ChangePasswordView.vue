@@ -10,7 +10,7 @@
                 <InputComponent v-model="password" label="New Password" placeholder="*********"/>
                 <InputComponent v-model="repeatPassword" label="Confirm password" placeholder="*********"/>
             </div>
-            <btnComponent type="primary" text="Update" @click="updatePassword"/>
+            <BtnComponent type="primary" text="Update" @click="updatePassword"/>
         </div>
     </div>
 </template>

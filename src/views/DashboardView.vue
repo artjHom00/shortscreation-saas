@@ -34,7 +34,9 @@
             </div>
             
             <div class="accounts-list" v-else>
-                <router-link to="/accounts" v-for="account in youtubeAccounts" :key="account._id"><AccountComponent :account="account"/></router-link>
+                <router-link to="/accounts" v-for="account in youtubeAccounts" :key="account._id">
+                    <AccountComponent :account="account"/>
+                </router-link>
             </div>
         </div>
 
@@ -45,7 +47,7 @@
             </div>
             <div class="last-shorts-list" v-else>
                 <ShortComponent v-for="short in shorts.shorts" :key="short._id" :short="short"/>
-                <btnComponent style="text-align: center; margin: 0 auto;" class="loadmore" type="primary" text="Load More" @click="getData(shorts?.pagination?.page + 1)" v-if="shorts?.pagination?.page < shorts?.pagination?.totalPages"/>
+                <BtnComponent style="text-align: center; margin: 0 auto;" class="loadmore" type="primary" text="Load More" @click="getData(shorts?.pagination?.page + 1)" v-if="shorts?.pagination?.page < shorts?.pagination?.totalPages"/>
             </div>
         </div>
     </div>

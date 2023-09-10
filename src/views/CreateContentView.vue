@@ -19,18 +19,18 @@
                     <div class="form youtube-upload-settings">
                         <h3>YouTube Upload Settings</h3>
                         <p><small>#{{ form.forAccount }}</small></p>
-                        <inputComponent v-model="form.data.settings.uploadInterval" label="Upload Interval" placeholder="Every 24 hours" option="true" :user="user"/>
-                        <inputComponent v-model="form.data.settings.title" label="Enter a title for every video" placeholder="Enter a title... "/>
+                        <InputComponent v-model="form.data.settings.uploadInterval" label="Upload Interval" placeholder="Every 24 hours" option="true" :user="user"/>
+                        <InputComponent v-model="form.data.settings.title" label="Enter a title for every video" placeholder="Enter a title... "/>
                         <div class="checkbox">
                             <input type="checkbox" v-model="form.useTiktokTitle" id="default"/>
                             <label for="default"><small>Set title as tiktok's title</small></label>
                         </div>
-                        <inputComponent v-model="form.data.settings.hashtags" label="Enter default hashtags for every video" placeholder="Enter hashtags... "/>
+                        <InputComponent v-model="form.data.settings.hashtags" label="Enter default hashtags for every video" placeholder="Enter hashtags... "/>
                         <p class="input-caption"><small>Hashtags will increase your chances to get into recommended section<br>
                         Example: #shorts #comedy #tiktok
                         </small></p>
-                        <!-- <inputComponent v-model="form.data.settings.pinnedComment" label="Enter a comment to pin under every video" placeholder="Enter a comment..." textarea="true"/> -->
-                        <inputComponent v-model="form.data.settings.description" label="Enter a description for every video" placeholder="Enter a description..." textarea="true"/>
+                        <!-- <InputComponent v-model="form.data.settings.pinnedComment" label="Enter a comment to pin under every video" placeholder="Enter a comment..." textarea="true"/> -->
+                        <InputComponent v-model="form.data.settings.description" label="Enter a description for every video" placeholder="Enter a description..." textarea="true"/>
                         <h4>Background video</h4>
                         <small>Recommended video aspect ratio: 9:16. Limit 300mb.</small>
                         <!--default html file upload button-->
@@ -42,7 +42,7 @@
                             {{ form.data.background_video ? form.data.background_video : 'Upload a file' }}
                         </label>
                         <br>
-                        <btnComponent type="primary" text="Save" class="save-button" @click="updateSettings()"/>
+                        <BtnComponent type="primary" text="Save" class="save-button" @click="updateSettings()"/>
                     </div>
                     <div class="form tiktok-accounts">
                         <h3>TikTok Accounts</h3>
@@ -52,11 +52,11 @@
                         </div>
                         <h4 v-else>No source accounts provided. Add one now!</h4>
                         <div class="input-flex">
-                            <inputComponent v-model="newTikTokAccount" label="Unique Id" placeholder="@example" style="width: 80%;"/>
-                            <btnComponent type="primary" icon="dashboard/plus.svg" class="add-button" style="width: calc(20% - 20px); margin-left: 20px" @click="addTikTokAccount"/>
+                            <InputComponent v-model="newTikTokAccount" label="Unique Id" placeholder="@example" style="width: 80%;"/>
+                            <BtnComponent type="primary" icon="dashboard/plus.svg" class="add-button" style="width: calc(20% - 20px); margin-left: 20px" @click="addTikTokAccount"/>
                         </div>
                         <br>
-                        <!-- <btnComponent type="primary" text="Save" class="save-button"/> -->
+                        <!-- <BtnComponent type="primary" text="Save" class="save-button"/> -->
                     </div>
                 </div>
             </Transition>
@@ -66,8 +66,8 @@
 <script>
 import ProfileNavigation from '@/components/dashboard/ProfileNavigation.vue';
 import AccountComponent from '@/components/dashboard/AccountComponent.vue';
-import inputComponent from '@/components/InputComponent.vue';
-import btnComponent from '@/components/BtnComponent.vue';
+import InputComponent from '@/components/InputComponent.vue';
+import BtnComponent from '@/components/BtnComponent.vue';
 import NotificationComponent from '@/components/NotificationComponent.vue'
 import TikTokAccountComponent from '@/components/dashboard/TikTokAccountComponent.vue'
 
@@ -79,8 +79,8 @@ export default {
     components: {
         ProfileNavigation,
         AccountComponent,
-        btnComponent,
-        inputComponent,
+        BtnComponent,
+        InputComponent,
         NotificationComponent,
         TikTokAccountComponent
     },

@@ -19,11 +19,11 @@
                 </div>
                 <div>
                     <Popper content="Copy link" class="action-btn" hover>
-                        <btnComponent type="primary" icon="dashboard/copy.svg" @click="copyLink"/>
+                        <BtnComponent type="primary" icon="dashboard/copy.svg" @click="copyLink"/>
                     </Popper>
                     <Popper content="Withdraw" class="action-btn" hover>
                         <a href="mailto:support@shortscreation.tech" target="_blank">
-                            <btnComponent type="primary" icon="dashboard/withdraw.svg"/>
+                            <BtnComponent type="primary" icon="dashboard/withdraw.svg"/>
                         </a>
                         <!-- @click="changeFormState()" -->
                     </Popper>
@@ -31,10 +31,10 @@
             </div>
             <Transition>
                 <div class="form" v-if="showForm">
-                    <inputComponent label="Wallet" placeholder="Enter your USDT Wallet Address"/>
-                    <inputComponent label="Amount" placeholder="Enter amount to withdraw"/>
+                    <InputComponent label="Wallet" placeholder="Enter your USDT Wallet Address"/>
+                    <InputComponent label="Amount" placeholder="Enter amount to withdraw"/>
                     <br>
-                    <btnComponent type="primary" text="Send request" />
+                    <BtnComponent type="primary" text="Send request" />
                 </div>
             </Transition>
             <div class="refferals">
@@ -45,7 +45,7 @@
                 <div class="refferal-list" v-else>
                     <RefferalComponent v-for="affiliate of affiliateData.affiliates" :key="affiliate._id" :affiliate="affiliate"/>
                 </div>
-                <btnComponent class="loadmore" type="primary" text="Load More" @click="getData(affiliateData?.pagination?.page + 1)" v-if="affiliateData?.pagination?.page < affiliateData?.pagination?.totalPages"/>
+                <BtnComponent class="loadmore" type="primary" text="Load More" @click="getData(affiliateData?.pagination?.page + 1)" v-if="affiliateData?.pagination?.page < affiliateData?.pagination?.totalPages"/>
 
             </div>
 
@@ -56,8 +56,8 @@
 <script>
 import ProfileNavigation from '@/components/dashboard/ProfileNavigation.vue';
 import RefferalComponent from '@/components/dashboard/RefferalComponent.vue';
-import inputComponent from '@/components/InputComponent.vue';
-import btnComponent from '@/components/BtnComponent.vue';
+import InputComponent from '@/components/InputComponent.vue';
+import BtnComponent from '@/components/BtnComponent.vue';
 import NotificationComponent from '@/components/NotificationComponent.vue';
 import Popper from 'vue3-popper';
 
@@ -80,8 +80,8 @@ export default {
     components: {
         ProfileNavigation,
         RefferalComponent,
-        btnComponent,
-        inputComponent,
+        BtnComponent,
+        InputComponent,
         NotificationComponent,
         Popper,
     },

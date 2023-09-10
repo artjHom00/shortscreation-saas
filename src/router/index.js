@@ -10,6 +10,8 @@ import AffiliateView from '../views/AffiliateView.vue'
 import ForgotPasswordView from '../views/ForgotPasswordView.vue'
 import ChangePasswordView from '../views/ChangePasswordView.vue'
 import SubscriptionsView from '../views/SubscriptionsView.vue'
+
+import store from '../store/index.js'
 // import axios from 'axios'
 
 
@@ -91,12 +93,34 @@ const router = createRouter({
 })
 
 // adding middleware on authenication
-// router.beforeEach((to) => {
+router.beforeEach(async (to, from, next) => {
   
-//   let isAuthRequired = to.matched.some(record => record.meta.isAuthRequired)
-//   if(!isAuthRequired) next()
+  let isAuthRequired = to.matched.some(record => record.meta?.isAuthRequired)
+  
+  const jwt_token = window.$cookies.get('jwt_token')
 
-// })
+  // first cheking, if there is a jwt token stored in cookies
+  // restore user data
+  if(jwt_token) {
+    
+    let _isUpdated = await store.dispatch('updateJWTIfNeeded', jwt_token)
+    
+    if(_isUpdated) {
+      // save user data in store
+      await store.dispatch('me')
+    }
+
+  }
+  
+  // if authorization aint needed or user authorized
+  // continue
+  if(!isAuthRequired || (isAuthRequired && store.state.user.user)) return next()
+  
+  // else redirect to auth page
+  return next({path: '/sign-in'})
+
+
+})
 
 router.afterEach((to) => {
   const DEFAULT_TITLE = 'ShortsCreation'

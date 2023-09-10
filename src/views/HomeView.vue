@@ -4,7 +4,9 @@
     <div class="main-section section container">
       <h1>Create a network of fully automated <span class="text-primary">YouTube Channels</span></h1>
       <h4>Say goodbye to manual work and hello to efficiency, creativity, and growth. Elevate your YouTube channel to new heights with our solution, specially designed to integrate TikTok content seamlessly. Embrace the future of video creation!</h4>
-      <router-link to="/dashboard" class="no-decoration"><BtnComponent text="Start Creating 🔗" type="primary"/></router-link>
+      <router-link to="/dashboard" class="no-decoration">
+        <BtnComponent text="Start Creating 🔗" type="primary"/>
+      </router-link>
       <div class="video">
         <video src="/promo.mp4" poster="/poster.png" loop controls>
         </video>
@@ -74,7 +76,7 @@
         <small class="text-primary">Unbelievable Pricing.</small>
       </h2>
       <div class="subscriptions-list">
-        <subscriptionComponent v-for="(subscription, index) of subscriptions" :key="index" :link="subscription.link" :type="subscription.type" :videos="subscription.videos" :accounts="subscription.accounts" :name="subscription.name" :price="subscription.price" :videoCost="subscription.videoCost" action="Get Started"/>
+        <SubscriptionComponent v-for="(subscription, index) of subscriptions" :key="index" :link="subscription.link" :type="subscription.type" :videos="subscription.videos" :accounts="subscription.accounts" :name="subscription.name" :price="subscription.price" :videoCost="subscription.videoCost" action="Get Started"/>
       </div>
     </div>
   </div>
@@ -82,14 +84,14 @@
 
 <script>
 import BtnComponent from '@/components/BtnComponent.vue'; 
-import subscriptionComponent from '@/components/SubscriptionComponent.vue'; 
+import SubscriptionComponent from '@/components/SubscriptionComponent.vue'; 
 import AlertComponent from '@/components/AlertComponent.vue'
 
 export default {
   name: 'HomeView',
   components: {
     BtnComponent,
-    subscriptionComponent,
+    SubscriptionComponent,
     AlertComponent
   },
   data() {

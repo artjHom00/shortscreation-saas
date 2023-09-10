@@ -10,7 +10,7 @@
             <div class="form">
                 <InputComponent label="Code" placeholder="Enter your confirmation code" v-model="code"/>
             </div>
-            <btnComponent type="primary" text="Verify" @click="confirmAccount()"/>
+            <BtnComponent type="primary" text="Verify" @click="confirmAccount()"/>
             <p>Don't see a code? 
                 <span class="resend text-primary" @click="resendConfirmation()" v-if="resendAvailable">Resend confirmation code</span>
                 <span class="text-primary" v-else>Wait 15 seconds until resending...</span>

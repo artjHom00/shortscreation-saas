@@ -12,20 +12,20 @@
         </p>
         <div class="accounts">
 
-            <btnComponent type="primary" text="Add New Account" @click="changeStateOfForm" v-if="isAllowedToAddAccounts"/>
+            <BtnComponent type="primary" text="Add New Account" @click="changeStateOfForm" v-if="isAllowedToAddAccounts"/>
 
             <transition>
 
             <div class="add-account" v-if="showForm">
 
                 <div class="add-account-form">
-                    <inputComponent label="Event Trigger URL" placeholder="Enter Event Trigger URL" v-model="newAccount.event_trigger_url"/>
-                    <!-- <inputComponent v-model="newAccount.email" label="Email*" placeholder="Email"/>
-                        <inputComponent v-model="newAccount.password" password="true" label="Password*" placeholder="*********"/>
-                        <inputComponent v-model="newAccount.recoveryEmail" label="Recovery Email" placeholder="Recovery email"/> -->
+                    <InputComponent label="Event Trigger URL" placeholder="Enter Event Trigger URL" v-model="newAccount.event_trigger_url"/>
+                    <!-- <InputComponent v-model="newAccount.email" label="Email*" placeholder="Email"/>
+                        <InputComponent v-model="newAccount.password" password="true" label="Password*" placeholder="*********"/>
+                        <InputComponent v-model="newAccount.recoveryEmail" label="Recovery Email" placeholder="Recovery email"/> -->
                 </div>
                 <a href="/instruction.pdf" class="text-primary" target="_blank">What is "Event Trigger URL" and where to get it?</a>
-                <btnComponent type="primary" text="Save" @click="createAccount()"/>
+                <BtnComponent type="primary" text="Save" @click="createAccount()"/>
 
             </div>
 
@@ -48,8 +48,8 @@
 import ProfileNavigation from '@/components/dashboard/ProfileNavigation.vue';
 import AccountComponent from '@/components/dashboard/AccountComponent.vue';
 import NotificationComponent from '@/components/NotificationComponent.vue'
-import inputComponent from '@/components/InputComponent.vue';
-import btnComponent from '@/components/BtnComponent.vue';
+import InputComponent from '@/components/InputComponent.vue';
+import BtnComponent from '@/components/BtnComponent.vue';
 
 import axios from 'axios';
 
@@ -170,8 +170,8 @@ export default {
     components: {
         ProfileNavigation,
         AccountComponent,
-        btnComponent,
-        inputComponent,
+        BtnComponent,
+        InputComponent,
         NotificationComponent
     }
 }

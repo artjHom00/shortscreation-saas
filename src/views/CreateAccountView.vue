@@ -19,7 +19,7 @@
                 </div> -->
                 <!-- <router-link to="/" class="text-primary">Forgot Your Password?</router-link> -->
             <!-- </div> -->
-            <btnComponent type="primary" text="Create" @click="createUser()"/>
+            <BtnComponent type="primary" text="Create" @click="createUser()"/>
             <p>Already have an account? <router-link to="/sign-in" class="text-primary">Sign in!</router-link></p>
         </div>
     </div>

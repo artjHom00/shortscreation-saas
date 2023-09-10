@@ -14,7 +14,7 @@
         </div>
 
         <div class="subscriptions-elements">
-            <subscriptionComponent 
+            <SubscriptionComponent 
             v-for="(subscription, index) of subscriptions[activeSection]" 
             :user="user" 
             :key="index" 
@@ -35,7 +35,7 @@
 <script>
 import ProfileNavigation from '@/components/dashboard/ProfileNavigation.vue';
 import BtnComponent from '@/components/BtnComponent.vue';
-import subscriptionComponent from '@/components/SubscriptionComponent.vue'; 
+import SubscriptionComponent from '@/components/SubscriptionComponent.vue'; 
 import NotificationComponent from '@/components/NotificationComponent.vue'
 
 import axios from 'axios';
@@ -47,7 +47,7 @@ export default {
     components: {
         ProfileNavigation,
         BtnComponent,
-        subscriptionComponent,
+        SubscriptionComponent,
         NotificationComponent
     },
     data() {

@@ -18,7 +18,7 @@ export default {
   },
   data() {
     return {
-      isLoading: true
+      isLoading: false
     }
   },
   methods: {
@@ -46,16 +46,16 @@ export default {
  
   },
   watch: {
-    async '$route' () {
-      const _isUpdated = await this.updateJWTIfNeeded(this.$cookies.get('jwt_token'))
+    // async '$route' () {
+    //   const _isUpdated = await this.updateJWTIfNeeded(this.$cookies.get('jwt_token'))
 
-      if(_isUpdated) {
-        this.isLoading = true
-        await this.me()
-        this.isLoading = false
+    //   if(_isUpdated) {
+    //     this.isLoading = true
+    //     await this.me()
+    //     this.isLoading = false
 
-      }
-    }
+    //   }
+    // }
   },
   async mounted() {
       

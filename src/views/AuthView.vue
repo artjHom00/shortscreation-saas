@@ -18,7 +18,7 @@
                 <router-link style="text-align:right" to="/forgot-password"><span class="text-primary forgot">Forgot Your Password?</span></router-link>
             </div>
             <!-- <router-link to="/dashboard" class="no-decoration"> -->
-                <btnComponent type="primary" text="Log In" @click="authUser"/>
+                <BtnComponent type="primary" text="Log In" @click="authUser"/>
             <!-- </router-link> -->
             <p>Don’t have an account? <router-link to="/create-account" class="text-primary">Create an account!</router-link></p>
         </div>

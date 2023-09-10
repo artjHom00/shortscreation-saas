@@ -9,7 +9,7 @@
             <div class="form">
                 <InputComponent v-model="email" label="Email" placeholder="Enter your email address"/>
             </div>
-            <btnComponent type="primary" text="Restore" @click="sendRequest()"/>
+            <BtnComponent type="primary" text="Restore" @click="sendRequest()"/>
             <p>Remembered password? <router-link to="/sign-in" class="text-primary">Sign in!</router-link></p>
         </div>
     </div>

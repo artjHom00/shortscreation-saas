@@ -53,6 +53,10 @@ module.exports = {
             return 'Bearer ' + state.jwt_token_cookie
         },
         getUser(state) {
+            
+            console.log("🚀 ~ file: user.js:58 ~ getUser ~ state.user:", state.user)
+            if(!state.user) return {}
+
             return {
                 id: state.user._id,
                 username: state.user.username,
