@@ -4,6 +4,8 @@ Public version of ShortsCreation - a SaaS product, made on Node.js (Express) / V
 > The project is deprecated, so some functionality might be not working.
 > Check out my latest project [NuxtSAAS](https://nuxtsaas.tech/)
 
+![ShortsCreation Preview Thumbnail](README-thumb.png)
+
 ## Stack
 
 - [CryptoCloud](https://cryptocloud.plus/en) - for payments via crypto
@@ -30,10 +32,6 @@ Public version of ShortsCreation - a SaaS product, made on Node.js (Express) / V
 - Automated Shorts uploading, using Pipedream
 
 
-## Initial Setup
-
-
-
 ## Setup & Configuration
 
 
@@ -47,7 +45,7 @@ Set up required services, create a new .env file from the .env.example file with
 
 In `frontend` folder, go to /store/index.js and update `host` variable
 
+---
 
-
-> Fully developed & designed by @artjhom. 2023 \
+> Fully developed & designed by @artjhom in 2023. \
 > [![Twitter URL](https://img.shields.io/twitter/url.svg?label=Follow%20artjhom&style=social&url=https%3A%2F%2Ftwitter.com%2Fartjhom)](https://twitter.com/artjhom)
