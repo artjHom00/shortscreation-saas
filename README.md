@@ -1,10 +1,12 @@
 # ShortsCreation [SaaS] 
-Public version of ShortsCreation - a SaaS product, made on Node.js (Express) / Vue.js
+ShortsCreation - A SaaS Product Built with Node.js (Express) and Vue.js. \
+Automated generation of YouTube Shorts from Tiktoks. Crypto payments & automated uploading to YouTube.
 
-> The project is deprecated, so some functionality might be not working.
-> Check out my latest project [NuxtSAAS](https://nuxtsaas.tech/)
+> Note: This project is currently deprecated, so some functionalities might not work as expected. \
+> Check out my latest project [NuxtSAAS](https://nuxtsaas.tech/) - SaaS Boilerplate on Nuxt 3.
 
-![ShortsCreation Preview Thumbnail](README-thumb.png)
+![image](https://github.com/user-attachments/assets/7ce5c8d2-220a-4b13-b3c2-e0ce0edabeeb)
+ 
 
 ## Stack
 
